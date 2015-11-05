@@ -57,5 +57,13 @@ class GoogleMusicTerminal(object):
         #listen for tags on the message bus; tag event might be called more than once
         bus = self.player.get_bus()
         bus.enable_sync_message_emission()
-        bus.add_signal_watch()
-        bus.connect('message::tag', on_tag)
+        bus.add_signal_wdef play():
+
+    def resume(self):
+        self.player.set_state(gst.STATE_PLAYING)
+
+    def pause(self):
+        self.player.set_state(gst.STATE_PAUSED)
+
+    def stop(self):
+        self.player.set_state(gst.STATE_NULL)
