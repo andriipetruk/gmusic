@@ -12,7 +12,11 @@ Create a `credentials.json` file in data/unlocked/. In this file, add the follow
 ```
 Note: if you use two-step authentication, password needs to be an application-specific password.
 
+<<<<<<< HEAD
 NEVER commit this data to your fork. You can use `python3 lock.py` to password-encrypt your credentials and `python3 unlock.py` to pasword-decrypt locked data.
+=======
+NEVER commit this data to your fork. You can use `python lock.py` to password-encrypt your credentials and `python unlock.py` to pasword-decrypt locked data.
+>>>>>>> ff69385c7706b4022ecafff653e96043787a5726
 
 ## Usage
 At the moment, `gmusic` is used in a python2 interpreter window. The gist of this is as follows....
