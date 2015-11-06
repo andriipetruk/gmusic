@@ -22,7 +22,7 @@ NEVER commit this data to your fork. You can use `python lock.py` to password-en
 At the moment, `gmusic` is used in a python2 interpreter window. The gist of this is as follows....
 
 ```python
-from gmusic.py import GoogleMusic
+from gmusic import GoogleMusic
 gm = GoogleMusic()
 gm.login()
 gm.get(song="___", artist="___")
