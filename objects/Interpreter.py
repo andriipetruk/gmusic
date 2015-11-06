@@ -9,18 +9,20 @@ class Interpreter(object):
 
     def typed_artist(self, artist=""):
         '''Attempts to print '''
-        self.last_search_tracks = [s for s in self.streamer.songs if artist in s['artist']]
-        self.display.search_results(self.last_search_tracks)
+        self.search(artist=artist)
 
     def typed_song(self, song=""):
         '''Attempts to print '''
-        self.last_search_tracks = [s for s in self.streamer.songs if song in s['title']]
-        self.display.search_results(self.last_search_tracks)
+        self.search(song=song)
 
     def typed_album(self, album=""):
         '''Attempts to print '''
-        self.last_search_tracks = [s for s in self.streamer.songs if album in s['album']]
+        self.search(album=album)
+
+    def search(self,artist="",album="",song=""):
+        self.last_search_tracks = [s for s in self.streamer.songs if (album in s['album'] and if artist in s['artist'] and if song in s['title'])]
         self.display.search_results(self.last_search_tracks)
+
 
     def typed_play(self,index):
         '''Play a song using an index from the most recent search'''
