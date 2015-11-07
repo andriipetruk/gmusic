@@ -50,13 +50,13 @@ class Display(object):
 
 
     def help(self):
-        with self.terminal.location(0, self.terminal.height-5):
+        with self.terminal.location(0, self.terminal.height-6):
             print self.terminal.bold("Search Features:\t") + "album (str), artist (str), song (str)"
             print self.terminal.bold("Playback Features:\t") + "play (number), pause, resume, stop"
             print self.terminal.bold("Other Features:\t\t") + "help, exit"
 
     def get_input(self, msg):
-        with self.terminal.location(0,self.terminal.height-2):
+        with self.terminal.location(0,self.terminal.height-3):
             self.print_line(bold=True)
             return raw_input(msg)
 

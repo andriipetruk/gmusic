@@ -20,7 +20,7 @@ class Interpreter(object):
         self.search(album=album)
 
     def search(self,artist="",album="",song=""):
-        self.last_search_tracks = [s for s in self.streamer.songs if (album in s['album'] and if artist in s['artist'] and if song in s['title'])]
+        self.last_search_tracks = [s for s in self.streamer.songs if (album in s['album'] and artist in s['artist'] and song in s['title'])]
         self.display.search_results(self.last_search_tracks)
 
 
