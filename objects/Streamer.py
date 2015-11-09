@@ -12,7 +12,7 @@ class Streamer(object):
         credentials = json.load(open('data/unlocked/credentials.json','r'))
         self.logged_in = self.client.login(credentials['username'], credentials['password'], Mobileclient.FROM_MAC_ADDRESS)
         self.songs = self.client.get_all_songs()
-        
+
     def play_url(self, url):
         '''Play a URL'''
         self.stop()

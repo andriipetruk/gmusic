@@ -7,6 +7,7 @@ class Interpreter(object):
         self.display = display
         self.last_search_tracks = []
 
+    '''Search Functions'''
     def typed_artist(self, artist=""):
         '''Attempts to print '''
         self.search(artist=artist)
@@ -24,6 +25,7 @@ class Interpreter(object):
         self.display.search_results(self.last_search_tracks)
 
 
+    '''Playback Control Functions'''
     def typed_play(self,index):
         '''Play a song using an index from the most recent search'''
         # Make sure it is within range
@@ -44,6 +46,8 @@ class Interpreter(object):
     def typed_resume(self,ignored):
         self.streamer.resume()
 
+
+    '''Other Functions'''
     def typed_exit(self, ignored):
         self.display.clear()
         sys.exit(1)
