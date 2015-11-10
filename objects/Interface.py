@@ -1,20 +1,17 @@
 import readline
-from objects.Parser import Parser
-from objects.Display import Display
+from objects.RequestHandler import RequestHandler
+from objects.ContentManager import ContentManager
+from objects.CursedMenu import CursedMenu
 
 class Interface(object):
 	'''This is the command line interface. It handles all user input and sends to the processor as necessary'''
 	def __init__(self,streamer):
-		self.display = Display()
-		self.parser = Parser(streamer, self.display)
-		readline.parse_and_bind('tab: complete')
+		self.content_manager = ContentManager(streamer)
+		self.request_handler = RequestHandler(streamer, self.content_manager)
+		self.display = CursedMenu(self.content_manager, self.request_handler)
 
 	# Waits for input from the user, then sends it off to be handled
 	def __running__(self):
 		'''Our default running loop which governs the UI'''
-		self.display.clear()
-		self.display.help()
-		while True:
-			self.display.redraw()
-			cmd = self.display.get_input(">  ")
-			self.parser.parse(cmd)
+		self.content_manager.load()
+		self.display.show()

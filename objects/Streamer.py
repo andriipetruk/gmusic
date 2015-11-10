@@ -3,7 +3,6 @@ import json, pygst, gst, sys
 
 class Streamer(object):
     def __init__(self):
-        self.last_search_tracks = []
         self.client = Mobileclient()
         self.player = gst.element_factory_make("playbin", "player")
 
@@ -11,7 +10,6 @@ class Streamer(object):
         '''Use data/unlocked/credentials.json to log in'''
         credentials = json.load(open('data/unlocked/credentials.json','r'))
         self.logged_in = self.client.login(credentials['username'], credentials['password'], Mobileclient.FROM_MAC_ADDRESS)
-        self.songs = self.client.get_all_songs()
 
     def play_url(self, url):
         '''Play a URL'''
@@ -30,6 +28,9 @@ class Streamer(object):
 
     def pause(self):
         '''Pause a song that is playing'''
+        if gst.STATE_PAUSED == self.player.get_state()[1]:
+            self.resume()
+            return
         self.player.set_state(gst.STATE_PAUSED)
 
     def stop(self):

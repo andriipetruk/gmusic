@@ -1,8 +1,8 @@
 from objects.Interpreter import Interpreter
 
-class Parser(object):
-    def __init__(self,streamer,display):
-        self.interpreter = Interpreter(streamer,display)
+class RequestHandler(object):
+    def __init__(self,streamer,content_manager):
+        self.interpreter = Interpreter(streamer,content_manager)
 
     def parse(self, line):
         '''Master method; figures out what was typed by the user'''
@@ -16,7 +16,7 @@ class Parser(object):
 
     def send_to_interpreter(self, data):
         # Get the correct method and invoke it
-        method_type = 'typed_{0}'.format(data[0])
+        method_type = 'typed_{0}'.format(data[0].lower())
         if hasattr(self.interpreter,method_type):
             method = getattr(self.interpreter,method_type)
             method(data[1])
