@@ -1,9 +1,9 @@
-import curses, os
+import curses, os, traceback
 
 class CursedMenu(object):
     '''A class which abstracts the horrors of building a curses-based menu system'''
 
-    def __init__(self, options, title="Title", subtitle="Subtitle"):
+    def __init__(self):
         '''Initialization'''
         self.screen = curses.initscr()
         curses.noecho()
@@ -16,14 +16,24 @@ class CursedMenu(object):
         self.highlighted = curses.color_pair(1)
         self.normal = curses.A_NORMAL
 
-        # simple information
-        self.selected = 0
-        self.options = options
+
+    def show(self, options, title="Title", subtitle="Subtitle"):
+        '''Draws a menu with the given parameters'''
+        self.set_options(options)
         self.title = title
         self.subtitle = subtitle
+        self.selected = 0
+        self.draw_menu()
 
 
-    def menu(self):
+    def set_options(self, options):
+        '''Validates that the last option is "Exit"'''
+        if options[-1] is not 'Exit':
+            options.append('Exit')
+        self.options = options
+
+
+    def draw_menu(self):
         '''Actually draws the menu and handles branching'''
         request = ""
         try:
@@ -31,10 +41,12 @@ class CursedMenu(object):
                 self.draw()
                 request = self.get_user_input()
                 self.handle_request(request)
-        except: pass
-            # This is just an example; surrounding in a try/catch to force run
-            # __exit__ if there's an exception thrown in the inner loop
-        self.__exit__()
+            self.__exit__()
+
+        # Also calls __exit__, but adds traceback after
+        except Exception as exception:
+            self.__exit__()
+            traceback.print_exc()
 
 
     def draw(self):
