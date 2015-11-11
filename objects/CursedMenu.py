@@ -34,26 +34,34 @@ class CursedMenu(object):
     def set_parameters(self):
         '''Draws a menu with the given parameters'''
         if self.content_manager.search_menu:
-            options = [a['title'] for a in self.content_manager.search_results]
-            if len(options) > 50:
-                options = options[:50]
-            self.set_options(options)
+            self.options = [a['title'] for a in self.content_manager.search_results]
             self.title = self.content_manager.title
             self.subtitle = self.content_manager.subtitle
         else:
-            self.set_options(self.content_manager.get_most_recent_searches())
+            self.options = self.content_manager.get_most_recent_searches()
             self.title = "Main Menu"
             self.subtitle = "Options"
+        self.set_options(self.options)
         self.selected = 0
+
+    def change_page(self):
+        if hasattr(self,'options'):
+            self.set_options(self.options)
 
 
     def set_options(self, options):
         '''Validates that the last option is "Exit"'''
+        options_per_page = self.terminal.height-14
+        options = options[self.content_manager.page*options_per_page:(self.content_manager.page+1)*options_per_page]
+
+        if len(options) == 0:
+            return
+
         if (options[-1] is not 'Exit' and not self.content_manager.search_menu):
             options.append('Exit')
         if (options[-1] is not 'Back' and self.content_manager.search_menu):
             options.append('Back')
-        self.options = options
+        self.page_options = options
 
 
     def draw_menu(self):
@@ -93,11 +101,11 @@ class CursedMenu(object):
         self.screen.addstr(8,2, self.subtitle, curses.A_BOLD) #Subtitle for this menu
 
         # Display all the menu items, showing the 'pos' item highlighted
-        for index in range(len(self.options)):
+        for index in range(len(self.page_options)):
             textstyle = self.normal
             if index == self.selected:
                 textstyle = self.highlighted
-            self.screen.addstr(9+index,4, "%d - %s" % (index+1, self.options[index]), textstyle)
+            self.screen.addstr(9+index,4, "%d - %s" % (index+1, self.page_options[index]), textstyle)
 
         self.screen.refresh()
 
@@ -106,20 +114,21 @@ class CursedMenu(object):
         '''Gets the user's input and acts appropriately'''
         user_in = self.screen.getch() # Gets user input
 
-        '''Enter and Exit Keys are special cases'''
+        # Enter Key
         if user_in == 10:
-            if self.selected == (len(self.options)-1):
-                return self.options[-1]
+            print self.page_options[-1]
+            if self.selected == len(self.page_options)-1:
+                self.content_manager.page = 0
+                return self.page_options[-1]
             if self.content_manager.search_menu:
-                return 'play {0}'.format(self.selected)
+                print 'searchmenu'
+                options_per_page = self.terminal.height-13
+                return 'play {0}'.format(self.selected + (options_per_page-1)*self.content_manager.page)
             return self.content_manager.most_recent_searches[self.selected]
+
+        # Escape
         if user_in == 27:
             self.__exit__()
-            return
-
-        # This is a number; check to see if we can set it
-        if user_in >= ord('1') and user_in <= ord(str(min(9,len(self.options)+1))):
-            self.selected = user_in - ord('0') - 1 # convert keypress back to a number, then subtract 1 to get index
             return
 
         if user_in == ord(' '):
@@ -128,12 +137,22 @@ class CursedMenu(object):
         if user_in == ord('i'):
             return self.handle_text_entry()
 
+        if user_in == ord('['):
+            self.content_manager.page = max(0, self.content_manager.page-1)
+            self.change_page()
+            return
+        if user_in == ord(']'):
+            self.content_manager.page += 1
+            self.change_page()
+            return
+
+
         # Increment or Decrement
         if user_in == curses.KEY_DOWN: # down arrow
             self.selected += 1
         if user_in == curses.KEY_UP: # up arrow
             self.selected -=1
-        self.selected = self.selected % len(self.options)
+        self.selected = self.selected % len(self.page_options)
         return
 
 

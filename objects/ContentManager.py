@@ -11,6 +11,7 @@ class ContentManager(object):
         self.most_recent_searches = []
         self.now_playing_track = ""
         self.redraw = False
+        self.page = 0
 
     def load(self):
         print "Loading songs and radios.\n"
