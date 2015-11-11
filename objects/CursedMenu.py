@@ -81,13 +81,18 @@ class CursedMenu(object):
 
 
     def center_text(self,text,r,style=curses.A_NORMAL):
+        # Check to make sure it's not too big... if so, replace the middle half with '...'
+        if (self.terminal.width-4) < len(text):
+            text = text[:int(self.terminal.width/4)] + "..." + text[int(3*self.terminal.width/4):]
+
         self.screen.addstr(r,int((self.terminal.width-len(text))/2), text, style)
 
     def draw_now_playing(self):
-        if self.content_manager.now_playing_track is not "":
-            self.center_text(self.content_manager.now_playing_track['title'], 2, curses.A_BOLD)
-            self.center_text(self.content_manager.now_playing_track['album'], 3, self.normal)
-            self.center_text(self.content_manager.now_playing_track['artist'], 4, self.normal)
+        track = self.content_manager.get_now_playing_track()
+        if track is not "":
+            self.center_text(track['title'], 2, curses.A_BOLD)
+            self.center_text(track['album'], 3, self.normal)
+            self.center_text(track['artist'], 4, self.normal)
             return
         self.center_text("Google Music Terminal",3,curses.A_BOLD)
 
@@ -116,12 +121,10 @@ class CursedMenu(object):
 
         # Enter Key
         if user_in == 10:
-            print self.page_options[-1]
             if self.selected == len(self.page_options)-1:
                 self.content_manager.page = 0
                 return self.page_options[-1]
             if self.content_manager.search_menu:
-                print 'searchmenu'
                 options_per_page = self.terminal.height-13
                 return 'play {0}'.format(self.selected + (options_per_page-1)*self.content_manager.page)
             return self.content_manager.most_recent_searches[self.selected]
@@ -131,12 +134,16 @@ class CursedMenu(object):
             self.__exit__()
             return
 
+        # Spacebar
         if user_in == ord(' '):
             return 'pause'
 
+        # i (text entry)
         if user_in == ord('i'):
             return self.handle_text_entry()
 
+
+        # Page Increment/Decrement
         if user_in == ord('['):
             self.content_manager.page = max(0, self.content_manager.page-1)
             self.change_page()
@@ -148,6 +155,10 @@ class CursedMenu(object):
 
 
         # Increment or Decrement
+        if user_in == curses.KEY_NPAGE:
+            self.selected = min(len(self.page_options)-1, self.selected+10)
+        if user_in == curses.KEY_PPAGE:
+            self.selected = max(0, self.selected-10)
         if user_in == curses.KEY_DOWN: # down arrow
             self.selected += 1
         if user_in == curses.KEY_UP: # up arrow

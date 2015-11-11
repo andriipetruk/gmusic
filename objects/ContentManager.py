@@ -9,8 +9,6 @@ class ContentManager(object):
         self.subtitle = ''
         self.search_menu = False
         self.most_recent_searches = []
-        self.now_playing_track = ""
-        self.redraw = False
         self.page = 0
 
     def load(self):
@@ -24,7 +22,6 @@ class ContentManager(object):
             self.title = artist+album+song
             self.subtitle = "Search Results"
             self.search_menu = True
-            self.redraw = True
             self.search_results = search_results
 
     def get_most_recent_searches(self):
@@ -32,8 +29,6 @@ class ContentManager(object):
 
     def play_track(self, num):
         track = self.search_results[num]
-        self.now_playing_track = track
-        self.redraw = True
         return track
 
     def queue(self, track_index):
@@ -44,3 +39,6 @@ class ContentManager(object):
              queue += self.search_results[:track_index-1]
 
         self.streamer.queue = queue
+
+    def get_now_playing_track(self):
+        return self.streamer.now_playing_track

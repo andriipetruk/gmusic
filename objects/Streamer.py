@@ -8,6 +8,7 @@ class Streamer(object):
         self.queue = []
         self.client = Mobileclient()
         self.player = gst.element_factory_make("playbin2", "player")
+        self.now_playing_track = ""
 
         bus = self.player.get_bus()
         bus.add_signal_watch()
@@ -37,6 +38,7 @@ class Streamer(object):
         '''Play a URL'''
         self.stop()
         url = self.client.get_stream_url(track['id'])
+        self.now_playing_track = track
         self.player.set_property('uri', url)
 
         self.player.set_state(gst.STATE_PLAYING)
