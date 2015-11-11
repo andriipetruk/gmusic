@@ -23,7 +23,7 @@ class Controller(object):
     def typed_play(self,index):
         '''Play a song using an index from the most recent search'''
         track = self.content_manager.play_track(int(index))
-        self.streamer.queue = self.content_manager.search_results
+        self.content_manager.queue(int(index))
         self.streamer.play_track(track)
 
     def typed_stop(self,ignored=""):

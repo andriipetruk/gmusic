@@ -1,1 +1,3 @@
-gmusicapi==7.0.0
+gmusicapi>=7.0.0
+blessed>=1.12.0
+pygobject>=3.14.0

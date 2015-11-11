@@ -34,7 +34,10 @@ class CursedMenu(object):
     def set_parameters(self):
         '''Draws a menu with the given parameters'''
         if self.content_manager.search_menu:
-            self.set_options([a['title'] for a in self.content_manager.search_results])
+            options = [a['title'] for a in self.content_manager.search_results]
+            if len(options) > 50:
+                options = options[:50]
+            self.set_options(options)
             self.title = self.content_manager.title
             self.subtitle = self.content_manager.subtitle
         else:

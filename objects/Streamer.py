@@ -27,6 +27,8 @@ class Streamer(object):
         '''Use data/unlocked/credentials.json to log in'''
         credentials = json.load(open('data/unlocked/credentials.json','r'))
         self.logged_in = self.client.login(credentials['username'], credentials['password'], Mobileclient.FROM_MAC_ADDRESS)
+        if self.logged_in:
+            print 'Logged into Google Music\n'
 
 
 
