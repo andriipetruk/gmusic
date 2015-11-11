@@ -1,11 +1,10 @@
 from objects.Display import Display
 import sys
 
-class Interpreter(object):
+class Controller(object):
     def __init__(self, streamer, content_manager):
         self.streamer = streamer
         self.content_manager = content_manager
-        self.last_search_tracks = []
 
     '''Search Functions'''
     def typed_artist(self, artist=""):
@@ -23,17 +22,18 @@ class Interpreter(object):
     '''Playback Control Functions'''
     def typed_play(self,index):
         '''Play a song using an index from the most recent search'''
-        track = self.content_manager.search_results[int(index)]
-        self.streamer.play_url(self.streamer.client.get_stream_url(track['id']))
+        track = self.content_manager.play_track(int(index))
+        self.streamer.queue = self.content_manager.search_results
+        self.streamer.play_track(track)
 
-    def typed_stop(self,ignored):
+    def typed_stop(self,ignored=""):
         self.streamer.stop()
 
-    def typed_pause(self,ignored):
+    def typed_pause(self,ignored=""):
         self.streamer.pause()
 
-    def typed_resume(self,ignored):
+    def typed_resume(self,ignored=""):
         self.streamer.resume()
 
-    def typed_back(self,ignored):
+    def typed_back(self,ignored=""):
         self.content_manager.search_menu = False

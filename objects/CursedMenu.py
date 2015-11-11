@@ -1,12 +1,14 @@
-import curses, os, traceback
 from blessed import Terminal
 from objects.RequestHandler import RequestHandler
+import curses, os, traceback, sys
 
 class CursedMenu(object):
     '''A class which abstracts the horrors of building a curses-based menu system'''
 
     def __init__(self, content_manager, request_handler):
         '''Initialization'''
+        reload(sys)
+        sys.setdefaultencoding('utf8')
         self.terminal = Terminal()
         self.screen = curses.initscr()
         curses.noecho()
@@ -36,7 +38,7 @@ class CursedMenu(object):
             self.title = self.content_manager.title
             self.subtitle = self.content_manager.subtitle
         else:
-            self.set_options(['Options', "Exit"])
+            self.set_options(self.content_manager.get_most_recent_searches())
             self.title = "Main Menu"
             self.subtitle = "Options"
         self.selected = 0
@@ -67,19 +69,32 @@ class CursedMenu(object):
             traceback.print_exc()
 
 
+    def center_text(self,text,r,style=curses.A_NORMAL):
+        self.screen.addstr(r,int((self.terminal.width-len(text))/2), text, style)
+
+    def draw_now_playing(self):
+        if self.content_manager.now_playing_track is not "":
+            self.center_text(self.content_manager.now_playing_track['title'], 2, curses.A_BOLD)
+            self.center_text(self.content_manager.now_playing_track['album'], 3, self.normal)
+            self.center_text(self.content_manager.now_playing_track['artist'], 4, self.normal)
+            return
+        self.center_text("Google Music Terminal",3,curses.A_BOLD)
+
     def draw(self):
         '''Draw the menu and lines'''
         self.screen.clear()
         self.screen.border(0)
-        self.screen.addstr(2,2, self.title, curses.A_STANDOUT) # Title for this menu
-        self.screen.addstr(4,2, self.subtitle, curses.A_BOLD) #Subtitle for this menu
+
+        self.draw_now_playing()
+        self.screen.addstr(6,2, self.title, curses.A_STANDOUT) # Title for this menu
+        self.screen.addstr(8,2, self.subtitle, curses.A_BOLD) #Subtitle for this menu
 
         # Display all the menu items, showing the 'pos' item highlighted
         for index in range(len(self.options)):
             textstyle = self.normal
             if index == self.selected:
                 textstyle = self.highlighted
-            self.screen.addstr(5+index,4, "%d - %s" % (index+1, self.options[index]), textstyle)
+            self.screen.addstr(9+index,4, "%d - %s" % (index+1, self.options[index]), textstyle)
 
         self.screen.refresh()
 
@@ -92,7 +107,9 @@ class CursedMenu(object):
         if user_in == 10:
             if self.selected == (len(self.options)-1):
                 return self.options[-1]
-            return 'play {0}'.format(self.selected)
+            if self.content_manager.search_menu:
+                return 'play {0}'.format(self.selected)
+            return self.content_manager.most_recent_searches[self.selected]
         if user_in == 27:
             self.__exit__()
             return
@@ -131,6 +148,8 @@ class CursedMenu(object):
         if request is None: return
 
         self.request_handler.parse(request)
+        if (('artist' in request or 'album' in request or 'song' in request) and request not in self.content_manager.most_recent_searches):
+            self.content_manager.most_recent_searches.append(request)
         self.set_parameters()
 
 

@@ -8,5 +8,5 @@ class GoogleMusic(object):
         self.interface = Interface(self.streamer)
 
     def __start__(self):
-        self.streamer.login()
+        self.streamer.run()
         self.interface.__running__()

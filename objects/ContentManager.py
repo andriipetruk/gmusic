@@ -8,6 +8,9 @@ class ContentManager(object):
         self.title = ''
         self.subtitle = ''
         self.search_menu = False
+        self.most_recent_searches = []
+        self.now_playing_track = ""
+        self.redraw = False
 
     def load(self):
         self.songs = self.streamer.client.get_all_songs()
@@ -19,4 +22,14 @@ class ContentManager(object):
             self.title = artist+album+song
             self.subtitle = "Search Results"
             self.search_menu = True
+            self.redraw = True
             self.search_results = search_results
+
+    def get_most_recent_searches(self):
+        return self.most_recent_searches + ['Options', 'Exit']
+
+    def play_track(self, num):
+        track = self.search_results[num]
+        self.now_playing_track = track
+        self.redraw = True
+        return track
