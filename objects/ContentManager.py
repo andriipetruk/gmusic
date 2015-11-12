@@ -80,7 +80,6 @@ class ContentManager(object):
         num_pages = int(math.ceil(len(self.full_options) / len(self.page_options)))
         self.page = min(max(0, self.page+val), num_pages)
 
-
         # Notify the menu (if it exists)
         if hasattr(self, 'menu'):
             self.page_options = self.menu.notify(self.full_options,self.page)

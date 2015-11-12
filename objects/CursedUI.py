@@ -35,7 +35,9 @@ class CursedUI(CursedObject):
 
         # i (text entry)
         if user_in == ord('i'):
-            return self.handle_text_entry()
+            result = self.handle_text_entry()
+            self.content_manager.menu.draw()
+            return result
 
 
         # Page Increment/Decrement

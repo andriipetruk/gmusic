@@ -19,7 +19,11 @@ class Controller(object):
         self.content_manager.search_songs(album=album)
 
     '''Playback Control Functions'''
-    def typed_play(self,index):
+    def typed_play(self,index=""):
+        if index is "":
+            self.content_manager.streamer.resume()
+            return
+
         '''Play a song using an index from the most recent search'''
         track = self.content_manager.play_track(int(index))
         self.content_manager.queue(int(index))
