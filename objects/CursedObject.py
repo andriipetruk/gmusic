@@ -34,6 +34,11 @@ class CursedObject(object):
         self.screen.clrtobot()
         self.screen.chgat(curr_y,curr_x)
 
+    def print_line(self,text,row, column=1,style=curses.A_NORMAL):
+        width = self.width()
+        text += ' '*int(width-len(text)-column-2)
+        self.screen.addstr(row, column, text, style)
+
     def center_text(self,text,r,style=curses.A_NORMAL):
         '''Auto-center text in a row; capable of fitting to screen'''
         # Check to make sure it's not too big... if so, replace the middle half with '...'
@@ -42,10 +47,10 @@ class CursedObject(object):
             text = text[:int(width/4)] + "..." + text[int(3*width/4):]
 
         diff = width - len(text)
-        text = ' '*int(math.floor(diff/2)-1) + text + ' '*int(math.ceil(diff/2)-1)
 
         # Add the string, then go back
-        self.screen.addstr(r,1, text, style)
+        text = ' '*int(math.floor(diff/2)-1) + text
+        self.print_line(text,r)
 
 
 

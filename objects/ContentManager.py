@@ -1,4 +1,5 @@
 from objects.Streamer import Streamer
+import math
 
 class ContentManager(object):
 
@@ -15,7 +16,7 @@ class ContentManager(object):
         self.streamer = Streamer()
 
     def load(self):
-        print "Logged into Google Music. Now loading songs and radios.\n"
+        print "Logged into Google Music. Now loading songs and radios."
         self.set_menu_options()
         self.streamer.run()
         self.songs = self.streamer.client.get_all_songs()
@@ -29,6 +30,7 @@ class ContentManager(object):
             self.main_menu = False
             self.search_results = search_results
             self.set_menu_options(self.search_results)
+
 
     def get_most_recent_searches(self):
         return self.most_recent_searches + ['Options', 'Exit']
@@ -50,8 +52,8 @@ class ContentManager(object):
     '''UI Notifications'''
     def set_menu_options(self, opts=[]):
         '''Draws a menu with the given parameters'''
-        self.selected = 0
         if self.main_menu:
+            self.selected = 0
             self.full_options = self.get_most_recent_searches()
             self.title = "Main Menu"
             self.subtitle = "Options"
@@ -63,12 +65,21 @@ class ContentManager(object):
             self.page_options = self.menu.notify(self.full_options)
 
 
+    def get_page_number(self):
+        num_pages = int(math.ceil(len(self.full_options) / len(self.page_options)))
+        if num_pages > 1:
+            return " (Page {0} of {1})".format(self.page,num_pages)
+        return ""
+
+
     def back_to_main(self):
         self.main_menu = True
         self.set_menu_options()
 
     def change_page(self, val):
-        self.page = max(0, self.page+val)
+        num_pages = int(math.ceil(len(self.full_options) / len(self.page_options)))
+        self.page = min(max(0, self.page+val), num_pages)
+
 
         # Notify the menu (if it exists)
         if hasattr(self, 'menu'):
@@ -76,7 +87,11 @@ class ContentManager(object):
 
 
     def adjust_selection(self, val):
-        self.selected = max(min(len(self.page_options),self.selected+val),0)
+        self.selected += val
+        if self.selected > len(self.page_options):
+            self.change_page(1)
+        if self.selected < 0:
+            self.change_page(-1)
         self.selected = self.selected % len(self.page_options)
         # Notify the menu (if it exists)
         if hasattr(self, 'menu'):

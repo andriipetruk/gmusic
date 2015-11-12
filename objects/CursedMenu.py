@@ -26,27 +26,27 @@ class CursedMenu(CursedObject):
         content_manager.attach_to_streamer(self.now_playing)
 
     def show(self):
-        self.launch_ui_thread()
         self.screen.clear()
         self.screen.refresh()
         self.now_playing.draw()
         self.draw()
         self.is_drawable = True
+        self.launch_ui_thread()
 
     def draw(self):
         '''Draw the menu and lines'''
         self.clear_rows_below(6)
         self.screen.refresh()
 
-        self.screen.addstr(6,2, self.content_manager.title, curses.A_STANDOUT) # Title for this menu
-        self.screen.addstr(8,2, self.content_manager.subtitle, curses.A_BOLD) #Subtitle for this menu
+        self.print_line(self.content_manager.title,6,2,curses.A_BOLD)
+        self.print_line(self.content_manager.subtitle,8,2,curses.A_BOLD)
 
         # Display all the menu items, showing the 'pos' item highlighted
         for index in range(len(self.options)):
             textstyle = self.normal
             if index == self.content_manager.selected:
                 textstyle = self.highlighted
-            self.screen.addstr(9+index,4, "%d - %s" % (index+1, self.options[index]), textstyle)
+            self.screen.addstr(9+index,4, "%d.\t%s" % (index+1, self.options[index]), textstyle)
 
         self.screen.border(0)
         self.screen.refresh()
