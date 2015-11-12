@@ -1,8 +1,8 @@
 from objects.Controller import Controller
 
 class RequestHandler(object):
-    def __init__(self,streamer,content_manager):
-        self.controller = Controller(streamer,content_manager)
+    def __init__(self,content_manager):
+        self.controller = Controller(content_manager)
 
     def parse(self, line):
         '''Master method; figures out what was typed by the user'''

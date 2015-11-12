@@ -1,18 +1,23 @@
+from objects.Streamer import Streamer
+
 class ContentManager(object):
 
-    def __init__(self, streamer):
-        self.streamer = streamer
+    def __init__(self):
         self.songs = []
         self.radios = []
         self.search_results =[]
+        self.most_recent_searches = []
         self.title = ''
         self.subtitle = ''
-        self.search_menu = False
-        self.most_recent_searches = []
+        self.main_menu = True
         self.page = 0
+        self.selected = 0
+        self.streamer = Streamer()
 
     def load(self):
-        print "Loading songs and radios.\n"
+        print "Logged into Google Music. Now loading songs and radios.\n"
+        self.set_menu_options()
+        self.streamer.run()
         self.songs = self.streamer.client.get_all_songs()
         self.radios = self.streamer.client.get_all_stations()
 
@@ -21,8 +26,9 @@ class ContentManager(object):
         if len(search_results) > 0:
             self.title = artist+album+song
             self.subtitle = "Search Results"
-            self.search_menu = True
+            self.main_menu = False
             self.search_results = search_results
+            self.set_menu_options(self.search_results)
 
     def get_most_recent_searches(self):
         return self.most_recent_searches + ['Options', 'Exit']
@@ -40,5 +46,60 @@ class ContentManager(object):
 
         self.streamer.queue = queue
 
-    def get_now_playing_track(self):
-        return self.streamer.now_playing_track
+
+    '''UI Notifications'''
+    def set_menu_options(self, opts=[]):
+        '''Draws a menu with the given parameters'''
+        self.selected = 0
+        if self.main_menu:
+            self.full_options = self.get_most_recent_searches()
+            self.title = "Main Menu"
+            self.subtitle = "Options"
+        else:
+            self.full_options = [a['title'] for a in self.search_results]
+
+        # Notify the menu (if it exists)
+        if hasattr(self, 'menu'):
+            self.page_options = self.menu.notify(self.full_options)
+
+
+    def back_to_main(self):
+        self.main_menu = True
+        self.set_menu_options()
+
+    def change_page(self, val):
+        self.page = max(0, self.page+val)
+
+        # Notify the menu (if it exists)
+        if hasattr(self, 'menu'):
+            self.page_options = self.menu.notify(self.full_options,self.page)
+
+
+    def adjust_selection(self, val):
+        self.selected = max(min(len(self.page_options),self.selected+val),0)
+        self.selected = self.selected % len(self.page_options)
+        # Notify the menu (if it exists)
+        if hasattr(self, 'menu'):
+            self.menu.draw()
+
+
+    def handle_execute(self):
+        if self.selected == len(self.page_options)-1:
+            self.page = 0
+            return self.page_options[-1]
+        if self.main_menu:
+            return self.most_recent_searches[self.selected]
+        return 'play {0}'.format(self.selected + (len(self.page_options)*self.page))
+
+
+
+    '''Attachments'''
+    def attach_to_streamer(self,now_playing=None):
+        self.streamer.attach(now_playing)
+
+    def attach(self,menu=None):
+        if menu is not None:
+            self.menu = menu
+
+    def exit(self):
+        self.menu.__exit__()

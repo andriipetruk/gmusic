@@ -9,6 +9,7 @@ class Streamer(object):
         self.client = Mobileclient()
         self.player = gst.element_factory_make("playbin2", "player")
         self.now_playing_track = ""
+        self.now_playing = None
 
         bus = self.player.get_bus()
         bus.add_signal_watch()
@@ -28,9 +29,6 @@ class Streamer(object):
         '''Use data/unlocked/credentials.json to log in'''
         credentials = json.load(open('data/unlocked/credentials.json','r'))
         self.logged_in = self.client.login(credentials['username'], credentials['password'], Mobileclient.FROM_MAC_ADDRESS)
-        if self.logged_in:
-            print 'Logged into Google Music\n'
-
 
 
     '''PLAYBACK METHODS'''
@@ -40,8 +38,8 @@ class Streamer(object):
         url = self.client.get_stream_url(track['id'])
         self.now_playing_track = track
         self.player.set_property('uri', url)
-
         self.player.set_state(gst.STATE_PLAYING)
+        self.notify_attachments()
 
     def resume(self):
         '''Resume a song that has been paused'''
@@ -72,3 +70,16 @@ class Streamer(object):
             track = self.queue[0]
             self.play_track(track)
             self.queue.remove(track)
+            return
+        self.now_playing_track = {"eos": True}
+        self.notify_attachments()
+
+
+    '''ATTACHMENTS'''
+    def attach(self,now_playing=None):
+        if now_playing is not None:
+            self.now_playing = now_playing
+
+    def notify_attachments(self):
+        if self.now_playing is not None:
+            self.now_playing.draw(new_track=self.now_playing_track)

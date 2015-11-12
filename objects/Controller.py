@@ -2,8 +2,7 @@ from objects.Display import Display
 import sys
 
 class Controller(object):
-    def __init__(self, streamer, content_manager):
-        self.streamer = streamer
+    def __init__(self, content_manager):
         self.content_manager = content_manager
 
     '''Search Functions'''
@@ -24,16 +23,16 @@ class Controller(object):
         '''Play a song using an index from the most recent search'''
         track = self.content_manager.play_track(int(index))
         self.content_manager.queue(int(index))
-        self.streamer.play_track(track)
+        self.content_manager.streamer.play_track(track)
 
     def typed_stop(self,ignored=""):
-        self.streamer.stop()
+        self.content_manager.streamer.stop()
 
     def typed_pause(self,ignored=""):
-        self.streamer.pause()
+        self.content_manager.streamer.pause()
 
     def typed_resume(self,ignored=""):
-        self.streamer.resume()
+        self.content_manager.streamer.resume()
 
     def typed_back(self,ignored=""):
-        self.content_manager.search_menu = False
+        self.content_manager.back_to_main()

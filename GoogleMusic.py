@@ -4,9 +4,7 @@ from objects.Interface import Interface
 class GoogleMusic(object):
     '''Google Music Terminal Interface'''
     def __init__(self):
-        self.streamer = Streamer()
-        self.interface = Interface(self.streamer)
+        self.interface = Interface()
 
     def __start__(self):
-        self.streamer.run()
         self.interface.__running__()
