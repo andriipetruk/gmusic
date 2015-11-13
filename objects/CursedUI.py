@@ -13,6 +13,7 @@ class CursedUI(CursedObject):
         while request != 'exit':
             request = self.get_user_input()
             self.handle_request(request)
+            
         self.content_manager.exit()
 
 

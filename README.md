@@ -27,7 +27,7 @@ sudo python setup.py install
 Then, install the dependencies specific to gmusic
 
 ```
-sudo pip install -r requirements.txt --no-cache-dir 
+sudo pip install -r requirements.txt --no-cache-dir
 ```
 
 And `pygst`:
@@ -39,9 +39,9 @@ sudo apt-get install python-gst0.10 gstreamer0.10-plugins-good gstreamer0.10-plu
 
 
 ## Usage
-To launch Google Music Terminal Interface, simply run the `launch.py` script; commands will be displayed at the bottom of the terminal next to the command line interface, and pertinent information will be above.
+To launch Google Music Terminal Interface, simply run the `GoogleMusic.py` script; commands will be displayed at the bottom of the terminal next to the command line interface, and pertinent information will be above.
 
 Example:
 ```
-python launch.py
+python GoogleMusic.py
 ```

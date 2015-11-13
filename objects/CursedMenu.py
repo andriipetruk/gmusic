@@ -25,7 +25,8 @@ class CursedMenu(CursedObject):
         self.now_playing = NowPlaying(self.screen)
         content_manager.attach_to_streamer(self.now_playing)
 
-    def show(self):
+    def start(self):
+        '''Start up the Menu'''
         self.screen.clear()
         self.screen.refresh()
         self.now_playing.draw()

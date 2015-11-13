@@ -10,7 +10,7 @@ class Interface(object):
 		self.display = CursedMenu(self.content_manager)
 
 	# Waits for input from the user, then sends it off to be handled
-	def __running__(self):
+	def __start__(self):
 		'''Our default running loop which governs the UI'''
 		self.content_manager.load()
-		self.display.show()
+		self.display.start()
