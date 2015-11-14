@@ -40,3 +40,6 @@ class Controller(object):
 
     def typed_back(self,ignored=""):
         self.content_manager.back_to_main()
+
+    def typed_next(self,ignored=""):
+        self.content_manager.streamer.next()

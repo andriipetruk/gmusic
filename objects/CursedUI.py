@@ -13,7 +13,7 @@ class CursedUI(CursedObject):
         while request != 'exit':
             request = self.get_user_input()
             self.handle_request(request)
-            
+
         self.content_manager.exit()
 
 
@@ -39,6 +39,10 @@ class CursedUI(CursedObject):
             result = self.handle_text_entry()
             self.content_manager.menu.draw()
             return result
+
+        # n (next)
+        if user_in == ord('n'):
+            return "next"
 
 
         # Page Increment/Decrement

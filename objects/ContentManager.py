@@ -1,4 +1,4 @@
-from objects.Streamer import Streamer
+from objects.StreamerWrapper import StreamerWrapper
 import math
 
 class ContentManager(object):
@@ -13,7 +13,7 @@ class ContentManager(object):
         self.main_menu = True
         self.page = 0
         self.selected = 0
-        self.streamer = Streamer()
+        self.streamer = StreamerWrapper()
 
     def load(self):
         print "Logged into Google Music. Now loading songs and radios."

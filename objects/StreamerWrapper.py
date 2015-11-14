@@ -1,7 +1,7 @@
 from gmusicapi import Mobileclient
 import json, pygst, gst, sys, gobject, thread
 
-class Streamer(object):
+class StreamerWrapper(object):
 
     '''STARTUP METHODS'''
     def __init__(self):
@@ -34,6 +34,8 @@ class Streamer(object):
     '''PLAYBACK METHODS'''
     def play_track(self, track):
         '''Play a URL'''
+        if 'id' not in track:
+            return
         self.stop()
         url = self.client.get_stream_url(track['id'])
         self.now_playing_track = track
@@ -56,22 +58,28 @@ class Streamer(object):
         '''Stop a song that is playing'''
         self.player.set_state(gst.STATE_NULL)
 
+    def next(self):
+        '''Play the next song'''
+        self.player.set_state(gst.STATE_NULL)
+        self.play_next()
 
+    def next_in_queue(self):
+        '''Get the next song in queue'''
+        if len(self.queue) > 0:
+            track = self.queue[0]
+            self.queue.remove(track)
+            return track
+        return {"eos": True}
 
     '''MESSAGE METHODS'''
     def handle_message(self, bus, message):
         if message.type == gst.MESSAGE_EOS:
             # file finished playing
-            self.player.set_state(gst.STATE_NULL)
-            self.playback_finished()
+            self.next()
 
-    def playback_finished(self):
-        if len(self.queue) > 0:
-            track = self.queue[0]
-            self.play_track(track)
-            self.queue.remove(track)
-            return
-        self.now_playing_track = {"eos": True}
+    def play_next(self):
+        next_track = self.next_in_queue()
+        self.play_track(next_track)
         self.notify_attachments()
 
 
