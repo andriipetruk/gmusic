@@ -30,23 +30,17 @@ class CursedObject(object):
     ''' I/O '''
     def clear_line(self,row):
         '''Clear a specified row'''
-        curr_y, curr_x = self.screen.getyx()
-        self.screen.chgat(row,0)
-        self.screen.clrtoeol()
-        self.screen.chgat(curr_y,curr_x)
+        self.run_method_at(row,0,self.screen.clrtoeol)
 
     def clear_rows_below(self, row):
         '''Clear from a row to the bottom'''
-        curr_y, curr_x = self.screen.getyx()
-        self.screen.chgat(row,0)
-        self.screen.clrtobot()
-        self.screen.chgat(curr_y,curr_x)
+        self.run_method_at(row,0,self.screen.clrtobot)
 
-    def print_line(self,text,row, column=1,style=curses.A_NORMAL):
+    def print_line(self,text,row,style=curses.A_NORMAL):
         '''Print a line which takes up the whole row'''
         width = self.width()
-        text += ' '*int(width-len(text)-column-2)
-        self.screen.addstr(row, column, text, style)
+        text += ' '*int(width-len(text)-4)
+        self.screen.addstr(row, 2, text, style)
 
     def compress_text(self, text, max_width):
         '''Change a "string that's too long" to "string t...too long" '''
@@ -68,6 +62,13 @@ class CursedObject(object):
 
 
     '''HELPERS'''
+    def run_method_at(self, row, column, method):
+        '''Assigns the cursor to a position, runs a method, then returns to the original position'''
+        curr_y, curr_x = self.screen.getyx()
+        self.screen.chgat(row,column)
+        method()
+        self.screen.chgat(curr_y,curr_x)
+
     def width(self):
         '''Get the width'''
         ignored, width = self.screen.getmaxyx()

@@ -39,8 +39,8 @@ class CursedMenu(CursedObject):
         self.clear_rows_below(6)
         self.screen.refresh()
 
-        self.print_line(self.content_manager.title,6,2,curses.A_BOLD)
-        self.print_line(self.content_manager.subtitle,8,2,curses.A_BOLD)
+        self.print_line(self.content_manager.title,6,curses.A_BOLD)
+        self.print_line(self.content_manager.subtitle,8,curses.A_BOLD)
 
         # Display all the menu items, showing the 'pos' item highlighted
         for index in range(len(self.options)):
