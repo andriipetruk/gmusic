@@ -5,10 +5,16 @@ import mock, unittest, os
 class RequestHandlerTest(unittest.TestCase):
     """Tests the launcher"""
 
-    def test_parse(self):
+    def setUp(self):
         req = RequestHandler(None)
-        req.send_to_controller = mock.Mock()
 
+    def tearDown(self):
+        os.system('stty sane')
+
+
+    def test_parse(self):
+        """Tests parsing a string"""
+        req.send_to_controller = mock.Mock()
         req.parse('Test Data')
 
         self.assertTrue(req.send_to_controller.called, \
@@ -16,9 +22,8 @@ class RequestHandlerTest(unittest.TestCase):
         req.send_to_controller.assert_called_once_with(['Test', 'Data'])
 
     def test_parse_single(self):
-        req = RequestHandler(None)
+        """Tests to see that an empty string is appended as necessary"""
         req.send_to_controller = mock.Mock()
-
         req.parse('Test')
 
         self.assertTrue(req.send_to_controller.called, \
@@ -27,7 +32,7 @@ class RequestHandlerTest(unittest.TestCase):
 
 
     def test_send_to_controller(self):
-        controller = Controller(None)
+        """Tests to see if a method is dynamically invoked"""
         req = RequestHandler(controller)
         req.controller.typed_method = mock.Mock()
 

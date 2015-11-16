@@ -30,6 +30,7 @@ class CursedObject(object):
         """Exits the program"""
         curses.endwin()
         os.system('clear')
+        os.system('stty sane')
 
 
 
