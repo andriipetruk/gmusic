@@ -3,12 +3,16 @@ from objects.RequestHandler import RequestHandler
 import curses
 
 class CursedUI(CursedObject):
+    """Handles keypress input from the user"""
+
     def __init__(self, screen, content_manager):
+        super(CursedUI, self).__init__()
         self.screen = screen
         self.content_manager = content_manager
         self.request_handler = RequestHandler(content_manager)
 
     def __running__(self):
+        """Runs an infinite loop so long as the request is not an exit cmd"""
         request = ""
         while request != 'exit':
             request = self.get_user_input()
@@ -67,20 +71,23 @@ class CursedUI(CursedObject):
 
 
     def handle_text_entry(self):
+        """Handles full-text entry, instead of keypresses"""
         curses.echo()
         height, width = self.screen.getmaxyx()
         self.screen.addstr(height-2, 2, "> ")
         self.screen.refresh()
-        rin =  self.screen.getstr(height-2, 4, width-4)
+        rin = self.screen.getstr(height-2, 4, width-4)
         curses.noecho()
         return rin
 
 
     def handle_request(self, request):
         '''This is where you do things with the request'''
-        if request is None: return
+        if request is None:
+            return
 
         self.request_handler.parse(request)
-        if (('artist' in request or 'album' in request or 'song' in request) and request not in self.content_manager.most_recent_searches):
+        if ('artist' in request or 'album' in request or 'song' in request) \
+            and request not in self.content_manager.most_recent_searches:
             self.content_manager.most_recent_searches.append(request)
         self.content_manager.menu.draw()

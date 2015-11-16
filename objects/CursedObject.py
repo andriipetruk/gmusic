@@ -1,7 +1,11 @@
 import curses, os, sys, math
 
+#pylint: disable=no-member
 class CursedObject(object):
     '''Base object for everything dealing with Curses'''
+
+    def __init__(self):
+        self.screen = None
 
     def __start__(self):
         '''Start a screen'''
@@ -22,21 +26,22 @@ class CursedObject(object):
         curses.cbreak()
         curses.start_color()
 
-    def __exit__(self):
+    def exit(self):
+        """Exits the program"""
         curses.endwin()
         os.system('clear')
 
 
-    ''' I/O '''
-    def clear_line(self,row):
+
+    def clear_line(self, row):
         '''Clear a specified row'''
-        self.run_method_at(row,0,self.screen.clrtoeol)
+        self.run_method_at(row, 0, self.screen.clrtoeol)
 
     def clear_rows_below(self, row):
         '''Clear from a row to the bottom'''
-        self.run_method_at(row,0,self.screen.clrtobot)
+        self.run_method_at(row, 0, self.screen.clrtobot)
 
-    def print_line(self,text,row,style=curses.A_NORMAL):
+    def print_line(self, text, row, style=curses.A_NORMAL):
         '''Print a line which takes up the whole row'''
         width = self.width()
         text += ' '*int(width-len(text)-4)
@@ -48,7 +53,7 @@ class CursedObject(object):
             return text[:int(max_width/4)] + "..." + text[int(3*max_width/4):]
         return text
 
-    def center_text(self,text,r,style=curses.A_NORMAL):
+    def center_text(self, text, row):
         '''Auto-center text in a row; capable of fitting to screen'''
 
         # Check to make sure it's not too big... if so, replace the middle half with '...'
@@ -58,26 +63,23 @@ class CursedObject(object):
         # Center the text
         diff = width - len(text)
         text = ' '*int(math.floor(diff/2)-1) + text
-        self.print_line(text,r)
+        self.print_line(text, row)
 
 
-    '''HELPERS'''
     def run_method_at(self, row, column, method):
         '''Assigns the cursor to a position, runs a method, then returns to the original position'''
         curr_y, curr_x = self.screen.getyx()
-        self.screen.chgat(row,column)
+        self.screen.chgat(row, column)
         method()
-        self.screen.chgat(curr_y,curr_x)
+        self.screen.chgat(curr_y, curr_x)
 
     def width(self):
         '''Get the width'''
-        ignored, width = self.screen.getmaxyx()
-        return width
+        return self.screen.getmaxyx()[1]
 
     def height(self):
         '''Get the height'''
-        height, ignored = self.screen.getmaxyx()
-        return height
+        return self.screen.getmaxyx()[0]
 
     def height_and_width(self):
         '''Alias for getmaxyx'''

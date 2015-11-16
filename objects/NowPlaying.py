@@ -1,15 +1,20 @@
 from objects.CursedObject import CursedObject
-import time, curses
+import curses
 
 class NowPlaying(CursedObject):
+    """Now Playing banner written for Curses"""
+
     def __init__(self, screen):
         self.track = {"eos": True}
         self.screen = screen
 
     def check_track(self, new_track):
-        if len(new_track) > 0:
+        """
+        Check to see if the new track is actually new, then figures out
+        what to do if it is new
+        """
+        if new_track is not None:
             self.track = new_track
-        curr_y, curr_x = self.screen.getyx()
         if 'eos' in self.track:
             self.draw_no_track()
         else:
@@ -17,14 +22,17 @@ class NowPlaying(CursedObject):
         self.screen.refresh()
 
     def draw_no_track(self):
-        self.center_text('  ',2,curses.A_NORMAL)
-        self.center_text("Google Music Terminal",3,curses.A_BOLD)
-        self.center_text('  ',4,curses.A_NORMAL)
+        """Draws a blank banner if there's not a song playing"""
+        self.center_text('  ', 2)
+        self.center_text("Google Music Terminal", 3)
+        self.center_text('  ', 4)
 
     def draw_track_details(self):
-        self.center_text(self.track['title'], 2, curses.A_BOLD)
-        self.center_text(self.track['album'], 3, curses.A_NORMAL)
-        self.center_text(self.track['artist'], 4, curses.A_NORMAL)
+        """Draws a banner for the current track if it is playing"""
+        self.center_text(self.track['title'], 2)
+        self.center_text(self.track['album'], 3)
+        self.center_text(self.track['artist'], 4)
 
-    def draw(self, new_track=[]):
+    def draw(self, new_track):
+        """Master draw method, checks the new_track to see what to draw"""
         self.check_track(new_track)

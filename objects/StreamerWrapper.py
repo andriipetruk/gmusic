@@ -1,9 +1,10 @@
 from gmusicapi import Mobileclient
-import json, pygst, gst, sys, gobject, thread
+import json, gst, gobject, thread
 
+#pylint: disable=no-member
 class StreamerWrapper(object):
+    """Wrapper for GStreamer object"""
 
-    '''STARTUP METHODS'''
     def __init__(self):
         self.queue = []
         self.client = Mobileclient()
@@ -21,17 +22,19 @@ class StreamerWrapper(object):
         gobject.threads_init()
 
         def start():
+            '''Looping thread start'''
             loop = gobject.MainLoop()
             loop.run()
         thread.start_new_thread(start, ())
 
     def login(self):
         '''Use data/unlocked/credentials.json to log in'''
-        credentials = json.load(open('data/unlocked/credentials.json','r'))
-        self.logged_in = self.client.login(credentials['username'], credentials['password'], Mobileclient.FROM_MAC_ADDRESS)
+        mac = Mobileclient.FROM_MAC_ADDRESS
+        credentials = json.load(open('data/unlocked/credentials.json', 'r'))
+        self.client.login(credentials['username'], credentials['password'], mac)
 
 
-    '''PLAYBACK METHODS'''
+
     def play_track(self, track):
         '''Play a URL'''
         if 'id' not in track:
@@ -71,23 +74,27 @@ class StreamerWrapper(object):
             return track
         return {"eos": True}
 
-    '''MESSAGE METHODS'''
+    #pylint: disable=unused-argument
     def handle_message(self, bus, message):
+        '''Handles a message from gst'''
         if message.type == gst.MESSAGE_EOS:
             # file finished playing
             self.next()
 
     def play_next(self):
+        '''Plays the next song in queue'''
         next_track = self.next_in_queue()
         self.play_track(next_track)
         self.notify_attachments()
 
 
-    '''ATTACHMENTS'''
-    def attach(self,now_playing=None):
+
+    def attach(self, now_playing=None):
+        '''Attaches an object for notification updates'''
         if now_playing is not None:
             self.now_playing = now_playing
 
     def notify_attachments(self):
+        '''Send notifications to attachments'''
         if self.now_playing is not None:
             self.now_playing.draw(new_track=self.now_playing_track)
