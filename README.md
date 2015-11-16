@@ -1,4 +1,4 @@
-# gmusic [![Code Climate](https://codeclimate.com/github/etkirsch/gmusic/badges/gpa.svg)](https://codeclimate.com/github/etkirsch/gmusic) <a href="https://codeclimate.com/github/etkirsch/gmusic/coverage"><img src="https://codeclimate.com/github/etkirsch/gmusic/badges/coverage.svg" /></a>
+# gmusic [![Code Climate](https://codeclimate.com/github/etkirsch/gmusic/badges/gpa.svg)](https://codeclimate.com/github/etkirsch/gmusic) [![Build Status](https://travis-ci.org/etkirsch/gmusic.svg)](https://travis-ci.org/etkirsch/gmusic)
 Google Music Terminal Interface; written in Python 2.
 
 ## Before We Start
