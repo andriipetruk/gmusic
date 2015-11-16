@@ -28,6 +28,7 @@ class ContentManager(object):
 
     def search_songs(self, artist="", album="", song=""):
         """Search for songs matching certain parameters"""
+        # Filter according to criteria supplied
         search_results = [s for s in self.songs \
             if album.lower() in s['album'].lower() \
             and artist.lower() in s['artist'].lower() \
