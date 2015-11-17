@@ -53,11 +53,12 @@ class ContentManager(object):
 
     def play_track(self, num):
         """Play a track from the search results"""
-        return self.search_results[num]
+        return self.page_options[num]
 
-    def queue(self, track_index):
+    def queue(self, page_index):
         """Queue a set of songs for playback"""
         queue = []
+        track_index = self.search_results.index(self.page_options[page_index])
         if track_index < len(self.search_results):
             queue += self.search_results[track_index+1:]
         if track_index > 0:
@@ -75,7 +76,7 @@ class ContentManager(object):
             self.title = "Main Menu"
             self.subtitle = "Options"
         else:
-            self.full_options = [a['title'] for a in self.search_results]
+            self.full_options = self.search_results
 
         # Notify the menu (if it exists)
         if hasattr(self, 'menu'):
@@ -126,7 +127,7 @@ class ContentManager(object):
             return self.page_options[-1]
         if self.main_menu:
             return self.most_recent_searches[self.selected]
-        return 'play {0}'.format(self.selected + (len(self.page_options)*self.page))
+        return 'play {0}'.format(self.selected)
 
 
     def attach_to_streamer(self, now_playing=None):

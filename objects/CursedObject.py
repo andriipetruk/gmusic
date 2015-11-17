@@ -51,8 +51,21 @@ class CursedObject(object):
     def compress_text(self, text, max_width):
         '''Change a "string that's too long" to "string t...too long" '''
         if max_width < len(text):
-            return text[:int(max_width/4)] + "..." + text[int(3*max_width/4):]
+
+            return text[:int(3*max_width/4)]+"..."+text[3-int(max_width/4):]
         return text
+
+    def pad_text(self, text, width):
+        """Pad text with spaces (if possible)"""
+        if len(text) > width:
+            return text
+        text += ' '*int(width-len(text))
+        return text
+
+    def compress_and_pad(self, text, width):
+        compressed = self.compress_text(text,width)
+        return self.pad_text(compressed,width)
+
 
     def center_text(self, text, row):
         '''Auto-center text in a row; capable of fitting to screen'''

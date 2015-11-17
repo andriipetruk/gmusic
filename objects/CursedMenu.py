@@ -1,6 +1,7 @@
 from objects.NowPlaying import NowPlaying
 from objects.CursedObject import CursedObject
 from objects.CursedUI import CursedUI
+from objects.Guide import Guide
 import curses, threading
 
 class CursedMenu(CursedObject):
@@ -22,6 +23,7 @@ class CursedMenu(CursedObject):
         self.content_manager = content_manager
         content_manager.attach(self)
         self.now_playing = NowPlaying(self.screen)
+        self.guide = Guide(self.screen)
         content_manager.attach_to_streamer(self.now_playing)
 
     def start(self):
@@ -47,27 +49,47 @@ class CursedMenu(CursedObject):
             if index == self.content_manager.selected:
                 textstyle = self.highlighted
             self.screen.addstr(9+index, 4, "%d.\t%s" % (index+1, self.options[index]), textstyle)
+        self.guide.draw()
 
         self.screen.border(0)
         self.screen.refresh()
 
     def notify(self, options, page=0):
         """Notification handler; tells everything to redraw"""
-        self.adjust_options_for_pages(options, page)
+        page_options = self.get_page_options(options, page)
+        self.options = self.adjust_titles_for_menu_type(page_options, page)
+
         if not self.content_manager.main_menu:
+            page_options.append('Back')
             self.options.append('Back')
+
         if self.is_drawable:
             self.now_playing.draw(new_track=None)
             self.draw()
-        return self.options
+        return page_options
 
-    def adjust_options_for_pages(self, options, page):
-        """Figures out how many elements are on a page and gets the appropriate
-        ones according to the current page"""
+    def get_page_options(self,options,page):
         elements_per_page = self.height()-16
         lower_bound = page*elements_per_page
         upper_bound = (page+1)*elements_per_page
-        self.options = options[lower_bound:upper_bound]
+        return options[lower_bound:upper_bound]
+
+    def adjust_titles_for_menu_type(self, options, page):
+        """Figures out how many elements are on a page and gets the appropriate
+        ones according to the current page"""
+        if self.content_manager.main_menu:
+            return options
+        return [self.format_title(a) for a in options]
+
+    def format_title(self, track):
+        """Formats a track for display in menu"""
+        song_width = int(self.width()/2)-4
+        album_width = int(self.width()/3)-4
+        title = self.compress_and_pad(track['title'], width=song_width)
+        album = self.compress_and_pad(track['album'], width=album_width)
+        return title + " " + album
+
+
 
     def launch_ui_thread(self):
         """Launches a UI thread"""
