@@ -39,7 +39,7 @@ class CursedUI(CursedObject):
             return 'pause'
 
         # i (text entry)
-        if user_in == ord('i'):
+        if user_in == ord('i') or user_in == ord('I'):
             result = self.handle_text_entry()
             self.content_manager.menu.draw()
             return result

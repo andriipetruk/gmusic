@@ -11,7 +11,7 @@ class Guide(CursedObject):
     def draw(self):
         row = self.height()-3
         help_string = \
-            "Arrows: Nav     "+\
+            "↑↓: Nav     "+\
             "Space: ▶/||     "+\
             "n: Next     " +\
             "[ ]: Next/Prev Page     " +\

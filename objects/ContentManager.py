@@ -36,7 +36,13 @@ class ContentManager(object):
 
         # Check to see if we should assign results to current state
         if len(search_results) > 0:
+            search_results = self.order_results(search_results)
             self.assign_search_results(artist+album+song, search_results)
+
+    def order_results(self, search_results):
+        """Orders the results by album, tracknumber, then title"""
+        return sorted(search_results, \
+            key = lambda y: (y['album'], y['trackNumber'],y['title']))
 
     def assign_search_results(self, search_parameters, search_results):
         """Assigns state-based parameters according to search results"""
