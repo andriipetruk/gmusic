@@ -39,9 +39,9 @@ sudo apt-get install python-gst0.10 gstreamer0.10-plugins-good gstreamer0.10-plu
 
 
 ## Usage
-To launch Google Music Terminal Interface, simply run the `GoogleMusic.py` script; commands will be displayed at the bottom of the terminal next to the command line interface, and pertinent information will be above.
+To launch Google Music Terminal Interface, simply run the `gmusic.py` script; commands will be displayed at the bottom of the terminal next to the command line interface, and pertinent information will be above.
 
 Example:
 ```
-python GoogleMusic.py
+python gmusic.py
 ```
