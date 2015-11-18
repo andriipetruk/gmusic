@@ -21,9 +21,9 @@ class CursedMenu(CursedObject):
 
         # Attached objects
         self.content_manager = content_manager
-        content_manager.attach(self)
         self.now_playing = NowPlaying(self.screen)
         self.guide = Guide(self.screen)
+        content_manager.attach(self)
         content_manager.attach_to_streamer(self.now_playing)
 
     def start(self):

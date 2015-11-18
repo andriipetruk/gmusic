@@ -67,7 +67,7 @@ class CursedObject(object):
         return self.pad_text(compressed,width)
 
 
-    def center_text(self, text, row):
+    def center_text(self, text, row, style=curses.A_NORMAL):
         '''Auto-center text in a row; capable of fitting to screen'''
 
         # Check to make sure it's not too big... if so, replace the middle half with '...'
@@ -77,7 +77,7 @@ class CursedObject(object):
         # Center the text
         diff = width - len(text)
         text = ' '*int(math.floor(diff/2)-1) + text
-        self.print_line(text, row)
+        self.print_line(text, row,style)
 
 
     def run_method_at(self, row, column, method):
