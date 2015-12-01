@@ -1,4 +1,4 @@
-from objects.Interface import Interface
+from gmusic.core.Interface import Interface
 
 gm = Interface()
 gm.__start__()

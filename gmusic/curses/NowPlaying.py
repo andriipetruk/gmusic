@@ -1,4 +1,4 @@
-from objects.CursedObject import CursedObject
+from gmusic.curses.CursedObject import CursedObject
 import curses
 
 class NowPlaying(CursedObject):

@@ -1,7 +1,7 @@
-from objects.NowPlaying import NowPlaying
-from objects.CursedObject import CursedObject
-from objects.CursedUI import CursedUI
-from objects.Guide import Guide
+from gmusic.curses.NowPlaying import NowPlaying
+from gmusic.curses.CursedObject import CursedObject
+from gmusic.curses.CursedUI import CursedUI
+from gmusic.curses.Guide import Guide
 import curses, threading
 
 class CursedMenu(CursedObject):

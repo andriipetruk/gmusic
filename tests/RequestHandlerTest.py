@@ -1,5 +1,5 @@
-from objects.RequestHandler import RequestHandler
-from objects.Controller import Controller
+from gmusic.core.RequestHandler import RequestHandler
+from gmusic.core.Controller import Controller
 import mock, unittest, os
 
 class RequestHandlerTest(unittest.TestCase):

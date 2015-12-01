@@ -1,4 +1,4 @@
-from objects.StreamerWrapper import StreamerWrapper
+from gmusic.core.StreamerWrapper import StreamerWrapper
 import math
 
 class ContentManager(object):

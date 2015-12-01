@@ -1,5 +1,5 @@
-from objects.ContentManager import ContentManager
-from objects.CursedMenu import CursedMenu
+from gmusic.core.ContentManager import ContentManager
+from gmusic.curses.CursedMenu import CursedMenu
 
 class Interface(object):
     """This is the command line interface. It handles

@@ -1,4 +1,4 @@
-from objects.Interface import Interface
+from gmusic.core.Interface import Interface
 import mock, unittest, os
 
 class InterfaceTest(unittest.TestCase):

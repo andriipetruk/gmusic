@@ -1,5 +1,5 @@
-from objects.CursedObject import CursedObject
-from objects.RequestHandler import RequestHandler
+from gmusic.curses.CursedObject import CursedObject
+from gmusic.core.RequestHandler import RequestHandler
 import curses
 
 class CursedUI(CursedObject):

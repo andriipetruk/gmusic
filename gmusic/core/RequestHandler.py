@@ -1,4 +1,4 @@
-from objects.Controller import Controller
+from gmusic.core.Controller import Controller
 
 class RequestHandler(object):
     """Class which is responsible for decoding user input"""
