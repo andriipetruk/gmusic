@@ -2,7 +2,7 @@ from gmusicapi import Mobileclient
 import json, gst, gobject, thread
 
 #pylint: disable=no-member
-class StreamerWrapper(object):
+class Streamer(object):
     """Wrapper for GStreamer object"""
 
     def __init__(self):

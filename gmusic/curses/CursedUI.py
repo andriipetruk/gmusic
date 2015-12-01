@@ -1,5 +1,5 @@
 from gmusic.curses.CursedObject import CursedObject
-from gmusic.core.RequestHandler import RequestHandler
+from gmusic.input.InputParser import InputParser
 import curses
 
 class CursedUI(CursedObject):
@@ -9,7 +9,7 @@ class CursedUI(CursedObject):
         super(CursedUI, self).__init__()
         self.screen = screen
         self.content_manager = content_manager
-        self.request_handler = RequestHandler(content_manager)
+        self.input_parser = InputParser(content_manager)
 
     def __running__(self):
         """Runs an infinite loop so long as the request is not an exit cmd"""
@@ -86,7 +86,7 @@ class CursedUI(CursedObject):
         if request is None:
             return
 
-        self.request_handler.parse(request)
+        self.input_parser.parse(request)
         if ('artist' in request or 'album' in request or 'song' in request) \
             and request not in self.content_manager.most_recent_searches:
             self.content_manager.most_recent_searches.append(request)

@@ -1,4 +1,4 @@
-from gmusic.core.ContentManager import ContentManager
+from gmusic.content.ContentManager import ContentManager
 from gmusic.curses.CursedMenu import CursedMenu
 
 class Interface(object):

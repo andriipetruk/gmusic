@@ -1,4 +1,4 @@
-from gmusic.core.StreamerWrapper import StreamerWrapper
+from gmusic.content.Streamer import Streamer
 import math
 
 class ContentManager(object):
@@ -14,7 +14,7 @@ class ContentManager(object):
         self.main_menu = True
         self.page = 0
         self.selected = 0
-        self.streamer = StreamerWrapper()
+        self.streamer = Streamer()
         self.full_options = None
         self.page_options = None
 
