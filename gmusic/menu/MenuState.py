@@ -1,4 +1,4 @@
-class MenuStateManager(object):
+class MenuState(object):
     def __init__(self):
         self.state = ""
 

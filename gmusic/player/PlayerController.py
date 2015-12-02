@@ -12,6 +12,7 @@ class PlayerController(object):
         self.content_handler = content_handler
         self.player = Player()
         self.player.attachments.append(self)
+        self.attachments = []
 
     def play_radio(self, rid):
         '''Plays a radio station by indexing with an rid'''
@@ -39,10 +40,11 @@ class PlayerController(object):
         '''Plays a song using an nid as lookup'''
         url = self.content_handler.get_url(nid)
         self.player.play(url)
+        self.notify_attachments('PLAY')
 
     def pause(self):
         self.player.pause()
-
+        self.notify_attachments('PAUSE')
 
     def load(self, playlist):
         '''Loads a playlist of nids'''
@@ -51,3 +53,7 @@ class PlayerController(object):
     def track_details(self, nid):
         '''Gets a full object from Content'''
         return self.content_manager.lookup_nid(nid)
+
+    def notify_attachments(self, event):
+        for attachment in self.attachments:
+            attachment.handle_event(event)

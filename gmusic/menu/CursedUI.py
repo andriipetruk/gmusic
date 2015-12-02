@@ -3,13 +3,12 @@ from gmusic.input.InputParser import InputParser
 import curses
 
 class CursedUI(CursedObject):
-    """Handles keypress input from the user"""
+    """Asynchronous. Handles input from the user"""
 
-    def __init__(self, screen, content_manager):
-        super(CursedUI, self).__init__()
-        self.screen = screen
-        self.content_manager = content_manager
-        self.input_parser = InputParser(content_manager)
+    def __init__(self, input_parser):
+        CursedObject.__init__(self)
+        self.__start__()
+        self.input_parser = input_parser
 
     def __running__(self):
         """Runs an infinite loop so long as the request is not an exit cmd"""
@@ -23,6 +22,8 @@ class CursedUI(CursedObject):
 
     def get_user_input(self):
         '''Gets the user's input and acts appropriately'''
+
+        print('getting input')
         user_in = self.screen.getch() # Gets user input
 
         # Enter Key
@@ -41,7 +42,7 @@ class CursedUI(CursedObject):
         # i (text entry)
         if user_in == ord('i') or user_in == ord('I'):
             result = self.handle_text_entry()
-            self.content_manager.menu.draw()
+            #self.content_manager.menu.draw()
             return result
 
         # n (next)
@@ -87,7 +88,3 @@ class CursedUI(CursedObject):
             return
 
         self.input_parser.parse(request)
-        if ('artist' in request or 'album' in request or 'song' in request) \
-            and request not in self.content_manager.most_recent_searches:
-            self.content_manager.most_recent_searches.append(request)
-        self.content_manager.menu.draw()

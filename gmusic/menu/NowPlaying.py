@@ -4,9 +4,8 @@ import curses
 class NowPlaying(CursedObject):
     """Now Playing banner written for Curses"""
 
-    def __init__(self, screen):
+    def __init__(self):
         self.track = {"eos": True}
-        self.screen = screen
 
     def check_track(self, new_track):
         """

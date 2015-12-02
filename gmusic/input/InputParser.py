@@ -15,7 +15,6 @@ class InputParser(object):
             data.append("")
         self.handle(data)
 
-
     def handle(self, data):
         """Get the correct method and invoke it"""
         method_type = 'typed_{0}'.format(data[0].lower())
