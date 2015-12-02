@@ -6,7 +6,7 @@ class DataCache:
         self.tracks = []
         self.radios = []
 
-    def has_track_nid(self, nid):
+    def has_track(self, nid):
         '''Checks to see if an nid exists in the cache'''
         return nid in self.track_nid_list()
 
@@ -24,7 +24,7 @@ class DataCache:
 
 
 
-    def has_radio_rid(self, rid):
+    def has_radio(self, rid):
         '''Checks to see if an rid exists in the cache'''
         return rid in self.radio_rid_list()
 

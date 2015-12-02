@@ -1,13 +1,13 @@
-from gmusic.curses.NowPlaying import NowPlaying
-from gmusic.curses.CursedObject import CursedObject
-from gmusic.curses.CursedUI import CursedUI
-from gmusic.curses.Guide import Guide
+from gmusic.menu.NowPlaying import NowPlaying
+from gmusic.menu.CursedObject import CursedObject
+from gmusic.menu.CursedUI import CursedUI
+from gmusic.menu.Guide import Guide
 import curses, threading
 
 class CursedMenu(CursedObject):
     '''A class which abstracts the horrors of building a curses-based menu system'''
 
-    def __init__(self, content_manager):
+    def __init__(self, tests):
         '''Initialization'''
         self.__start__()
         self.cursed_ui = None
@@ -19,52 +19,45 @@ class CursedMenu(CursedObject):
         self.normal = curses.A_NORMAL
         self.is_drawable = False
 
-        # Attached objects
-        self.content_manager = content_manager
-        self.now_playing = NowPlaying(self.screen)
-        self.guide = Guide(self.screen)
-        content_manager.attach(self)
-        content_manager.attach_to_streamer(self.now_playing)
 
     def start(self):
         '''Start up the Menu'''
         self.screen.clear()
         self.screen.refresh()
-        self.now_playing.draw(new_track=None)
         self.draw()
         self.is_drawable = True
-        self.launch_ui_thread()
+        #self.launch_ui_thread()
 
     def draw(self):
         '''Draw the menu and lines'''
         self.clear_rows_below(6)
         self.screen.refresh()
 
-        self.print_line(self.content_manager.title, 6, curses.A_BOLD)
-        self.print_line(self.content_manager.subtitle, 8, curses.A_BOLD)
+        self.print_line('test', 6, curses.A_BOLD)
+        self.print_line('test', 8, curses.A_BOLD)
+
+        selected = 2
 
         # Display all the menu items, showing the 'pos' item highlighted
-        for index in range(len(self.options)):
+        for index in range(10):
             textstyle = self.normal
-            if index == self.content_manager.selected:
+            if index == selected:
                 textstyle = self.highlighted
-            self.screen.addstr(9+index, 4, "%d.\t%s" % (index+1, self.options[index]), textstyle)
-        self.guide.draw()
-
+            self.screen.addstr(9+index, 4, "%d.\t%s" % (index+1, 'test'), textstyle)
+        #self.guide.draw()
         self.screen.border(0)
         self.screen.refresh()
 
     def notify(self, options, page=0):
         """Notification handler; tells everything to redraw"""
-        page_options = self.get_page_options(options, page)
-        self.options = self.adjust_titles_for_menu_type(page_options, page)
+        #page_options = self.get_page_options(options, page)
+        #self.options = self.adjust_titles_for_menu_type(page_options, page)
 
-        if not self.content_manager.main_menu:
-            page_options.append('Back')
-            self.options.append('Back')
+        #if not self.content_manager.main_menu:
+        #    page_options.append('Back')
+        #    self.options.append('Back')
 
         if self.is_drawable:
-            self.now_playing.draw(new_track=None)
             self.draw()
         return page_options
 
@@ -77,8 +70,8 @@ class CursedMenu(CursedObject):
     def adjust_titles_for_menu_type(self, options, page):
         """Figures out how many elements are on a page and gets the appropriate
         ones according to the current page"""
-        if self.content_manager.main_menu:
-            return options
+        #if self.content_manager.main_menu:
+        #    return options
         return [self.format_title(a) for a in options]
 
     def format_title(self, track):

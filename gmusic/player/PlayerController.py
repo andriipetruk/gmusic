@@ -7,16 +7,28 @@ import json
 class PlayerController(object):
     '''Controls Player; operable by Menu and remote DJ'''
 
-    def __init__(self):
+    def __init__(self, content_handler):
         self.playlist = PlayList()
-        self.content_handler = ContentHandler()
+        self.content_handler = content_handler
         self.player = Player()
         self.player.attachments.append(self)
+
+    def play_radio(self, rid):
+        '''Plays a radio station by indexing with an rid'''
+        tracks = self.content_handler.client.get_radio_contents(rid)
+        nids = [track['nid'] for track in tracks if 'nid' in track]
+        self.load(nids)
+        self.play(nids[0])
 
     def handle_event(self, event):
         '''Handle events from Player'''
         if 'END' in event:
             self.next()
+
+    def previous(self):
+        '''Play the next song'''
+        prev_song = self.playlist.previous()
+        self.play(prev_song)
 
     def next(self):
         '''Play the next song'''
@@ -31,7 +43,8 @@ class PlayerController(object):
     def pause(self):
         self.player.pause()
 
-    def load_playlist(self, playlist):
+
+    def load(self, playlist):
         '''Loads a playlist of nids'''
         self.playlist.load(playlist)
 

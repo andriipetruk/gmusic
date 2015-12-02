@@ -1,4 +1,4 @@
-from gmusic.curses.CursedObject import CursedObject
+from gmusic.menu.CursedObject import CursedObject
 from gmusic.input.InputParser import InputParser
 import curses
 

@@ -3,8 +3,8 @@ from gmusic.input.InputHandler import InputHandler
 class InputParser(object):
     """Class which is responsible for decoding user input"""
 
-    def __init__(self, content_manager):
-        self.handler = InputHandler(content_manager)
+    def __init__(self, content_handler, player_controller):
+        self.handler = InputHandler(content_handler, player_controller)
 
     def parse(self, line):
         '''Master method; figures out what was typed by the user'''
