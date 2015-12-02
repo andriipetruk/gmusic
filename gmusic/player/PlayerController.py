@@ -9,7 +9,7 @@ class PlayerController(object):
 
     def __init__(self):
         self.playlist = PlayList()
-        self.content_handler = None
+        self.content_handler = ContentHandler()
         self.player = Player()
         self.player.attachments.append(self)
 
@@ -21,11 +21,20 @@ class PlayerController(object):
     def next(self):
         '''Play the next song'''
         next_song = self.playlist.next()
-        url = self.content_handler.get_url(next_song)
-        self.player.play(url)
+        self.play(next_song)
 
-    def play(self):
-        pass
+    def play(self, nid):
+        '''Plays a song using an nid as lookup'''
+        url = self.content_handler.get_url(nid)
+        self.player.play(url)
 
     def pause(self):
         self.player.pause()
+
+    def load_playlist(self, playlist):
+        '''Loads a playlist of nids'''
+        self.playlist.load(playlist)
+
+    def track_details(self, nid):
+        '''Gets a full object from Content'''
+        return self.content_manager.lookup_nid(nid)

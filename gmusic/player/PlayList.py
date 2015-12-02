@@ -1,7 +1,7 @@
 import random
 
 class PlayList:
-    '''Simple object which maintains track nids and location'''
+    '''Simple object which maintains track NIDs and location'''
 
     def __init__(self):
         self.contents = []
