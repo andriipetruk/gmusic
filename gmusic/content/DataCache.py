@@ -1,6 +1,11 @@
-from gmusic.content.Streamer import Streamer
+#from gmusic.player.Streamer import Streamer
 import math
 
+class DataCache:
+    def __init__(self):
+        print('helo')
+
+'''
 class ContentManager(object):
     """Main class for controlling what content is available to Gstreamer"""
 
@@ -73,7 +78,7 @@ class ContentManager(object):
 
 
     def set_menu_options(self):
-        '''Draws a menu with the given parameters'''
+        ''Draws a menu with the given parameters''
         if self.main_menu:
             self.selected = 0
             self.full_options = self.get_most_recent_searches()
@@ -146,3 +151,4 @@ class ContentManager(object):
     def exit(self):
         """Calls on the menu to exit the application"""
         self.menu.exit()
+'''

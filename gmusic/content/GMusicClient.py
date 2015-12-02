@@ -40,3 +40,6 @@ class GMusicClient:
 
     def search_albums_all_access(self, query):
         return self.search_all_access(query)['album_hits']
+
+    def get_stream_url(self, nid):
+        return self.client.get_stream_url(nid)
