@@ -1,13 +1,12 @@
-from gmusicapi import Mobileclient
+
 import json, gst, gobject, thread
 
 #pylint: disable=no-member
-class Streamer(object):
+class Player(object):
     """Wrapper for GStreamer object"""
 
     def __init__(self):
         self.queue = []
-        self.client = Mobileclient()
         self.player = gst.element_factory_make("playbin2", "player")
         self.now_playing_track = ""
         self.now_playing = None
@@ -27,11 +26,7 @@ class Streamer(object):
             loop.run()
         thread.start_new_thread(start, ())
 
-    def login(self):
-        '''Use data/unlocked/credentials.json to log in'''
-        mac = Mobileclient.FROM_MAC_ADDRESS
-        credentials = json.load(open('data/unlocked/credentials.json', 'r'))
-        self.client.login(credentials['username'], credentials['password'], mac)
+
 
 
 

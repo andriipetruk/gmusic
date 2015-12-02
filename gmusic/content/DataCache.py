@@ -23,8 +23,6 @@ class ContentManager(object):
         print "Logged into Google Music. Now loading songs and radios."
         self.set_menu_options()
         self.streamer.run()
-        self.songs = self.streamer.client.get_all_songs()
-        self.radios = self.streamer.client.get_all_stations()
 
     def search_songs(self, artist="", album="", song=""):
         """Search for songs matching certain parameters"""
