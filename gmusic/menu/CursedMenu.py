@@ -7,26 +7,18 @@ import curses, threading
 class CursedMenu(CursedObject):
     '''A class which abstracts the horrors of building a curses-based menu system'''
 
-    def __init__(self):
+    def __init__(self, screen):
         '''Initialization'''
-        #self.__start__()
+        self.screen = screen
         self.cursed_ui = None
         self.options = None
 
         # Highlighted and Normal line definitions
-        #curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
-        #self.highlighted = curses.color_pair(1)
-        #self.normal = curses.A_NORMAL
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        self.highlighted = curses.color_pair(1)
+        self.normal = curses.A_NORMAL
         #self.is_drawable = False
 
-
-    def start(self):
-        '''Start up the Menu'''
-        self.screen.clear()
-        self.screen.refresh()
-        self.draw()
-        self.is_drawable = True
-        #self.launch_ui_thread()
 
     def draw(self):
         '''Draw the menu and lines'''

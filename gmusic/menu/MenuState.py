@@ -1,6 +1,8 @@
 class MenuState(object):
     def __init__(self):
         self.state = ""
+        self.selected_element = 0
+        self.page_number = 0
 
 '''
 The CursedMenu uses this to keep track of where the user is.

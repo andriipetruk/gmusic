@@ -33,6 +33,6 @@ class NowPlaying(CursedObject):
         self.center_text(self.track['album'], 3)
         self.center_text(self.track['artist'], 4)
 
-    def draw(self, new_track):
+    def draw(self, new_track=None):
         """Master draw method, checks the new_track to see what to draw"""
         self.check_track(new_track)

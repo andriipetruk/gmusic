@@ -7,7 +7,7 @@ class CursedObject(object):
     def __init__(self):
         self.screen = None
 
-    def __start__(self):
+    def start(self):
         '''Start a screen'''
         reload(sys)
         sys.setdefaultencoding('utf8')
