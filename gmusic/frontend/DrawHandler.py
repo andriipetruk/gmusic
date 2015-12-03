@@ -44,5 +44,17 @@ class DrawHandler(CursedObject):
         self.banner.draw()
         self.guide.draw()
 
-    def receive_ui_event(self, event):
-        pass
+    def banner_update(self, song_details):
+        self.banner.track = song_details
+        self.banner.draw()
+
+    def handle_event(self, event, args=None):
+        if 'CLEAR TEXT ENTRY' in event:
+            self.redraw()
+
+        if 'REDRAW' in event:
+            self.redraw()
+
+        if 'UPDATE' in event:
+            self.update_menu()
+            self.redraw()

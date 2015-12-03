@@ -6,6 +6,7 @@ from gmusic.core.CommandParser import CommandParser
 from gmusic.core.UIParser import UIParser
 from gmusic.frontend.DrawHandler import DrawHandler
 from gmusic.frontend.UI import UI
+import sys
 
 class Core:
     def __init__(self):
@@ -22,7 +23,7 @@ class Core:
         player_controller.attachments.append(self)
         player_controller.start()
 
-        cmd_parser = CommandParser(content_handler, player_controller)
+        cmd_parser = CommandParser(self, content_handler, player_controller)
         ui_parser = UIParser(event_handler=self, command_parser=cmd_parser)
 
         return (cmd_parser, ui_parser)
@@ -31,6 +32,16 @@ class Core:
         cmd_parser, ui_parser = self.build_parsers()
         self.draw_handler.launch(cmd_parser, ui_parser)
 
-    def handle_event(self, event):
+    def handle_event(self, event, args=None):
         if 'CHANGE' in event:
             self.draw_handler.redraw()
+
+        if 'PLAY' in event:
+            self.draw_handler.banner_update(args)
+
+        if 'STOP' in event:
+            self.draw_handler.banner_update(None)
+
+        if 'EXIT' in event:
+            self.draw_handler.exit()
+            sys.exit(1)

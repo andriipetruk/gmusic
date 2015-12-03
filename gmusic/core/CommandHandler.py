@@ -1,7 +1,8 @@
 class CommandHandler(object):
     '''Text-Entry Controller which interfaces with Streamer/ContentManager'''
 
-    def __init__(self, content_handler, player_controller):
+    def __init__(self, event_handler, content_handler, player_controller):
+        self.attachments = [event_handler]
         self.content_handler = content_handler
         self.player_controller = player_controller
 
@@ -52,3 +53,10 @@ class CommandHandler(object):
     def typed_next(self, *_):
         '''Tells the Streamer to go to the next song'''
         self.player_controller.next()
+
+    def typed_exit(self, *_):
+        self.notify_attachments('EXIT')
+
+    def notify_attachments(self, event, args=None):
+        for attachment in self.attachments:
+            attachment.handle_event(event, args)

@@ -44,7 +44,10 @@ class PlayerController(object):
         '''Plays a song using an nid as lookup'''
         url = self.content_handler.get_url(nid)
         self.player.play(url)
-        self.notify_attachments('PLAY')
+
+        # Tell attachments about the song
+        track_details = self.content_handler.lookup_nid(nid)
+        self.notify_attachments('PLAY', track_details)
 
     def pause(self):
         self.player.pause()
@@ -58,6 +61,6 @@ class PlayerController(object):
         '''Gets a full object from Content'''
         return self.content_manager.lookup_nid(nid)
 
-    def notify_attachments(self, event):
+    def notify_attachments(self, event, args=None):
         for attachment in self.attachments:
-            attachment.handle_event(event)
+            attachment.handle_event(event, args)

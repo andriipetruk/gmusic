@@ -27,6 +27,7 @@ class UI(CursedObject):
         # Text Entry must occur here, in curses land
         if user_input == ord('i') or user_input == ord('I'):
             result = self.handle_text_entry()
+            self.notify_attachments('CLEAR TEXT ENTRY')
             return
 
         # Otherwise it goes off to the UI Parser
@@ -42,6 +43,9 @@ class UI(CursedObject):
         self.screen.refresh()
         request = self.screen.getstr(height-2, 4, width-4)
         curses.noecho()
-
         # Push it to cmd_parser
         self.cmd_parser.parse(request)
+
+    def notify_attachments(self, event, args=None):
+        for attachment in self.attachments:
+            attachment.handle_event(event)
