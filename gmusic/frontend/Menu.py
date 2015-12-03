@@ -1,7 +1,7 @@
-from gmusic.menu.NowPlaying import NowPlaying
-from gmusic.menu.CursedObject import CursedObject
-from gmusic.menu.UI import UI
-from gmusic.menu.Guide import Guide
+from gmusic.frontend.NowPlaying import NowPlaying
+from gmusic.frontend.CursedObject import CursedObject
+from gmusic.frontend.UI import UI
+from gmusic.frontend.Guide import Guide
 import curses, threading
 
 class Menu(CursedObject):

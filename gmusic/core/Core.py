@@ -1,10 +1,10 @@
-from gmusic.menu.Cache import Cache
-from gmusic.menu.State import State
-from gmusic.menu.DrawHandler import DrawHandler
-from gmusic.player.PlayerController import PlayerController
 from gmusic.content.ContentHandler import ContentHandler
-from gmusic.input.InputParser import InputParser
-from gmusic.menu.CursedUI import CursedUI
+from gmusic.player.PlayerController import PlayerController
+from gmusic.core.Cache import Cache
+from gmusic.core.State import State
+from gmusic.core.CommandParser import CommandParser
+from gmusic.frontend.DrawHandler import DrawHandler
+from gmusic.frontend.UI import UI
 
 class Core:
     def __init__(self):
@@ -25,7 +25,6 @@ class Core:
         return InputParser(content_handler, player_controller)
 
     def start(self):
-        parser = self.build_parser()
         self.draw_handler.launch(parser)
 
     def handle_event(self, event):

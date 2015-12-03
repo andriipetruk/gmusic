@@ -1,5 +1,6 @@
-from gmusic.menu.CursedObject import CursedObject
-from gmusic.input.InputParser import InputParser
+from gmusic.frontend.CursedObject import CursedObject
+from gmusic.core.CommandParser import CommandParser
+from gmusic.core.UIParser import UIParser
 import curses
 
 class UI(CursedObject):

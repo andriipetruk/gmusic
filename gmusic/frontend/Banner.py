@@ -1,7 +1,7 @@
-from gmusic.menu.CursedObject import CursedObject
+from gmusic.frontend.CursedObject import CursedObject
 import curses
 
-class NowPlaying(CursedObject):
+class Banner(CursedObject):
     """Now Playing banner written for Curses"""
 
     def __init__(self, screen):

@@ -1,4 +1,4 @@
-class InputHandler(object):
+class CommandHandler(object):
     '''Text-Entry Controller which interfaces with Streamer/ContentManager'''
 
     def __init__(self, content_handler, player_controller):

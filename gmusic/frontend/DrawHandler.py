@@ -1,8 +1,8 @@
-from gmusic.menu.CursedObject import CursedObject
-from gmusic.menu.Menu import Menu
-from gmusic.menu.UI import UI
-from gmusic.menu.Guide import Guide
-from gmusic.menu.NowPlaying import NowPlaying
+from gmusic.frontend.CursedObject import CursedObject
+from gmusic.frontend.Menu import Menu
+from gmusic.frontend.UI import UI
+from gmusic.frontend.Guide import Guide
+from gmusic.frontend.Banner import Banner
 import threading
 
 class DrawHandler(CursedObject):
@@ -20,7 +20,7 @@ class DrawHandler(CursedObject):
 
     def create_system(self):
         '''Builds all of the components and sends them the unified screen'''
-        self.now_playing = NowPlaying(self.screen)
+        self.banner = Banner(self.screen)
         self.menu = Menu(self.screen)
         self.guide = Guide(self.screen)
 
@@ -32,7 +32,7 @@ class DrawHandler(CursedObject):
 
     def draw(self):
         self.menu.draw()
-        self.now_playing.draw()
+        self.banner.draw()
         self.guide.draw()
 
     def receive_ui_event(self, event):
