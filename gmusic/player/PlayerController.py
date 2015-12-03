@@ -14,6 +14,10 @@ class PlayerController(object):
         self.player.attachments.append(self)
         self.attachments = []
 
+    def start(self):
+        '''Start up the system'''
+        self.player.run()
+
     def play_radio(self, rid):
         '''Plays a radio station by indexing with an rid'''
         tracks = self.content_handler.client.get_radio_contents(rid)

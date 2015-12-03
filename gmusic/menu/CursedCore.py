@@ -18,6 +18,7 @@ class CursedCore:
         content_handler.launch()
         player_controller = PlayerController(content_handler)
         player_controller.attachments.append(self)
+        player_controller.start()
         self.input_parser = InputParser(content_handler, player_controller)
 
     def start(self):

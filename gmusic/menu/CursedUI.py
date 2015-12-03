@@ -5,9 +5,9 @@ import curses
 class CursedUI(CursedObject):
     """Asynchronous. Handles input from the user"""
 
-    def __init__(self, input_parser):
+    def __init__(self, screen, input_parser):
         CursedObject.__init__(self)
-        self.__start__()
+        self.screen = screen
         self.input_parser = input_parser
 
     def __running__(self):
