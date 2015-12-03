@@ -1,7 +1,4 @@
-from gmusic.frontend.NowPlaying import NowPlaying
 from gmusic.frontend.CursedObject import CursedObject
-from gmusic.frontend.UI import UI
-from gmusic.frontend.Guide import Guide
 import curses, threading
 
 class Menu(CursedObject):
@@ -17,26 +14,22 @@ class Menu(CursedObject):
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
         self.highlighted = curses.color_pair(1)
         self.normal = curses.A_NORMAL
-        #self.is_drawable = False
 
-
-    def draw(self):
+    def draw(self, selected):
         '''Draw the menu and lines'''
         self.clear_rows_below(6)
         self.screen.refresh()
 
-        self.print_line('test', 6, curses.A_BOLD)
-        self.print_line('test', 8, curses.A_BOLD)
-
-        selected = 2
+        self.print_line(self.title, 6, curses.A_BOLD)
+        self.print_line(self.subtitle, 8, curses.A_BOLD)
 
         # Display all the menu items, showing the 'pos' item highlighted
-        for index in range(10):
+        for index in range(len(self.options)):
             textstyle = self.normal
             if index == selected:
                 textstyle = self.highlighted
-            self.screen.addstr(9+index, 4, "%d.\t%s" % (index+1, 'test'), textstyle)
-        #self.guide.draw()
+            self.screen.addstr(9+index, 4, "%d.\t%s" % (index+1, self.options[index]), textstyle)
+
         self.screen.border(0)
         self.screen.refresh()
 

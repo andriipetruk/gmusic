@@ -2,17 +2,21 @@ from gmusic.content.ContentHandler import ContentHandler
 from gmusic.content.DataCache import DataCache
 from gmusic.content.GMusicClient import GMusicClient
 
-from gmusic.input.InputHandler import InputHandler
-from gmusic.input.Interface import Interface
-from gmusic.input.InputParser import InputParser
+from gmusic.core.Cache import Cache
+from gmusic.core.CommandHandler import CommandHandler
+from gmusic.core.CommandParser import CommandParser
+from gmusic.core.Core import Core
+from gmusic.core.State import State
+from gmusic.core.UIHandler import UIHandler
+from gmusic.core.UIParser import UIParser
 
-from gmusic.player.Player import Player
+from gmusic.frontend.Banner import Banner
+from gmusic.frontend.CursedObject import CursedObject
+from gmusic.frontend.DrawHandler import DrawHandler
+from gmusic.frontend.Guide import Guide
+from gmusic.frontend.Menu import Menu
+from gmusic.frontend.UI import UI
+
 from gmusic.player.PlayerController import PlayerController
+from gmusic.player.Player import Player
 from gmusic.player.PlayList import PlayList
-
-from gmusic.menu.CursedMenu import CursedMenu
-from gmusic.menu.CursedObject import CursedObject
-from gmusic.menu.CursedUI import CursedUI
-from gmusic.menu.Guide import Guide
-from gmusic.menu.MenuStateManager import MenuStateManager
-from gmusic.menu.NowPlaying import NowPlaying
