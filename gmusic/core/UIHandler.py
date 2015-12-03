@@ -56,5 +56,5 @@ class UIHandler(object):
 
     def notify_attachments(self, event):
         '''blahblah'''
-        for attachment in attachments:
+        for attachment in self.attachments:
             attachment.handle_event(event)
