@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from gmusic.curses.CursedObject import CursedObject
+from gmusic.frontend.CursedObject import CursedObject
 import curses
 
 class Guide(CursedObject):
