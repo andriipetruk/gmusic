@@ -49,6 +49,10 @@ class PlayerController(object):
         track_details = self.content_handler.lookup_nid(nid)
         self.notify_attachments('PLAY', track_details)
 
+    def resume(self):
+        self.player.resume()
+        self.notify_attachments('PLAY')
+
     def pause(self):
         self.player.pause()
         self.notify_attachments('PAUSE')

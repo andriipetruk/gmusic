@@ -1,53 +1,68 @@
 class State(object):
     def __init__(self):
         self.state = ""
-        self.title = "Main Page"
-        self.subtitle = "Options"
+        self.title = ""
+        self.subtitle = ""
         self.selected_element = 0
         self.page_number = 0
 
         # Elements follow the tuple pattern (DISPLAY_STRING, id)
         self.full_elements = []
-        self.page_elements = [('Artists',None), ('Albums',None), \
-            ('Radios', None), ('Songs', None), ('DJs', None), \
-            ('Options', None), ('Exit', None)]
+        self.state_aliases = [('Artists','artist'), ('Albums','album'), \
+            ('Radios', 'radio'), ('Songs', 'song'), ('DJs', 'dj'), \
+            ('Options', 'options'), ('Exit', 'exit')]
+        self.page_elements = []
+
+        # this just so happens to work in my favor!
+        self.main_menu()
 
     def adjust_selection(self, amount):
         """Adjusts the position of the selection cursor in the menu"""
         self.selected_element += amount
-        if self.selected_element > len(self.page_elements):
-            self.change_page(1)
-        if self.selected_element < 0:
-            self.change_page(-1)
+        #if self.selected_element > len(self.page_elements):
+        #    self.change_page(1)
+        #if self.selected_element < 0:
+        #    self.change_page(-1)
         self.selected_element = self.selected_element % len(self.page_elements)
 
-    def change_page(self, page):
-        pass
+    def change_page(self, value):
+        new_page = self.constrain_page_number(self.page_number + value)
+        self.set_page(new_page)
+
+    def set_page(self, page):
+        self.selected_element = 0
+        self.page_number = page
+        self.page_elements = self.full_elements[self.page_number]
+        if self.state != 'main' and self.page_elements[-1][0] != 'Back':
+            self.page_elements.append(('Back','back'))
+
+    def main_menu(self):
+        self.full_elements = [self.state_aliases]
+        self.page_elements = self.state_aliases
+        self.state = "main"
+        self.title = "Main Page"
+        self.subtitle = "Options"
 
     def handle_execute(self):
-        if self.page_elements[self.selected_element][0] == 'Artists':
-            return 'artist'
-        if self.page_elements[self.selected_element][0] == 'Albums':
-            return 'album'
-        if self.page_elements[self.selected_element][0] == 'Songs':
-            return 'song'
-        if self.page_elements[self.selected_element][0] == 'Radios':
-            return 'radio'
-        return ''
+        if self.state == 'main':
+            return self.page_elements[self.selected_element][1]
 
-    def set_options(self, new_options, pattern):
-        self.page_elements = new_options
+        # Check to see if we're trying to go back to main menu
+        if self.page_elements[self.selected_element][0] == 'Back':
+            return 'back'
 
+        state = [alias[1] for alias in self.state_aliases if self.state == alias[0]][0]
+        return "play {0} {1}".format(\
+            state,\
+            self.page_elements[self.selected_element][1])
 
-'''
-The CursedMenu uses this to keep track of where the user is.
+    def set_options(self, new_options, capacity):
+        '''Splits the elements up into sublists for pages'''
+        self.full_elements = [new_options[x:x+capacity] \
+            for x in range(0, len(new_options), capacity)]
+        #if len(self.full_elements) > 1:
+        #    self.title = 'Page '
+        self.change_page(0)
 
-states:
-    main - Main menu
-    options - Options menu
-    playlists - List of playlists
-    playlist - A specific playlist
-    radios - List of radios
-    radio - A specfic radio
-    search - Search menu
-'''
+    def constrain_page_number(self, new_page_number):
+        return max(min(new_page_number, len(self.full_elements)), 0)

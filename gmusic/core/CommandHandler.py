@@ -22,16 +22,20 @@ class CommandHandler(object):
         '''Asks the Content Manager to find a song from specified album'''
         self.content_handler.search_albums(album=album)
 
-    def typed_play(self, index=""):
+    def typed_play(self, additional):
         '''Tells the streamer to play/resume or play a specific track'''
-        if index is "":
-            self.content_manager.streamer.resume()
+        if additional is "":
+            self.player_controller.resume()
             return
 
-        #Play a song using an index from the most recent search
-        track = self.content_manager.play_track(int(index))
-        self.content_manager.queue(int(index))
-        self.content_manager.streamer.play_track(track)
+        args = additional.split(' ', 1)
+        if args[0] == 'radio':
+            self.player_controller.play_radio(args[1])
+        else:
+            self.player_controller.play(args[1])
+
+    def typed_back(self, *_):
+        self.notify_attachments('BACK')
 
     def typed_stop(self, *_):
         '''Tells the streamer to stop playback'''

@@ -23,10 +23,9 @@ class Menu(CursedObject):
         self.print_line(self.subtitle, 8, curses.A_BOLD)
 
         width = self.width()
-        max_elements = self.height() - 18
 
         # Display all the menu items, showing the 'pos' item highlighted
-        for index in range(min(max_elements, len(self.options))):
+        for index in range(len(self.options)):
             textstyle = self.normal
             if index == selected:
                 textstyle = self.highlighted

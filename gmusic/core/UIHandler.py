@@ -48,6 +48,12 @@ class UIHandler(object):
         if user_in == curses.KEY_UP: # up arrow
             self.state.adjust_selection(-1)
             self.notify_attachments('SELECTION CHANGE')
+        if user_in == curses.KEY_RIGHT:
+            self.state.change_page(1)
+            self.notify_attachments('PAGE CHANGE')
+        if user_in == curses.KEY_LEFT:
+            self.state.change_page(-1):
+            self.notify_attachments('PAGE CHANGE')
 
 
     def notify_attachments(self, event):

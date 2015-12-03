@@ -31,6 +31,8 @@ class DrawHandler(CursedObject):
         ui_thread.start()
 
     def draw(self):
+        self.screen.clear()
+        self.screen.refresh()
         self.update_menu()
         self.redraw()
 
@@ -47,6 +49,9 @@ class DrawHandler(CursedObject):
     def banner_update(self, song_details):
         self.banner.track = song_details
         self.banner.draw()
+
+    def get_page_capacity(self):
+        return self.height() - 15
 
     def handle_event(self, event, args=None):
         if 'CLEAR TEXT ENTRY' in event:

@@ -43,10 +43,16 @@ class Core:
         if 'STOP' in event:
             self.draw_handler.banner_update(None)
 
+        if 'BACK' in event:
+            self.state.main_menu()
+            self.draw_handler.draw()
+
         if 'EXIT' in event:
             self.draw_handler.exit()
             sys.exit(1)
 
         if 'SEARCH' in event:
-            self.state.set_options(args, 'artist')
+            self.state.state = event.split(' ', 1)[1]
+            capacity = self.draw_handler.get_page_capacity()
+            self.state.set_options(args, capacity)
             self.draw_handler.draw()

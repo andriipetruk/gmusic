@@ -34,14 +34,16 @@ class GMusicClient:
         return self.client.search_all_access(query)
 
     def search_tracks_all_access(self, query):
-        return self.search_all_access(query)['song_hits']
+        artists = self.search_all_access(query)['song_hits']
+        return [(artist['track']['title'], artist['track']['nid']) for artist in artists]
 
     def search_artists_all_access(self, query):
         artists = self.search_all_access(query)['artist_hits']
         return [(artist['artist']['name'], artist['artist']['artistId']) for artist in artists]
 
     def search_albums_all_access(self, query):
-        return self.search_all_access(query)['album_hits']
+        artists = self.search_all_access(query)['album_hits']
+        return [(artist['album']['name'], artist['album']['albumId']) for artist in artists]
 
     def get_stream_url(self, nid):
         return self.client.get_stream_url(nid)

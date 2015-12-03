@@ -34,25 +34,25 @@ class ContentHandler:
             artists = self.client.search_artists_all_access(artist)
         else:
             artists = self.data_cache.get_artists()
-        self.notify_attachments('SEARCH', artists)
+        self.notify_attachments('SEARCH Artists', artists)
 
     def search_albums(self, album):
         if album is not '':
             albums = self.client.search_albums_all_access(album)
         else:
             albums = self.data_cache.get_albums()
-        self.notify_attachments('SEARCH', albums)
+        self.notify_attachments('SEARCH Albums', albums)
 
     def search_radios(self, query):
         radios = [(r['name'], r['id']) for r in self.client.get_radio_list(query)]
-        self.notify_attachments('SEARCH', radios)
+        self.notify_attachments('SEARCH Radios', radios)
 
     def search_songs(self, song):
         if song is not '':
             songs = self.client.search_tracks_all_access(song)
         else:
             songs = self.data_cache.get_tracks()
-        self.notify_attachments('SEARCH', songs)
+        self.notify_attachments('SEARCH Songs', songs)
 
     def notify_attachments(self, event, args=None):
         for attachment in self.attachments:
