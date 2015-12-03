@@ -8,6 +8,9 @@ class CommandParser(object):
 
     def parse(self, line):
         '''Master method; figures out what was typed by the user'''
+        if line is '':
+            return
+
         data = line.split(' ', 1)
 
         # Default content to empty string

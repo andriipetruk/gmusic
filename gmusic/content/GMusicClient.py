@@ -37,7 +37,8 @@ class GMusicClient:
         return self.search_all_access(query)['song_hits']
 
     def search_artists_all_access(self, query):
-        return self.search_all_access(query)['artist_hits']
+        artists = self.search_all_access(query)['artist_hits']
+        return [(artist['artist']['name'], artist['artist']['artistId']) for artist in artists]
 
     def search_albums_all_access(self, query):
         return self.search_all_access(query)['album_hits']

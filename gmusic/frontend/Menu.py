@@ -7,7 +7,6 @@ class Menu(CursedObject):
     def __init__(self, screen):
         '''Initialization'''
         self.screen = screen
-        self._ui = None
         self.options = None
 
         # Highlighted and Normal line definitions
@@ -23,12 +22,18 @@ class Menu(CursedObject):
         self.print_line(self.title, 6, curses.A_BOLD)
         self.print_line(self.subtitle, 8, curses.A_BOLD)
 
+        width = self.width()
+        max_elements = self.height() - 18
+
         # Display all the menu items, showing the 'pos' item highlighted
-        for index in range(len(self.options)):
+        for index in range(min(max_elements, len(self.options))):
             textstyle = self.normal
             if index == selected:
                 textstyle = self.highlighted
-            self.screen.addstr(9+index, 4, "%d.\t%s" % (index+1, self.options[index]), textstyle)
+
+            # Use 0 index here, as the tuple pattern is (DISPLAY_STRING, id)
+            option = self.compress_text(self.options[index][0], width-4)
+            self.screen.addstr(9+index, 4, "%d.\t%s" % (index+1, option), textstyle)
 
         self.screen.border(0)
         self.screen.refresh()

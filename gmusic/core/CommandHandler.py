@@ -8,12 +8,11 @@ class CommandHandler(object):
 
     def typed_radio(self, query):
         '''Gets a radio station'''
-        radio = self.content_handler.client.get_radio_list(query)
-        self.player_controller.play_radio(radio[0]['id'])
+        radio = self.content_handler.search_radios(query)
 
     def typed_artist(self, artist):
         '''Asks the Content Manager to find a song from specified artist'''
-        self.content_handler.search_songs(artist=artist)
+        self.content_handler.search_artists(artist=artist)
 
     def typed_song(self, song):
         '''Asks the Content Manager to find a song with a specified name'''
@@ -21,7 +20,7 @@ class CommandHandler(object):
 
     def typed_album(self, album):
         '''Asks the Content Manager to find a song from specified album'''
-        self.content_handler.search_songs(album=album)
+        self.content_handler.search_albums(album=album)
 
     def typed_play(self, index=""):
         '''Tells the streamer to play/resume or play a specific track'''

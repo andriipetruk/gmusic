@@ -11,7 +11,9 @@ class UIHandler(object):
     def handle(self, user_in):
         # Enter Key
         if user_in == 10:
-            return self.handle_execute()
+            execution_command = self.state.handle_execute()
+            if execution_command is not "":
+                self.cmd_parser.parse(execution_command)
 
         # Escape
         #if user_in == 27:
@@ -47,9 +49,6 @@ class UIHandler(object):
             self.state.adjust_selection(-1)
             self.notify_attachments('SELECTION CHANGE')
 
-
-    def handle_execute(self):
-        pass
 
     def notify_attachments(self, event):
         '''blahblah'''

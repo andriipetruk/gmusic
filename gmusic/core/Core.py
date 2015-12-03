@@ -16,6 +16,7 @@ class Core:
 
     def build_parsers(self):
         content_handler = ContentHandler()
+        content_handler.attachments.append(self)
         content_handler.launch()
 
         # Player Controller
@@ -45,3 +46,7 @@ class Core:
         if 'EXIT' in event:
             self.draw_handler.exit()
             sys.exit(1)
+
+        if 'SEARCH' in event:
+            self.state.set_options(args, 'artist')
+            self.draw_handler.draw()
