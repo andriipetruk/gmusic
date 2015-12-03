@@ -2,12 +2,13 @@ from gmusic.menu.CursedObject import CursedObject
 from gmusic.input.InputParser import InputParser
 import curses
 
-class CursedUI(CursedObject):
+class UI(CursedObject):
     """Asynchronous. Handles input from the user"""
 
-    def __init__(self, screen, input_parser):
+    def __init__(self, draw_handler, input_parser):
         CursedObject.__init__(self)
-        self.screen = screen
+        self.screen = draw_handler.screen
+        self.attachments = [draw_handler]
         self.input_parser = input_parser
 
     def __running__(self):

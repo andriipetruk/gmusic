@@ -1,16 +1,16 @@
 from gmusic.menu.NowPlaying import NowPlaying
 from gmusic.menu.CursedObject import CursedObject
-from gmusic.menu.CursedUI import CursedUI
+from gmusic.menu.UI import UI
 from gmusic.menu.Guide import Guide
 import curses, threading
 
-class CursedMenu(CursedObject):
+class Menu(CursedObject):
     '''A class which abstracts the horrors of building a curses-based menu system'''
 
     def __init__(self, screen):
         '''Initialization'''
         self.screen = screen
-        self.cursed_ui = None
+        self._ui = None
         self.options = None
 
         # Highlighted and Normal line definitions
