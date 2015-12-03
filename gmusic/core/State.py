@@ -42,6 +42,7 @@ class State(object):
         self.state = "main"
         self.title = "Main Page"
         self.subtitle = "Options"
+        self.selected_element = 0
 
     def handle_execute(self):
         if self.state == 'main':
@@ -51,6 +52,9 @@ class State(object):
         if self.page_elements[self.selected_element][0] == 'Back':
             return 'back'
 
+        if self.state == 'Artists' or self.state == 'Albums':
+            return 'song {0}'.format(self.page_elements[self.selected_element][0])
+
         state = [alias[1] for alias in self.state_aliases if self.state == alias[0]][0]
         return "play {0} {1}".format(\
             state,\
@@ -58,6 +62,7 @@ class State(object):
 
     def set_options(self, new_options, capacity):
         '''Splits the elements up into sublists for pages'''
+        self.title = self.state
         self.full_elements = [new_options[x:x+capacity] \
             for x in range(0, len(new_options), capacity)]
         #if len(self.full_elements) > 1:
@@ -65,4 +70,4 @@ class State(object):
         self.change_page(0)
 
     def constrain_page_number(self, new_page_number):
-        return max(min(new_page_number, len(self.full_elements)), 0)
+        return max(min(new_page_number, len(self.full_elements)-1), 0)

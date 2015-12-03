@@ -52,7 +52,7 @@ class UIHandler(object):
             self.state.change_page(1)
             self.notify_attachments('PAGE CHANGE')
         if user_in == curses.KEY_LEFT:
-            self.state.change_page(-1):
+            self.state.change_page(-1)
             self.notify_attachments('PAGE CHANGE')
 
 

@@ -34,6 +34,10 @@ class Core:
         self.draw_handler.launch(cmd_parser, ui_parser)
 
     def handle_event(self, event, args=None):
+        if 'PAGE' in event:
+            self.draw_handler.draw()
+            return
+
         if 'CHANGE' in event:
             self.draw_handler.redraw()
 
