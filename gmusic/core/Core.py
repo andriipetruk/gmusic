@@ -47,6 +47,10 @@ class Core:
         if 'STOP' in event:
             self.draw_handler.banner_update(None)
 
+        if 'OPTIONS' in event:
+            self.state.options_menu()
+            self.draw_handler.draw()
+
         if 'BACK' in event:
             self.state.main_menu()
             self.draw_handler.draw()

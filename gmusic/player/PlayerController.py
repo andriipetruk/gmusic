@@ -42,7 +42,12 @@ class PlayerController(object):
 
     def play(self, nid):
         '''Plays a song using an nid as lookup'''
-        url = self.content_handler.get_url(nid)
+        try:
+            url = self.content_handler.get_url(nid)
+        except:
+            self.next()
+            return
+
         self.player.play(url)
 
         # Tell attachments about the song

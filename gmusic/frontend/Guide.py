@@ -11,10 +11,10 @@ class Guide(CursedObject):
     def draw(self):
         row = self.height()-3
         help_string = \
-            "↑↓: Nav     "+\
+            "↕: Nav     "+\
+            "↔: Page Nav     " +\
             "Space: ▶/||     "+\
             "n: Next     " +\
-            "[ ]: Next/Prev Page     " +\
             "i: Cmd Line"
 
         self.center_text(help_string,row)
