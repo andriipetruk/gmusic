@@ -44,6 +44,7 @@ class PlayerController(object):
         '''Plays a song using an nid as lookup'''
         try:
             url = self.content_handler.get_url(nid)
+            return
         except:
             self.next()
 
