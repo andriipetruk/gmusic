@@ -15,11 +15,6 @@ class UIHandler(object):
             if execution_command is not "":
                 self.cmd_parser.parse(execution_command)
 
-        # Escape
-        #if user_in == 27:
-    #        self.notify_attachments('EXIT')
-        #self.exit()
-
         # Spacebar
         if user_in == ord(' '):
             self.cmd_parser.parse("pause")
@@ -31,15 +26,6 @@ class UIHandler(object):
         # p (prev)
         if user_in == ord('p'):
             self.cmd_parser.parse("previous")
-
-        # Page Increment/Decrement
-        if user_in == ord('['):
-            self.state.change_page(-1)
-            self.notify_attachments('PAGE CHANGE')
-        if user_in == ord(']'):
-            self.state.change_page(1)
-            self.notify_attachments('PAGE CHANGE')
-
 
         # Increment or Decrement
         if user_in == curses.KEY_DOWN: # down arrow
