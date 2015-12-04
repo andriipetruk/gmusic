@@ -44,7 +44,8 @@ class ContentHandler:
         self.notify_attachments('SEARCH Albums', albums)
 
     def search_radios(self, query):
-        radios = [(r['name'], r['id']) for r in self.client.get_radio_list(query)]
+        sorted_radios = sorted(self.client.get_radio_list(query), reverse=True, key = lambda x : x['recentTimestamp'])
+        radios = [(r['name'], r['id']) for r in sorted_radios]
         self.notify_attachments('SEARCH Radios', radios)
 
     def search_songs(self, song):
