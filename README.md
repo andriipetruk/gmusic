@@ -46,3 +46,9 @@ Example:
 ```
 python gmusic.py
 ```
+
+or
+
+```
+./run
+```
