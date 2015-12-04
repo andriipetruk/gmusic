@@ -15,6 +15,7 @@ class State(object):
             ('Options', 'options'), ('Exit', 'exit')]
         self.page_elements = []
 
+        self.subtitle = "Options"
         # this just so happens to work in my favor!
         self.main_menu()
 
@@ -28,10 +29,8 @@ class State(object):
             MenuElement('DJs', 'dj'),
             MenuElement('Options', 'options'),
             MenuElement('Exit', 'exit')]]
-        self.state = "main"
+        self.state = "Main Menu"
         self.set_page(0)
-        self.title = "Main Page"
-        self.subtitle = "Options"
 
     def options_menu(self):
         self.full_elements = [[
@@ -40,10 +39,8 @@ class State(object):
             MenuElement('Highlight color', 'back', 'White'),
             MenuElement('Port for DJ Push Notifications', 'back', '8080'),
             MenuElement('Allow DJ to control playback', 'back', 'No')]]
-        self.state = 'options'
+        self.state = 'Options Menu'
         self.set_page(0)
-        self.title = 'Options Menu'
-        self.subtitle = 'Options'
 
     def adjust_selection(self, amount):
         """Adjusts the position of the selection cursor in the menu"""
@@ -67,12 +64,12 @@ class State(object):
             self.title = self.title + ' (Page {0} of {1})'.format(self.page_number+1, len(self.full_elements))
 
         # If this isn't the main menu, make sure that we have 'BACK' available
-        if self.state != 'main' and self.page_elements[-1].main != 'Back':
+        if self.state != 'Main Menu' and self.page_elements[-1].main != 'Back':
             self.page_elements.append(MenuElement('Back','back'))
 
     def handle_execute(self):
         '''State Machine'''
-        if self.state == 'main':
+        if self.state == 'Main Menu':
             return self.page_elements[self.selected_element].id
 
         # First and foremost, go BACK if the element says to do so
