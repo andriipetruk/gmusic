@@ -58,6 +58,7 @@ class CommandHandler(object):
         self.player_controller.next()
 
     def typed_exit(self, *_):
+        self.player_controller.stop()
         self.notify_attachments('EXIT')
 
     def notify_attachments(self, event, args=None):

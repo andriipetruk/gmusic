@@ -19,10 +19,6 @@ class State(object):
     def adjust_selection(self, amount):
         """Adjusts the position of the selection cursor in the menu"""
         self.selected_element += amount
-        #if self.selected_element > len(self.page_elements):
-        #    self.change_page(1)
-        #if self.selected_element < 0:
-        #    self.change_page(-1)
         self.selected_element = self.selected_element % len(self.page_elements)
 
     def change_page(self, value):
@@ -65,8 +61,6 @@ class State(object):
         self.title = self.state
         self.full_elements = [new_options[x:x+capacity] \
             for x in range(0, len(new_options), capacity)]
-        #if len(self.full_elements) > 1:
-        #    self.title = 'Page '
         self.change_page(0)
 
     def constrain_page_number(self, new_page_number):

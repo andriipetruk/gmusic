@@ -43,6 +43,7 @@ class DrawHandler(CursedObject):
 
     def redraw(self):
         self.menu.draw(selected=self.state.selected_element)
+        self.screen.refresh()
         self.banner.draw()
         self.guide.draw()
 
