@@ -15,6 +15,7 @@ from gmusic.frontend.CursedObject import CursedObject
 from gmusic.frontend.DrawHandler import DrawHandler
 from gmusic.frontend.Guide import Guide
 from gmusic.frontend.Menu import Menu
+from gmusic.MenuElement import MenuElement
 from gmusic.frontend.UI import UI
 
 from gmusic.player.PlayerController import PlayerController

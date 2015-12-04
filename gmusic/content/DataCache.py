@@ -39,13 +39,13 @@ class DataCache:
         return [radio['id'] for radio in self.radios if 'id' in radio]
 
     def get_albums(self):
-        return list(set([(track['album'], track['albumId']) \
+        return list(set([(track['album'],track['albumId'],track['artist']) \
             for track in self.tracks if 'albumId' in track]))
 
     def get_artists(self):
-        return list(set([(track['artist'], track['artistId'][0]) \
+        return list(set([(track['artist'],track['artistId'][0],None) \
             for track in self.tracks if 'artistId' in track]))
 
     def get_tracks(self):
-        return [(track['title'], track['nid']) \
+        return [(track['title'], track['nid'], track['album'])\
             for track in self.tracks if 'nid' in track]

@@ -34,16 +34,24 @@ class GMusicClient:
         return self.client.search_all_access(query)
 
     def search_tracks_all_access(self, query):
-        artists = self.search_all_access(query)['song_hits']
-        return [(artist['track']['title'], artist['track']['nid']) for artist in artists]
+        tracks = self.search_all_access(query)['song_hits']
+        return [(track['track']['title'], track['track']['nid'], track['track']['album']) for track in tracks]
 
     def search_artists_all_access(self, query):
         artists = self.search_all_access(query)['artist_hits']
         return [(artist['artist']['name'], artist['artist']['artistId']) for artist in artists]
 
     def search_albums_all_access(self, query):
-        artists = self.search_all_access(query)['album_hits']
-        return [(artist['album']['name'], artist['album']['albumId']) for artist in artists]
+        albums = self.search_all_access(query)['album_hits']
+        return [(album['album']['name'], album['album']['albumId'], album['album']['artist']) for album in albums]
+
+    def get_album_songs(self, album_id):
+        songs = self.client.get_album_info(album_id, include_tracks=True)['tracks']
+        return [(t['title'], t['nid'], t['album']) for t in songs if 'nid' in t]
+
+    def get_artist_albums(self, artist_id):
+        albums = self.client.get_artist_info(artist_id, include_albums=True)['albums']
+        return [(t['name'], t['albumId'], t['artist']) for t in albums if 'albumId' in t]
 
     def get_stream_url(self, nid):
         return self.client.get_stream_url(nid)

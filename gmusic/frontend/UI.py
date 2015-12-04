@@ -26,6 +26,7 @@ class UI(CursedObject):
 
         # Text Entry must occur here, in curses land
         if user_input == ord('i') or user_input == ord('I'):
+
             result = self.handle_text_entry()
             self.notify_attachments('CLEAR TEXT ENTRY')
             return
