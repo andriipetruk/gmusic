@@ -35,35 +35,18 @@ class ContentHandler:
         radios = [MenuElement(r['name'], r['id']) for r in sorted_radios]
         self.notify_attachments('SEARCH Radios', radios)
 
-    def search_artists(self, artist):
-        if artist is not '':
-            found_artists = self.client.search_artists_all_access(artist)
+    def search_items(self, search_type, item):
+        '''Master Search Method'''
+        if item is not '':
+            method_name = 'search_{0}_all_access'.format(search_type)
+            search = getattr(self.client, method_name)
         else:
-            found_artists = self.data_cache.get_artists()
+            method_name = 'get_{0}'.format(search_type)
+            search = getattr(self.data_cache, method_name)
 
-        # Package up nicely
-        artists = [MenuElement(s[0],s[1]) for s in found_artists]
-        self.notify_attachments('SEARCH Artists', artists)
-
-    def search_albums(self, album):
-        if album is not '':
-            found_albums = self.client.search_albums_all_access(album)
-        else:
-            found_albums = self.data_cache.get_albums()
-
-        #Package up nicely
-        albums = [MenuElement(s[0],s[1],s[2]) for s in found_albums]
-        self.notify_attachments('SEARCH Albums', albums)
-
-    def search_songs(self, song):
-        if song is not '':
-            found_songs = self.client.search_tracks_all_access(song)
-        else:
-            found_songs = self.data_cache.get_tracks()
-
-        # Package up nicely
-        songs = [MenuElement(s[0],s[1],s[2]) for s in found_songs]
-        self.notify_attachments('SEARCH Songs', songs)
+        items = [MenuElement(s[0], s[1], s[2]) for s in search(item)]
+        if len(items) > 0:
+            self.notify_attachments('SEARCH {0}'.format(search_type.capitalize()), items)
 
     def search_artist_albums(self, artist_id):
         found_albums = self.client.get_artist_albums(artist_id)

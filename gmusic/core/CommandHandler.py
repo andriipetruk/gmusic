@@ -12,15 +12,15 @@ class CommandHandler(object):
 
     def typed_artist(self, artist):
         '''Asks the Content Manager to find a song from specified artist'''
-        self.content_handler.search_artists(artist=artist)
+        self.content_handler.search_items('artists', artist)
 
     def typed_song(self, song):
         '''Asks the Content Manager to find a song with a specified name'''
-        self.content_handler.search_songs(song=song)
+        self.content_handler.search_items('songs', song)
 
     def typed_album(self, album):
         '''Asks the Content Manager to find a song from specified album'''
-        self.content_handler.search_albums(album=album)
+        self.content_handler.search_items('albums', album)
 
     def typed_artist_albums(self, artist_id):
         self.content_handler.search_artist_albums(artist_id=artist_id)

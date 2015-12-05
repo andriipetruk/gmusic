@@ -38,14 +38,14 @@ class DataCache:
         '''Creates a list of nids'''
         return [radio['id'] for radio in self.radios if 'id' in radio]
 
-    def get_albums(self):
+    def get_albums(self, *_):
         return list(set([(track['album'],track['albumId'],track['artist']) \
             for track in self.tracks if 'albumId' in track]))
 
-    def get_artists(self):
+    def get_artists(self, *_):
         return list(set([(track['artist'],track['artistId'][0],None) \
             for track in self.tracks if 'artistId' in track]))
 
-    def get_tracks(self):
+    def get_tracks(self, *_):
         return [(track['title'], track['nid'], track['album'])\
             for track in self.tracks if 'nid' in track]
