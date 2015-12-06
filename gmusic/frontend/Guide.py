@@ -9,12 +9,16 @@ class Guide(CursedObject):
         self.screen = screen
 
     def draw(self):
-        row = self.height()-3
-        help_string = \
-            "↕: Nav     "+\
-            "↔: Page Nav     " +\
-            "Space: ▶/||     "+\
-            "n: Next     " +\
-            "i: Cmd Line"
+        first_line = \
+            "  ↕ : Nav      "+\
+            " ↔ : Page     " +\
+            "  n: Next     " +\
+            "  p: Prev "
+        second_line = \
+            "Spc: ▶/||     "+\
+            "  q: Queue    "+\
+            "  i: Cmd Line "+\
+            "  r: Radio"
 
-        self.center_text(help_string,row)
+        self.center_text(first_line, self.height() - 4)
+        self.center_text(second_line, self.height() - 3)

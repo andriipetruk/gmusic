@@ -37,7 +37,8 @@ class State(object):
             MenuElement('Background color', 'back', 'Gray'),
             MenuElement('Text color', 'back', 'White'),
             MenuElement('Highlight color', 'back', 'White'),
-            MenuElement('Port for DJ Push Notifications', 'back', '8080'),
+            MenuElement('Number of radio tracks to pull', 'back', '25'),
+            MenuElement('Port for DJ Notifications', 'back', '8080'),
             MenuElement('Allow DJ to control playback', 'back', 'No')]]
         self.state = 'Options Menu'
         self.set_page(0)
