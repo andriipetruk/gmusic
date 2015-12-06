@@ -19,6 +19,7 @@ class CommandHandler(object):
         except:
             return
 
+        self.notify_attachments('FEEDBACK', 'Creating Radio "{0}"'.format(name))
         radio_id = self.content_handler.create_radio(seed_type, id, name)
         if radio_id is not None:
             self.typed_play('radio {0}'.format(radio_id))

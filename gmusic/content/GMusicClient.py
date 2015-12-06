@@ -21,7 +21,9 @@ class GMusicClient(ContentConsumer):
         self.load_radios()
 
     def load_radios(self):
-        self.data_cache.radios = self.client.get_all_stations()
+        radios = self.client.get_all_stations()
+        radios.reverse()
+        self.data_cache.radios = radios
 
     def get_radio_contents(self, radio_id):
         tracks = self.client.get_station_tracks(radio_id)

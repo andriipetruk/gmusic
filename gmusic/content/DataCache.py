@@ -37,6 +37,12 @@ class DataCache(ContentConsumer):
         id_type = self.get_id_type(item_type)
         return [x for x in self.tracks if id_type in x and x[id_type] == id][0]
 
+    def get_cache_target(self, item_type):
+        '''Used to determine the data_cache source for searching'''
+        if 'radio' in item_type:
+            return self.radios
+        return self.tracks
+
     def get_items(self, item_type, *_):
         '''Get all items from cache of `item_type`'''
         args = self.get_index_arguments(item_type)
@@ -50,4 +56,4 @@ class DataCache(ContentConsumer):
             args['type'] = 'title'
 
         return list(set([(track[args['type']], track[args['id']], track[args['alt']]) \
-            for track in self.tracks if args['id'] in track]))
+            for track in self.get_cache_target(item_type) if args['id'] in track]))

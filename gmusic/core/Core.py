@@ -64,3 +64,6 @@ class Core:
             capacity = self.draw_handler.get_page_capacity()
             self.state.set_options(args, capacity)
             self.draw_handler.draw()
+
+        if 'FEEDBACK' in event:
+            self.draw_handler.provide_feedback(args[0])
