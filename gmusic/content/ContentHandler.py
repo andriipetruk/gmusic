@@ -20,15 +20,10 @@ class ContentHandler:
         '''Try to get information about an nid'''
         # Check to see if it's in our library
         if self.data_cache.has_track(nid):
-            return self.data_cache.get_track(nid)
+            return self.data_cache.get_item_from_id('track', nid)
 
         # Not in cache; need to look it up
         return self.client.lookup(nid)
-
-    def lookup_rid(self, rid):
-        '''Try to get information about a radio id'''
-        if self.data_cache.has_track(rid):
-            return self.data_cache.get_radio(rid)
 
     def search_radios(self, query):
         sorted_radios = sorted(self.client.get_radio_list(query), reverse=True, key = lambda x : x['recentTimestamp'])
@@ -41,10 +36,10 @@ class ContentHandler:
             method_name = 'search_items_all_access'.format(search_type)
             search = getattr(self.client, method_name)
         else:
-            method_name = 'get_{0}'.format(search_type)
+            method_name = 'get_items'.format(search_type)
             search = getattr(self.data_cache, method_name)
 
-        found_items = search(query, search_type)
+        found_items = search(search_type, query)
         self.package_and_notify(search_type, found_items)
 
     def package_and_notify(self, search_type, found_items):
@@ -53,13 +48,12 @@ class ContentHandler:
             self.notify_attachments('SEARCH {0}'.format(search_type.capitalize()), items)
 
     def search_artist_or_album_items(self, type_from, from_id):
-
+        '''Works for getting a specific artist's albums, or an album's tracks'''
         search_type = 'songs'
         if type_from is 'artist':
             search_type = 'albums'
 
         found_items = self.client.get_artist_or_album_items(type_from, search_type, from_id)
-        items = [MenuElement(s[0],s[1],s[2]) for s in found_items]
         self.package_and_notify(search_type, found_items)
 
     def notify_attachments(self, event, args=None):

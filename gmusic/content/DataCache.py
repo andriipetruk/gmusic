@@ -1,51 +1,49 @@
 #from gmusic.player.Streamer import Streamer
+from gmusic.content.ContentConsumer import ContentConsumer
 import math
 
-class DataCache:
+class DataCache(ContentConsumer):
     def __init__(self):
         self.tracks = []
         self.radios = []
 
     def has_track(self, nid):
         '''Checks to see if an nid exists in the cache'''
-        return nid in self.track_nid_list()
+        return nid in self.track_id_list()
 
-    def get_track(self, nid):
-        '''Gets the track which matches this nid'''
-        return [x for x in self.tracks if 'nid' in x and x['nid'] == nid][0]
+    def has_radio(self, rid):
+        '''Checks to see if an rid exists in the cache'''
+        return rid in self.radio_id_list()
 
     def add_tracks(self, tracks):
         '''Adds tracks to the cache'''
         self.tracks = self.tracks + tracks
 
-    def track_nid_list(self):
-        '''Creates a list of nids'''
-        return [track['nid'] for track in self.tracks if 'nid' in track]
-
-    def has_radio(self, rid):
-        '''Checks to see if an rid exists in the cache'''
-        return rid in self.radio_rid_list()
-
-    def get_radio(self, rid):
-        '''Gets the station which matches this id'''
-        return [x for x in self.radios if 'id' in x and x['id'] == rid][0]
-
     def add_radios(self, radios):
         '''Adds tracks to the cache'''
         self.radios = self.radios + radios
 
-    def radio_rid_list(self):
+    def radio_id_list(self):
         '''Creates a list of nids'''
         return [radio['id'] for radio in self.radios if 'id' in radio]
 
-    def get_albums(self, *_):
-        return list(set([(track['album'],track['albumId'],track['artist']) \
-            for track in self.tracks if 'albumId' in track]))
+    def track_id_list(self):
+        '''Creates a list of nids'''
+        return [track['nid'] for track in self.tracks if 'nid' in track]
 
-    def get_artists(self, *_):
-        return list(set([(track['artist'],track['artistId'][0],None) \
-            for track in self.tracks if 'artistId' in track]))
+    def get_item_from_id(self, item_type, id):
+        '''Get an item which matches a specific id'''
+        id_type = self.get_id_type(item_type)
+        return [x for x in self.tracks if id_type in x and x[id_type] == id][0]
 
-    def get_tracks(self, *_):
-        return [(track['title'], track['nid'], track['album'])\
-            for track in self.tracks if 'nid' in track]
+    def get_items(self, item_type, *_):
+        '''Get all items from cache of `item_type`'''
+        args = self.get_index_arguments(item_type)
+
+        # Have to account for absurdity in 'artists' AGAIN...
+        if item_type == 'artists':
+            return list(set([(track[args['type']], track[args['id']][0], None) \
+                for track in self.tracks if args['id'] in track]))
+
+        return list(set([(track[args['type']], track[args['id']], track[args['alt']]) \
+            for track in self.tracks if args['id'] in track]))

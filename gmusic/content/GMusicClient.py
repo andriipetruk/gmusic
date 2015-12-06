@@ -1,7 +1,10 @@
+from gmusic.content.ContentConsumer import ContentConsumer
 from gmusicapi import Mobileclient
 import json
 
-class GMusicClient:
+class GMusicClient(ContentConsumer):
+    '''Element in charge of interfacing with GMusicApi Client'''
+
     def __init__(self, data_cache):
         self.client = Mobileclient()
         self.data_cache = data_cache
@@ -33,35 +36,7 @@ class GMusicClient:
     def search_all_access(self, query):
         return self.client.search_all_access(query)
 
-    def get_index_arguments(self, type):
-        '''Get the data indexing arguments'''
-        # Songs have some weird arguments, so we have to account for that
-        if type is 'songs':
-            return {'type': 'track',
-            'name': 'title',
-            'id': 'nid',
-            'alt': 'album'}
-
-        # Otherwise we can generalize a lot of data
-        return {'type': type[:-1],
-            'name': 'name',
-            'id': type[:-1]+'Id',
-            'alt': 'artist'}
-
-    def format_item(self, item, type, args):
-        '''Format the item for content_handler'''
-        # Artist does not have alternate information
-        if type is 'artists':
-            return (item[args['type']][args['name']], \
-                item[args['type']][args['id']], \
-                None)
-
-        # Otherwise include alternate information
-        return (item[args['type']][args['name']], \
-            item[args['type']][args['id']], \
-            item[args['type']][args['alt']])
-
-    def search_items_all_access(self, query, type):
+    def search_items_all_access(self, type, query):
         '''Searches Albums, Artists, and Songs; uses metaprogramming'''
         index_arguments = self.get_index_arguments(type)
 
