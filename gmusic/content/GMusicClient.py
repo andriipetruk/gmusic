@@ -33,17 +33,40 @@ class GMusicClient:
     def search_all_access(self, query):
         return self.client.search_all_access(query)
 
-    def search_tracks_all_access(self, query):
-        tracks = self.search_all_access(query)['song_hits']
-        return [(track['track']['title'], track['track']['nid'], track['track']['album']) for track in tracks]
+    def get_index_arguments(self, type):
+        '''Get the data indexing arguments'''
+        # Songs have some weird arguments, so we have to account for that
+        if type is 'songs':
+            return {'type': 'track',
+            'name': 'title',
+            'id': 'nid',
+            'alt': 'album'}
 
-    def search_artists_all_access(self, query):
-        artists = self.search_all_access(query)['artist_hits']
-        return [(artist['artist']['name'], artist['artist']['artistId']) for artist in artists]
+        # Otherwise we can generalize a lot of data
+        return {'type': type[:-1],
+            'name': 'name',
+            'id': type[:-1]+'Id',
+            'alt': 'artist'}
 
-    def search_albums_all_access(self, query):
-        albums = self.search_all_access(query)['album_hits']
-        return [(album['album']['name'], album['album']['albumId'], album['album']['artist']) for album in albums]
+    def format_item(self, item, type, args):
+        '''Format the item for content_handler'''
+        # Artist does not have alternate information
+        if type is 'artists':
+            return (item[args['type']][args['name']], \
+                item[args['type']][args['id']], \
+                None)
+
+        # Otherwise include alternate information
+        return (item[args['type']][args['name']], \
+            item[args['type']][args['id']], \
+            item[args['type']][args['alt']])
+
+    def search_items_all_access(self, query, type):
+        '''Searches Albums, Artists, and Songs; uses metaprogramming'''
+        index_arguments = self.get_index_arguments(type)
+
+        items = self.search_all_access(query)['{0}_hits'.format(type[:-1])]
+        return [self.format_item(item, type, index_arguments) for item in items]
 
     def get_album_songs(self, album_id):
         songs = self.client.get_album_info(album_id, include_tracks=True)['tracks']

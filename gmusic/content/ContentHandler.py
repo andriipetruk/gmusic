@@ -35,16 +35,16 @@ class ContentHandler:
         radios = [MenuElement(r['name'], r['id']) for r in sorted_radios]
         self.notify_attachments('SEARCH Radios', radios)
 
-    def search_items(self, search_type, item):
+    def search_items(self, search_type, query):
         '''Master Search Method'''
-        if item is not '':
-            method_name = 'search_{0}_all_access'.format(search_type)
+        if query is not '':
+            method_name = 'search_items_all_access'.format(search_type)
             search = getattr(self.client, method_name)
         else:
             method_name = 'get_{0}'.format(search_type)
             search = getattr(self.data_cache, method_name)
 
-        items = [MenuElement(s[0], s[1], s[2]) for s in search(item)]
+        items = [MenuElement(s[0], s[1], s[2]) for s in search(query, search_type)]
         if len(items) > 0:
             self.notify_attachments('SEARCH {0}'.format(search_type.capitalize()), items)
 
