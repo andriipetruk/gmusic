@@ -43,6 +43,9 @@ class ContentHandler:
         self.package_and_notify(search_type, found_items)
 
     def package_and_notify(self, search_type, found_items):
+        '''Stores in data cache if it's a song, then packages and notifies'''
+        if 'song' in search_type:
+            self.data_cache.recently_searched_songs = [x[1] for x in found_items]
         items = [MenuElement(s[0], s[1], s[2]) for s in found_items]
         if len(items) > 0:
             self.notify_attachments('SEARCH {0}'.format(search_type.capitalize()), items)

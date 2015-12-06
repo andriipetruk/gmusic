@@ -38,7 +38,7 @@ class CommandHandler(object):
         if args[0] == 'radio':
             self.player_controller.play_radio(args[1])
         else:
-            self.player_controller.play(args[1])
+            self.player_controller.play_song_from_list(args[1])
 
     def typed_stop(self, *_):
         '''Tells the streamer to stop playback'''

@@ -25,6 +25,20 @@ class PlayerController(object):
         self.load(nids)
         self.play(nids[0])
 
+    def play_song_from_list(self, nid):
+        '''Play a song from SEARCH Songs'''
+        # Since these are stored, they should already be nids
+        nids = self.content_handler.data_cache.recently_searched_songs
+        self.load(nids)
+
+        # Error handling: if there's a fluke and this nid isn't in the list
+        # play it, then play the playlist.
+        if nid in nids:
+            self.playlist.index = nids.index(nid)
+        else:
+            self.playlist.index = 0
+        self.play(nid)
+
     def handle_event(self, event):
         '''Handle events from Player'''
         if 'END' in event:

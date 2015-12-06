@@ -5,7 +5,8 @@ import math
 class DataCache(ContentConsumer):
     def __init__(self):
         self.tracks = []
-        self.radios = []
+        self.radios = [];
+        self.recently_searched_songs = []
 
     def has_track(self, nid):
         '''Checks to see if an nid exists in the cache'''
@@ -44,6 +45,9 @@ class DataCache(ContentConsumer):
         if item_type == 'artists':
             return list(set([(track[args['type']], track[args['id']][0], None) \
                 for track in self.tracks if args['id'] in track]))
+
+        if 'song' in item_type or 'track' in item_type:
+            args['type'] = 'title'
 
         return list(set([(track[args['type']], track[args['id']], track[args['alt']]) \
             for track in self.tracks if args['id'] in track]))
