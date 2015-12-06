@@ -10,6 +10,20 @@ class CommandHandler(object):
         '''Gets a radio station'''
         radio = self.content_handler.search_radios(query)
 
+    def typed_seed(self, additional):
+        '''Seeds a station from an artist, album, or track'''
+        # ensures that data is accurate
+        try:
+            seed_type, id_and_name = additional.split(' ', 1)
+            id, name = id_and_name.split(' ', 1)
+        except:
+            return
+
+        radio_id = self.content_handler.create_radio(seed_type, id, name)
+        if radio_id is not None:
+            self.typed_play('radio {0}'.format(radio_id))
+
+
     def typed_artist(self, artist):
         '''Asks the Content Manager to find a song from specified artist'''
         self.content_handler.search_items('artists', artist)

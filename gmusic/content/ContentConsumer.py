@@ -5,13 +5,13 @@ class ContentConsumer:
         '''Get the data indexing arguments'''
         # Songs have some weird arguments, so we have to account for that
         if type is 'songs':
-            return {'type': 'track',
+            return {'type': self.get_type_name(type),
             'name': 'title',
             'id': 'nid',
             'alt': 'album'}
 
         # Otherwise we can generalize a lot of data
-        return {'type': type[:-1],
+        return {'type': self.get_type_name(type),
             'name': 'name',
             'id': self.get_id_type(type[:-1]),
             'alt': 'artist'}
@@ -36,3 +36,9 @@ class ContentConsumer:
         if 'radio' in type:
             return 'id'
         return type + 'Id'
+
+    def get_type_name(self, type):
+        '''Get the name used for indexing'''
+        if type is 'songs':
+            return 'track'
+        return type[:-1]

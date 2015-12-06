@@ -25,6 +25,12 @@ class ContentHandler:
         # Not in cache; need to look it up
         return self.client.lookup(nid)
 
+    def create_radio(self, seed_type, id, name):
+        '''Create a radio from an id, then add it to cache'''
+        radio_id = self.client.create_radio(seed_type, id, name)
+        self.client.load_radios()
+        return radio_id
+
     def search_radios(self, query):
         sorted_radios = sorted(self.client.get_radio_list(query), reverse=True, key = lambda x : x['recentTimestamp'])
         radios = [MenuElement(r['name'], r['id']) for r in sorted_radios]

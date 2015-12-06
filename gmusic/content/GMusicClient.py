@@ -18,7 +18,10 @@ class GMusicClient(ContentConsumer):
     def load_my_library(self):
         '''Load user's songs, playlists, and stations'''
         self.data_cache.add_tracks(self.client.get_all_songs())
-        self.data_cache.add_radios(self.client.get_all_stations())
+        self.load_radios()
+
+    def load_radios(self):
+        self.data_cache.radios = self.client.get_all_stations()
 
     def get_radio_contents(self, radio_id):
         tracks = self.client.get_station_tracks(radio_id)
@@ -35,6 +38,15 @@ class GMusicClient(ContentConsumer):
 
     def search_all_access(self, query):
         return self.client.search_all_access(query)
+
+    def create_radio(self, seed_type, id, name):
+        '''Create a radio'''
+        # This is a weird way to do this, but there's no other choice
+        ids = {"track": None, "album": None, "artist": None}
+        seed_id_name = self.get_type_name(seed_type)
+        ids[seed_id_name] = id
+
+        return self.client.create_station(name=name, track_id=ids['track'], album_id=ids['album'], artist_id=ids['artist'])
 
     def search_items_all_access(self, type, query):
         '''Searches Albums, Artists, and Songs; uses metaprogramming'''

@@ -43,6 +43,9 @@ class State(object):
         self.state = 'Options Menu'
         self.set_page(0)
 
+    def get_selected_element(self):
+        return self.page_elements[self.selected_element]
+
     def adjust_selection(self, amount):
         """Adjusts the position of the selection cursor in the menu"""
         self.selected_element += amount
@@ -89,7 +92,7 @@ class State(object):
         state = [alias[1] for alias in self.state_aliases if self.state == alias[0]][0]
         return "play {0} {1}".format(\
             state,\
-            self.page_elements[self.selected_element].id)
+            self.get_selected_element().id)
 
     def set_options(self, new_options, capacity):
         '''Splits the elements up into sublists for pages'''
