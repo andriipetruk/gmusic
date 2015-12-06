@@ -11,7 +11,6 @@ class RequestHandlerTest(unittest.TestCase):
     def tearDown(self):
         os.system('stty sane')
 
-
     def test_parse(self):
         """Tests parsing a string"""
         req.send_to_controller = mock.Mock()

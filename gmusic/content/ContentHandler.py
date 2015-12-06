@@ -44,23 +44,23 @@ class ContentHandler:
             method_name = 'get_{0}'.format(search_type)
             search = getattr(self.data_cache, method_name)
 
-        items = [MenuElement(s[0], s[1], s[2]) for s in search(query, search_type)]
+        found_items = search(query, search_type)
+        self.package_and_notify(search_type, found_items)
+
+    def package_and_notify(self, search_type, found_items):
+        items = [MenuElement(s[0], s[1], s[2]) for s in found_items]
         if len(items) > 0:
             self.notify_attachments('SEARCH {0}'.format(search_type.capitalize()), items)
 
-    def search_artist_albums(self, artist_id):
-        found_albums = self.client.get_artist_albums(artist_id)
+    def search_artist_or_album_items(self, type_from, from_id):
 
-        #Package
-        albums = [MenuElement(s[0],s[1],s[2]) for s in found_albums]
-        self.notify_attachments('SEARCH Albums', albums)
+        search_type = 'songs'
+        if type_from is 'artist':
+            search_type = 'albums'
 
-    def search_album_songs(self, album_id):
-        found_songs = self.client.get_album_songs(album_id)
-
-        #Package
-        songs = [MenuElement(s[0],s[1],s[2]) for s in found_songs]
-        self.notify_attachments('SEARCH Songs', songs)
+        found_items = self.client.get_artist_or_album_items(type_from, search_type, from_id)
+        items = [MenuElement(s[0],s[1],s[2]) for s in found_items]
+        self.package_and_notify(search_type, found_items)
 
     def notify_attachments(self, event, args=None):
         for attachment in self.attachments:

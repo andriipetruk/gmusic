@@ -68,13 +68,18 @@ class GMusicClient:
         items = self.search_all_access(query)['{0}_hits'.format(type[:-1])]
         return [self.format_item(item, type, index_arguments) for item in items]
 
-    def get_album_songs(self, album_id):
-        songs = self.client.get_album_info(album_id, include_tracks=True)['tracks']
-        return [(t['title'], t['nid'], t['album']) for t in songs if 'nid' in t]
+    def get_artist_or_album_items(self, type_from, search_type, from_id):
+        '''Here type_from refers to artist or album we're indexing against'''
+        args = self.get_index_arguments(search_type)
 
-    def get_artist_albums(self, artist_id):
-        albums = self.client.get_artist_info(artist_id, include_albums=True)['albums']
-        return [(t['name'], t['albumId'], t['artist']) for t in albums if 'albumId' in t]
+        # Get the appropriate search method and execute it
+        search_method_name = 'get_{0}_info'.format(type_from)
+        search_method = getattr(self.client, search_method_name)
+        items = search_method(from_id, True) # True here includes subelements
+
+        # Now return appropriately
+        return [(t[args['name']], t[args['id']], t[args['alt']])\
+            for t in items[args['type']+'s'] if args['id'] in t]
 
     def get_stream_url(self, nid):
         return self.client.get_stream_url(nid)

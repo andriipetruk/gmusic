@@ -23,10 +23,10 @@ class CommandHandler(object):
         self.content_handler.search_items('albums', album)
 
     def typed_artist_albums(self, artist_id):
-        self.content_handler.search_artist_albums(artist_id=artist_id)
+        self.content_handler.search_artist_or_album_items('artist', artist_id)
 
     def typed_album_songs(self, album_id):
-        self.content_handler.search_album_songs(album_id=album_id)
+        self.content_handler.search_artist_or_album_items('album', album_id)
 
     def typed_play(self, additional):
         '''Tells the streamer to play/resume or play a specific track'''
