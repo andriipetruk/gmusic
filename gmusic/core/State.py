@@ -48,6 +48,13 @@ class State(object):
     def get_selected_element(self):
         return self.page_elements[self.selected_element]
 
+    def get_seed_type(self):
+        if self.state == 'Suggested':
+            return 'songs'
+        if self.state == 'Songs' or self.state == 'Artists' or self.state == 'Albums':
+            return self.state.lower()
+        return ''
+
     def adjust_selection(self, amount):
         """Adjusts the position of the selection cursor in the menu"""
         self.selected_element += amount

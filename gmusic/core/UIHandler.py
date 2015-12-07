@@ -28,10 +28,13 @@ class UIHandler(object):
             self.cmd_parser.parse("previous")
 
         if user_in == ord('r') or user_in == ord('R'):
-            id = self.state.get_selected_element().id
-            name = self.state.get_selected_element().main
-            cmd = 'seed {0} {1} {2}'.format(self.state.state.lower(), id, name)
-            self.cmd_parser.parse(cmd)
+            # Seed Radio
+            seed_type = self.state.get_seed_type()
+            if seed_type is not '':
+                id = self.state.get_selected_element().id
+                name = self.state.get_selected_element().main
+                cmd = 'seed {0} {1} {2}'.format(seed_type, id, name)
+                self.cmd_parser.parse(cmd)
 
         # Increment or Decrement
         if user_in == curses.KEY_DOWN: # down arrow

@@ -58,7 +58,6 @@ class GMusicClient(ContentConsumer):
         ids = {"track": None, "album": None, "artist": None}
         seed_id_name = self.get_type_name(seed_type)
         ids[seed_id_name] = id
-
         return self.client.create_station(name=name, track_id=ids['track'], album_id=ids['album'], artist_id=ids['artist'])
 
     def search_items_all_access(self, type, query):

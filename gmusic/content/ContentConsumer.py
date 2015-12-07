@@ -39,6 +39,6 @@ class ContentConsumer:
 
     def get_type_name(self, type):
         '''Get the name used for indexing'''
-        if type is 'songs':
+        if 'song' in type:
             return 'track'
         return type[:-1]
