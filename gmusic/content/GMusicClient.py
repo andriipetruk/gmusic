@@ -1,5 +1,6 @@
 from gmusic.content.ContentConsumer import ContentConsumer
 from gmusicapi import Mobileclient
+from decimal import Decimal
 import json
 
 class GMusicClient(ContentConsumer):
@@ -17,8 +18,12 @@ class GMusicClient(ContentConsumer):
 
     def load_my_library(self):
         '''Load user's songs, playlists, and stations'''
-        self.data_cache.add_tracks(self.client.get_all_songs())
+        self.load_tracks()
         self.load_radios()
+
+    def load_tracks(self):
+        tracks = [t for t in self.client.get_all_songs() if 'nid' in t]
+        self.data_cache.tracks = tracks
 
     def load_radios(self):
         radios = self.client.get_all_stations()
@@ -69,6 +74,11 @@ class GMusicClient(ContentConsumer):
         # Now return appropriately
         return [(t[args['name']], t[args['id']], t[args['alt']])\
             for t in items[args['type']+'s'] if args['id'] in t]
+
+    def get_suggested(self):
+        '''Returns a list of tracks that the user might be interested in'''
+        items = sorted(self.client.get_promoted_songs(), key=lambda y: y['title'])
+        return [(t['title'], t['nid'], t['album']) for t in items if 'nid' in t]
 
     def get_stream_url(self, nid):
         return self.client.get_stream_url(nid)

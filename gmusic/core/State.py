@@ -22,11 +22,13 @@ class State(object):
     def main_menu(self):
         '''Set everything necessary for the main menu'''
         self.full_elements = [[
-            MenuElement('Artists', 'artist'),
-            MenuElement('Albums', 'album'),
-            MenuElement('Radios', 'radio'),
-            MenuElement('Songs', 'song'),
-            MenuElement('DJs', 'dj'),
+            MenuElement('View Suggested Songs', 'suggested'),
+            MenuElement('Browse Albums', 'album'),
+            MenuElement('Browse Artists', 'artist'),
+            MenuElement('Browse Playlists', 'playlist'),
+            MenuElement('Browse Radios', 'radio'),
+            MenuElement('Browse Songs', 'song'),
+            MenuElement('Connect to DJs', 'dj'),
             MenuElement('Options', 'options'),
             MenuElement('Exit', 'exit')]]
         self.state = "Main Menu"

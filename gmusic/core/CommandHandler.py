@@ -10,6 +10,9 @@ class CommandHandler(object):
         '''Gets a radio station'''
         radio = self.content_handler.search_radios(query)
 
+    def typed_suggested(self, *_):
+        self.content_handler.get_suggested()
+
     def typed_seed(self, additional):
         '''Seeds a station from an artist, album, or track'''
         # ensures that data is accurate

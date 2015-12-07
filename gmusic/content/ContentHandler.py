@@ -65,6 +65,11 @@ class ContentHandler:
         found_items = self.client.get_artist_or_album_items(type_from, search_type, from_id)
         self.package_and_notify(search_type, found_items)
 
+    def get_suggested(self):
+        '''Gets a list of tracks that the user might be interested in'''
+        suggested_tracks = self.client.get_suggested()
+        self.package_and_notify('songs', suggested_tracks)
+
     def notify_attachments(self, event, args=None):
         for attachment in self.attachments:
             attachment.handle_event(event, args)
