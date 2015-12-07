@@ -27,6 +27,9 @@ class CommandHandler(object):
         if radio_id is not None:
             self.typed_play('radio {0}'.format(radio_id))
 
+    def typed_playlist(self, playlist):
+        '''Asks the Content Manager to find a playlist'''
+        playlist = self.content_handler.search_playlists(playlist)
 
     def typed_artist(self, artist):
         '''Asks the Content Manager to find a song from specified artist'''
@@ -41,10 +44,13 @@ class CommandHandler(object):
         self.content_handler.search_items('albums', album)
 
     def typed_artist_albums(self, artist_id):
-        self.content_handler.search_artist_or_album_items('artist', artist_id)
+        self.content_handler.search_sub_items('artist', artist_id)
 
     def typed_album_songs(self, album_id):
-        self.content_handler.search_artist_or_album_items('album', album_id)
+        self.content_handler.search_sub_items('album', album_id)
+
+    def typed_playlist_songs(self, playlist_id):
+        self.content_handler.search_sub_items('playlist', playlist_id)
 
     def typed_play(self, additional):
         '''Tells the streamer to play/resume or play a specific track'''

@@ -5,7 +5,8 @@ import math
 class DataCache(ContentConsumer):
     def __init__(self):
         self.tracks = []
-        self.radios = [];
+        self.radios = []
+        self.playlists = []
         self.recently_searched_songs = []
 
     def has_track(self, nid):
@@ -15,14 +16,6 @@ class DataCache(ContentConsumer):
     def has_radio(self, rid):
         '''Checks to see if an rid exists in the cache'''
         return rid in self.radio_id_list()
-
-    def add_tracks(self, tracks):
-        '''Adds tracks to the cache'''
-        self.tracks = self.tracks + tracks
-
-    def add_radios(self, radios):
-        '''Adds tracks to the cache'''
-        self.radios = self.radios + radios
 
     def radio_id_list(self):
         '''Creates a list of nids'''

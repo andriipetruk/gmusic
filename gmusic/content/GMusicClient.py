@@ -20,6 +20,12 @@ class GMusicClient(ContentConsumer):
         '''Load user's songs, playlists, and stations'''
         self.load_tracks()
         self.load_radios()
+        self.load_playlists()
+
+    def load_playlists(self):
+        playlists = self.client.get_all_user_playlist_contents()
+        playlists.reverse()
+        self.data_cache.playlists = playlists
 
     def load_tracks(self):
         tracks = [t for t in self.client.get_all_songs() if 'nid' in t]
@@ -41,7 +47,7 @@ class GMusicClient(ContentConsumer):
         return [e for e in element if filter_by in e[field]]
 
     def get_playlist_list(self, name):
-        return self.filter(self.playlists, 'name', name)
+        return self.filter(self.data_cache.playlists, 'name', name)
 
     def search_all_access(self, query):
         return self.client.search_all_access(query)
@@ -62,23 +68,34 @@ class GMusicClient(ContentConsumer):
         items = self.search_all_access(query)['{0}_hits'.format(type[:-1])]
         return [self.format_item(item, type, index_arguments) for item in items]
 
-    def get_artist_or_album_items(self, type_from, search_type, from_id):
+    def get_sub_items(self, type_from, search_type, from_id):
         '''Here type_from refers to artist or album we're indexing against'''
         args = self.get_index_arguments(search_type)
 
-        # Get the appropriate search method and execute it
-        search_method_name = 'get_{0}_info'.format(type_from)
-        search_method = getattr(self.client, search_method_name)
-        items = search_method(from_id, True) # True here includes subelements
+        if type_from == 'playlist':
+            args['id'] = 'storeId'
+            items = self.get_playlist_contents(from_id)
+
+        else:
+            # Get the appropriate search method and execute it
+            search_method_name = 'get_{0}_info'.format(type_from)
+            search_method = getattr(self.client, search_method_name)
+            items = search_method(from_id, True)[args['type']+'s'] # True here includes subelements
 
         # Now return appropriately
         return [(t[args['name']], t[args['id']], t[args['alt']])\
-            for t in items[args['type']+'s'] if args['id'] in t]
+            for t in items if args['id'] in t]
+
+    def get_playlist_contents(self, from_id):
+        '''Playlist exclusive stuff'''
+        items = [t for t in self.data_cache.playlists \
+            if t['id'] == from_id][0]['tracks']
+        return [t['track'] for t in items if 'track' in t]
 
     def get_suggested(self):
         '''Returns a list of tracks that the user might be interested in'''
         items = sorted(self.client.get_promoted_songs(), key=lambda y: y['title'])
-        return [(t['title'], t['nid'], t['album']) for t in items if 'nid' in t]
+        return [(t['title'], t['storeId'], t['album']) for t in items if 'storeId' in t]
 
     def get_stream_url(self, nid):
         return self.client.get_stream_url(nid)

@@ -32,9 +32,17 @@ class ContentHandler:
         return radio_id
 
     def search_radios(self, query):
-        radios = [MenuElement(r['name'], r['id']) \
-            for r in self.client.get_radio_list(query)]
-        self.notify_attachments('SEARCH Radios', radios)
+        self.search_radio_or_playlist(query, 'radios')
+
+    def search_playlists(self, query):
+        self.search_radio_or_playlist(query, 'playlists')
+
+    def search_radio_or_playlist(self, query, type):
+        method_name = 'get_{0}_list'.format(type[:-1])
+        search = getattr(self.client, method_name)
+
+        items = [MenuElement(r['name'], r['id']) for r in search(query)]
+        self.notify_attachments('SEARCH {0}'.format(type.capitalize()), items)
 
     def search_items(self, search_type, query):
         '''Master Search Method'''
@@ -56,14 +64,15 @@ class ContentHandler:
         if len(items) > 0:
             self.notify_attachments('SEARCH {0}'.format(search_type.capitalize()), items)
 
-    def search_artist_or_album_items(self, type_from, from_id):
+    def search_sub_items(self, type_from, from_id):
         '''Works for getting a specific artist's albums, or an album's tracks'''
         search_type = 'songs'
         if type_from is 'artist':
             search_type = 'albums'
 
-        found_items = self.client.get_artist_or_album_items(type_from, search_type, from_id)
+        found_items = self.client.get_sub_items(type_from, search_type, from_id)
         self.package_and_notify(search_type, found_items)
+
 
     def get_suggested(self):
         '''Gets a list of tracks that the user might be interested in'''

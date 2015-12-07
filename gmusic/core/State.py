@@ -84,11 +84,14 @@ class State(object):
 
         # Look up Albums by an artist
         if self.state == 'Artists':
-            return 'artist_albums {0}'.format(self.page_elements[self.selected_element].id)
+            return 'artist_albums {0}'.format(self.get_selected_element().id)
 
         # Look up Songs in an album
         if self.state == 'Albums':
-            return 'album_songs {0}'.format(self.page_elements[self.selected_element].id)
+            return 'album_songs {0}'.format(self.get_selected_element().id)
+
+        if self.state == 'Playlists':
+            return 'playlist_songs {0}'.format(self.get_selected_element().id)
 
         # otherwise, play!
         state = [alias[1] for alias in self.state_aliases if self.state == alias[0]][0]
