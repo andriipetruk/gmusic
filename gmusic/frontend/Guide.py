@@ -27,7 +27,7 @@ class Guide(CursedObject):
             "  n: Next     " +\
             "  p: Prev "
         second_line = \
-            "Spc: ▶/||     "+\
+            "Spc: ▶/▌▌     "+\
             "  q: Queue    "+\
             "  i: Cmd Line "+\
             "  r: Radio"

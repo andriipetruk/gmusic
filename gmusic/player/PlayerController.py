@@ -43,6 +43,7 @@ class PlayerController(object):
         '''Handle events from Player'''
         if 'END' in event:
             self.next()
+        self.notify_attachments(event)
 
     def previous(self):
         '''Play the next song'''
@@ -81,7 +82,6 @@ class PlayerController(object):
 
     def pause(self):
         self.player.pause()
-        self.notify_attachments('PAUSE')
 
     def load(self, playlist):
         '''Loads a playlist of nids'''

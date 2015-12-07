@@ -53,6 +53,9 @@ class DrawHandler(CursedObject):
         self.banner.track = song_details
         self.banner.draw()
 
+    def banner_pause_resume(self, is_playing=True):
+        self.banner.draw(is_playing)
+
     def get_page_capacity(self):
         return self.height() - 15
 

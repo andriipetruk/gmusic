@@ -26,10 +26,12 @@ class Player:
             self.resume()
             return
         self.player.set_state(gst.STATE_PAUSED)
+        self.notify_attachments('PAUSE')
 
     def resume(self):
         '''Resume a song that has been paused'''
         self.player.set_state(gst.STATE_PLAYING)
+        self.notify_attachments('RESUME')
 
     def build_bus(self):
         '''Handle building the bus'''

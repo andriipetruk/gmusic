@@ -44,6 +44,12 @@ class Core:
         if 'PLAY' in event:
             self.draw_handler.banner_update(args)
 
+        if 'RESUME' in event:
+            self.draw_handler.banner_pause_resume(is_playing=True)
+
+        if 'PAUSE' in event:
+            self.draw_handler.banner_pause_resume(is_playing=False)
+
         if 'STOP' in event:
             self.draw_handler.banner_update(None)
 
