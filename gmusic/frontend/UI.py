@@ -39,13 +39,31 @@ class UI(CursedObject):
         curses.echo()
         height, width = self.screen.getmaxyx()
 
-        # Start the entry
-        self.screen.addstr(height-2, 2, "> ")
-        self.screen.refresh()
-        request = self.screen.getstr(height-2, 4, width-4)
-        curses.noecho()
+        request = self.draw_cli_prompt(height, width)
+
         # Push it to cmd_parser
+        curses.noecho()
         self.cmd_parser.parse(request)
+
+    def draw_cli_prompt(self, height, width):
+        win = curses.newwin(14, 60, height-20, int(width*0.5)-30)
+        win.box()
+        win_h, win_w = win.getmaxyx()
+        win.addstr(0, 2, 'Commands', curses.A_BOLD)
+        win.addstr(1, 2, '"album ____"       Search for Albums', curses.A_NORMAL)
+        win.addstr(2, 2, '"artist ____"      Search for Artists', curses.A_NORMAL)
+        win.addstr(3, 2, '"playlist ____"    Search for Playlists', curses.A_NORMAL)
+        win.addstr(4, 2, '"radio ____"       Search for Radios', curses.A_NORMAL)
+        win.addstr(5, 2, '"song ____"        Search for Songs', curses.A_NORMAL)
+        win.addstr(6, 2, '"play"/"pause"     General Playback', curses.A_NORMAL)
+        win.addstr(7, 2, '"next"/"previous"  Play Next or Previous', curses.A_NORMAL)
+        win.addstr(8, 2, '"random"           Toggle Shuffle', curses.A_NORMAL)
+        win.addstr(9, 2, '"back"             Back to Main Menu', curses.A_NORMAL)
+        win.addstr(10, 2, '"exit"             Exit the program', curses.A_NORMAL)
+        win.addstr(win_h-2, 2, "> ")
+        self.screen.refresh()
+        win.refresh()
+        return win.getstr(win_h-2, 4, win_w-4)
 
     def notify_attachments(self, event, args=None):
         for attachment in self.attachments:
