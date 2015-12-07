@@ -32,8 +32,6 @@ class CursedObject(object):
         os.system('clear')
         os.system('stty sane')
 
-
-
     def clear_line(self, row):
         '''Clear a specified row'''
         self.run_method_at(row, 0, self.screen.clrtoeol)

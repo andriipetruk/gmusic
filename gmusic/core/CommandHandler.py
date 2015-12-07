@@ -82,6 +82,9 @@ class CommandHandler(object):
         '''Tells the streamer to resume'''
         self.player_controller.resume()
 
+    def typed_queue(self, id):
+        self.player_controller.queue(id)
+
     def typed_previous(self, *_):
         '''Tells the menu to go to the previous song'''
         self.player_controller.previous()

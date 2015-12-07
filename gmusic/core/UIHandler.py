@@ -27,6 +27,11 @@ class UIHandler(object):
         if user_in == ord('p'):
             self.cmd_parser.parse("previous")
 
+        # Queue
+        if user_in == ord('q'):
+            id = self.state.get_selected_element().id
+            self.cmd_parser.parse('queue {0}'.format(id))
+
         if user_in == ord('+'):
             self.cmd_parser.parse('volume 1')
         if user_in == ord('-'):

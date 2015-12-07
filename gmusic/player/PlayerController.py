@@ -75,6 +75,10 @@ class PlayerController(object):
         track_details = self.content_handler.lookup_nid(nid)
         self.notify_attachments('PLAY', track_details)
 
+    def queue(self, nid):
+        '''Inserts an id directly after the playing song'''
+        self.playlist.queue(nid)
+
     def stop(self):
         self.player.stop()
         self.notify_attachments('STOP')

@@ -21,6 +21,9 @@ class PlayList:
             return self.next_shuffle()
         return self.next_direct()
 
+    def queue(self, id):
+        self.contents.insert(self.index+1, id)
+
     def next_direct(self):
         '''Increments the index, but loops back if overflow'''
         self.index = (self.index + 1) % len(self.contents)
