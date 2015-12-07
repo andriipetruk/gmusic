@@ -5,6 +5,7 @@ class Player:
 
     def __init__(self):
         self.player = gst.element_factory_make("playbin2", "player")
+        self.volume = 1.0
         self.build_bus()
         self.attachments = []
 
@@ -32,6 +33,10 @@ class Player:
         '''Resume a song that has been paused'''
         self.player.set_state(gst.STATE_PLAYING)
         self.notify_attachments('RESUME')
+
+    def adjust_volume(self, adjustment):
+        self.volume = max(min(2.0,self.volume + float(adjustment)/10.0), 0.0)
+        self.player.set_property('volume', self.volume)
 
     def build_bus(self):
         '''Handle building the bus'''

@@ -27,6 +27,11 @@ class UIHandler(object):
         if user_in == ord('p'):
             self.cmd_parser.parse("previous")
 
+        if user_in == ord('+'):
+            self.cmd_parser.parse('volume 1')
+        if user_in == ord('-'):
+            self.cmd_parser.parse('volume -1')
+
         if user_in == ord('r') or user_in == ord('R'):
             # Seed Radio
             seed_type = self.state.get_seed_type()

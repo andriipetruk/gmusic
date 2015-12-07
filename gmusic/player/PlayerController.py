@@ -39,6 +39,9 @@ class PlayerController(object):
             self.playlist.index = 0
         self.play(nid)
 
+    def adjust_volume(self, adjustment):
+        self.player.adjust_volume(adjustment)
+
     def handle_event(self, event):
         '''Handle events from Player'''
         if 'END' in event:

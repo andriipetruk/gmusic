@@ -71,6 +71,9 @@ class CommandHandler(object):
         '''Tells the streamer to stop playback'''
         self.player_controller.stop()
 
+    def typed_volume(self, adjustment):
+        self.player_controller.adjust_volume(float(adjustment))
+
     def typed_pause(self, *_):
         '''Tells the Streamer to pause/play toggle'''
         self.player_controller.pause()

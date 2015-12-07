@@ -13,8 +13,8 @@ class Guide(CursedObject):
         draw_mtd = getattr(self, self.draw_type)
         lines = draw_mtd()
 
-        self.center_text(lines[0], self.height() - 4)
-        self.center_text(lines[1], self.height() - 3)
+        for i in range(3):
+            self.center_text(lines[i], self.height() - (5-i))
 
     def draw_cmd_line(self):
         first_line = "search: \"artist\", \"album\", \"song\", or \"radio\""
@@ -22,14 +22,17 @@ class Guide(CursedObject):
 
     def draw_keys(self):
         first_line = \
-            "  ↕ : Nav      "+\
-            " ↔ : Page     " +\
+            "      ↕: Nav     "+\
+            "  ↔ : Page     " +\
+            "  -: Vol Down  "+\
+            " +: Vol Up     "
+        second_line = \
+            "  q: Queue    "+\
+            "Spc: ▶/▌▌     "+\
             "  n: Next     " +\
             "  p: Prev "
-        second_line = \
-            "Spc: ▶/▌▌     "+\
-            "  q: Queue    "+\
+        third_line = \
             "  i: Cmd Line "+\
-            "  r: Radio"
+            "  r: Radio     "
 
-        return (first_line, second_line)
+        return (first_line, second_line, third_line)

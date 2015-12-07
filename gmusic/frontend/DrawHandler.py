@@ -57,7 +57,7 @@ class DrawHandler(CursedObject):
         self.banner.draw(is_playing)
 
     def get_page_capacity(self):
-        return self.height() - 15
+        return self.height() - 16
 
     def provide_feedback(self, information):
         self.feedback.draw(information)
