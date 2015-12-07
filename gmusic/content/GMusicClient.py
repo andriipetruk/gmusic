@@ -72,8 +72,7 @@ class GMusicClient(ContentConsumer):
         args = self.get_index_arguments(search_type)
 
         if type_from == 'playlist':
-            args['id'] = 'storeId'
-            items = self.get_playlist_contents(from_id)
+            return self.get_playlist_contents(from_id)
 
         else:
             # Get the appropriate search method and execute it
@@ -87,9 +86,14 @@ class GMusicClient(ContentConsumer):
 
     def get_playlist_contents(self, from_id):
         '''Playlist exclusive stuff'''
-        items = [t for t in self.data_cache.playlists \
-            if t['id'] == from_id][0]['tracks']
-        return [t['track'] for t in items if 'track' in t]
+        shareToken = [t for t in self.data_cache.playlists \
+            if t['id'] == from_id][0]['shareToken']
+        contents = self.client.get_shared_playlist_contents(shareToken)
+
+        store_available = [(t['track']['title'], t['trackId'], t['track']['album']) \
+            for t in contents if 'track' in t]
+
+        return store_available
 
     def get_suggested(self):
         '''Returns a list of tracks that the user might be interested in'''
