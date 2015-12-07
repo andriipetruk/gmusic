@@ -49,6 +49,9 @@ class PlayerController(object):
         prev_song = self.playlist.previous()
         self.play(prev_song)
 
+    def random(self):
+        self.playlist.toggle_random()
+
     def next(self):
         '''Play the next song'''
         next_song = self.playlist.next()

@@ -52,6 +52,9 @@ class CommandHandler(object):
     def typed_playlist_songs(self, playlist_id):
         self.content_handler.search_sub_items('playlist', playlist_id)
 
+    def typed_random(self, *_):
+        self.player_controller.random()
+
     def typed_play(self, additional):
         '''Tells the streamer to play/resume or play a specific track'''
         if additional is "":
