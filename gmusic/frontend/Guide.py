@@ -16,18 +16,9 @@ class Guide(CursedObject):
             self.center_text(lines[i], self.height() - (5-i))
 
     def keys(self):
-        first_line = \
-            "      ↕: Nav     "+\
-            "  ↔ : Page     " +\
-            "  -: Vol Down  "+\
-            " +: Vol Up     "
-        second_line = \
-            "  q: Queue    "+\
-            "Spc: ▶/▌▌     "+\
-            "  n: Next     " +\
-            "  p: Prev "
-        third_line = \
-            "  i: CLI      "+\
-            "  r: Radio     "
+        line1 = "↕ : Move Selection    r : Create Radio    n : Next    + : Vol Up  "
+        line2 = "↔ : Change Page       q : Play Next       p : Prev    - : Vol Down"
+        # offset last row to account for wierd centering issues
+        line3 = "                        i : CLI         Space : ▶/❚❚              "
 
-        return (first_line, second_line, third_line)
+        return (line1, line2, line3)
