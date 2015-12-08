@@ -1,9 +1,11 @@
 from gmusic.content.DataCache import DataCache
 from gmusic.content.GMusicClient import GMusicClient
+from gmusic.core.EventHandler import EventHandler
 from gmusic.model.MenuElement import MenuElement
 
-class ContentHandler:
+class ContentHandler(EventHandler):
     def __init__(self):
+        EventHandler.__init__(self)
         self.attachments = []
         self.data_cache = DataCache()
         self.client = GMusicClient(self.data_cache)
@@ -42,7 +44,10 @@ class ContentHandler:
         search = getattr(self.client, method_name)
 
         items = [MenuElement(r['name'], r['id']) for r in search(query)]
-        self.notify_attachments('SEARCH {0}'.format(type.capitalize()), items)
+        self.notify_attachments('Search',\
+            event_parameters={"results": items,
+            "title": query,
+            "display_element_type": "{0}".format(type.capitalize())} )
 
     def search_items(self, search_type, query):
         '''Master Search Method'''
@@ -54,15 +59,18 @@ class ContentHandler:
             search = getattr(self.data_cache, method_name)
 
         found_items = search(search_type, query)
-        self.package_and_notify(search_type, found_items)
+        self.package_and_notify(query, search_type, found_items)
 
-    def package_and_notify(self, search_type, found_items):
+    def package_and_notify(self, title, search_type, found_items):
         '''Stores in data cache if it's a song, then packages and notifies'''
         if 'song' in search_type:
             self.data_cache.recently_searched_songs = [x[1] for x in found_items]
         items = [MenuElement(s[0], s[1], s[2]) for s in found_items]
         if len(items) > 0:
-            self.notify_attachments('SEARCH {0}'.format(search_type.capitalize()), items)
+            self.notify_attachments('Search',\
+                event_parameters={"results": items,
+                "title": title,
+                "display_element_type": "{0}".format(search_type.capitalize())})
 
     def search_sub_items(self, type_from, from_id):
         '''Works for getting a specific artist's albums, or an album's tracks'''
@@ -71,14 +79,9 @@ class ContentHandler:
             search_type = 'albums'
 
         found_items = self.client.get_sub_items(type_from, search_type, from_id)
-        self.package_and_notify(search_type, found_items)
-
+        self.package_and_notify(from_id, search_type, found_items)
 
     def get_suggested(self):
         '''Gets a list of tracks that the user might be interested in'''
         suggested_tracks = self.client.get_suggested()
-        self.package_and_notify('songs', suggested_tracks)
-
-    def notify_attachments(self, event, args=None):
-        for attachment in self.attachments:
-            attachment.handle_event(event, args)
+        self.package_and_notify('Suggested Tracks', 'songs', suggested_tracks)

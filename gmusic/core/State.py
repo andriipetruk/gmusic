@@ -15,6 +15,7 @@ class State(object):
             ('Options', 'options'), ('Exit', 'exit')]
         self.page_elements = []
 
+        self.actual_title = 'Main Menu'
         self.subtitle = "Options"
         # this just so happens to work in my favor!
         self.main_menu()
@@ -32,6 +33,7 @@ class State(object):
             MenuElement('Options', 'options'),
             MenuElement('Exit', 'exit')]]
         self.state = "Main Menu"
+        self.actual_title = 'Main Menu'
         self.set_page(0)
 
     def options_menu(self):
@@ -43,6 +45,7 @@ class State(object):
             MenuElement('Port for DJ Notifications', 'back', '8080'),
             MenuElement('Allow DJ to control playback', 'back', 'No')]]
         self.state = 'Options Menu'
+        self.actual_title = 'Options Menu'
         self.set_page(0)
 
     def get_selected_element(self):
@@ -72,7 +75,7 @@ class State(object):
         self.page_elements = self.full_elements[self.page_number]
 
         # Handle Page Number
-        self.title = self.state
+        self.title = self.actual_title
         if len(self.full_elements) > 1:
             self.title = self.title + ' (Page {0} of {1})'.format(self.page_number+1, len(self.full_elements))
 

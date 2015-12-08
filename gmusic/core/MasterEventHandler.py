@@ -2,6 +2,7 @@ from gmusic.core.EventHandler import EventHandler
 from gmusic.core.Cache import Cache
 from gmusic.core.State import State
 from gmusic.frontend.DrawHandler import DrawHandler
+from gmusic.model.events import *
 import sys
 
 class MasterEventHandler(EventHandler):
@@ -11,43 +12,36 @@ class MasterEventHandler(EventHandler):
         self.state = State()
         self.draw_handler = DrawHandler(self.cache, self.state)
 
-    def handle_event(self, event, args=None):
-        if 'PAGE' in event:
+    def handle_event(self, event):
+        if isinstance(event, PageChange):
             self.draw_handler.draw()
-            return
 
-        if 'CHANGE' in event:
+        if isinstance(event, PageUpdate):
             self.draw_handler.redraw()
 
-        if 'PLAY' in event:
-            self.draw_handler.banner_update(args)
+        if isinstance(event, PlayOrStop):
+            self.draw_handler.banner_update(event.track)
 
-        if 'RESUME' in event:
-            self.draw_handler.banner_pause_resume(is_playing=True)
+        if isinstance(event, PauseOrResume):
+            self.draw_handler.banner_pause_resume(is_playing=event.is_playing)
 
-        if 'PAUSE' in event:
-            self.draw_handler.banner_pause_resume(is_playing=False)
-
-        if 'STOP' in event:
-            self.draw_handler.banner_update(None)
-
-        if 'OPTIONS' in event:
-            self.state.options_menu()
+        if isinstance(event, ChangeMenu):
+            build_menu = getattr(self.state, event.menu_type)
+            build_menu()
             self.draw_handler.draw()
 
-        if 'BACK' in event:
-            self.state.main_menu()
-            self.draw_handler.draw()
-
-        if 'EXIT' in event:
+        if isinstance(event, Exit):
             self.draw_handler.exit()
             sys.exit(1)
 
-        if 'SEARCH' in event:
-            self.state.state = event.split(' ', 1)[1]
+        if isinstance(event, Search):
+            self.state.state = event.display_element_type
+            self.state.actual_title = event.title
+            self.state.subtitle = event.display_element_type.capitalize()
+
             capacity = self.draw_handler.get_page_capacity()
-            self.state.set_options(args, capacity)
+            self.state.set_options(event.results, capacity)
             self.draw_handler.draw()
 
-        if 'FEEDBACK' in event:
-            self.draw_handler.provide_feedback(args[0])
+        if isinstance(event, Feedback):
+            self.draw_handler.provide_feedback(event.message)

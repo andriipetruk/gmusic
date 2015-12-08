@@ -1,3 +1,5 @@
+from gmusic.core.EventHandler import EventHandler
+from gmusic.model.events import *
 from gmusic.frontend.Banner import Banner
 from gmusic.frontend.CursedObject import CursedObject
 from gmusic.frontend.Feedback import Feedback
@@ -6,7 +8,7 @@ from gmusic.frontend.Menu import Menu
 from gmusic.frontend.UI import UI
 import threading
 
-class DrawHandler(CursedObject):
+class DrawHandler(CursedObject, EventHandler):
     def __init__(self, cache, state):
         self.cache = cache
         self.state = state
@@ -63,12 +65,9 @@ class DrawHandler(CursedObject):
         self.feedback.draw(information)
 
     def handle_event(self, event, args=None):
-        if 'CLEAR TEXT ENTRY' in event:
+        if isinstance(event, PageUpdate):
             self.redraw()
 
-        if 'REDRAW' in event:
-            self.redraw()
-
-        if 'UPDATE' in event:
+        if isinstance(event, PageChange):
             self.update_menu()
             self.redraw()

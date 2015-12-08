@@ -1,11 +1,15 @@
-class CommandHandler(object):
+from gmusic.core.EventHandler import EventHandler
+from gmusic.model.events import *
+
+class CommandHandler(EventHandler):
     '''Text-Entry Controller which interfaces with Streamer/ContentManager'''
 
     def __init__(self, event_handler, content_handler, player_controller):
-        self.attachments = [event_handler]
+        EventHandler.__init__(self)
+        self.attachments.append(event_handler)
         self.content_handler = content_handler
         self.player_controller = player_controller
-        
+
     def typed_radio(self, query):
         '''Gets a radio station'''
         radio = self.content_handler.search_radios(query)
@@ -22,7 +26,9 @@ class CommandHandler(object):
         except:
             return
 
-        self.notify_attachments('FEEDBACK', 'Creating Radio "{0}"'.format(name))
+        self.notify_attachments('Feedback', \
+            event_parameters={"message": 'Creating Radio "{0}"'.format(name)})
+
         radio_id = self.content_handler.create_radio(seed_type, id, name)
         if radio_id is not None:
             self.typed_play('radio {0}'.format(radio_id))
@@ -94,15 +100,13 @@ class CommandHandler(object):
         self.player_controller.next()
 
     def typed_back(self, *_):
-        self.notify_attachments('BACK')
+        self.notify_attachments('ChangeMenu',\
+            event_parameters={"menu_type": "main_menu"})
 
     def typed_exit(self, *_):
         self.player_controller.stop()
-        self.notify_attachments('EXIT')
+        self.notify_attachments('Exit')
 
     def typed_options(self, *_):
-        self.notify_attachments('OPTIONS')
-
-    def notify_attachments(self, event, args=None):
-        for attachment in self.attachments:
-            attachment.handle_event(event, args)
+        self.notify_attachments('ChangeMenu',\
+            event_parameters={"menu_type": "options_menu"})

@@ -1,18 +1,20 @@
+from gmusic.content.ContentHandler import ContentHandler
+from gmusic.core.EventHandler import EventHandler
+from gmusic.model.events import *
 from gmusic.player.PlayList import PlayList
 from gmusic.player.Player import Player
-from gmusic.content.ContentHandler import ContentHandler
 import json
 
 #pylint: disable=no-member
-class PlayerController(object):
+class PlayerController(EventHandler):
     '''Controls Player; operable by Menu and remote DJ'''
 
     def __init__(self, content_handler):
+        EventHandler.__init__(self)
         self.playlist = PlayList()
         self.content_handler = content_handler
         self.player = Player()
         self.player.attachments.append(self)
-        self.attachments = []
 
     def start(self):
         '''Start up the system'''
@@ -42,12 +44,6 @@ class PlayerController(object):
     def adjust_volume(self, adjustment):
         self.player.adjust_volume(adjustment)
 
-    def handle_event(self, event):
-        '''Handle events from Player'''
-        if 'END' in event:
-            self.next()
-        self.notify_attachments(event)
-
     def previous(self):
         '''Play the next song'''
         prev_song = self.playlist.previous()
@@ -73,7 +69,7 @@ class PlayerController(object):
 
         # Tell attachments about the song
         track_details = self.content_handler.lookup_nid(nid)
-        self.notify_attachments('PLAY', track_details)
+        self.notify_attachments('PlayOrStop', {'track': track_details})
 
     def queue(self, nid):
         '''Inserts an id directly after the playing song'''
@@ -81,11 +77,11 @@ class PlayerController(object):
 
     def stop(self):
         self.player.stop()
-        self.notify_attachments('STOP')
+        self.notify_attachments('PlayOrStop', {'track': None})
 
     def resume(self):
         self.player.resume()
-        self.notify_attachments('PLAY')
+        self.notify_attachments('PauseOrResume', {'is_playing': True})
 
     def pause(self):
         self.player.pause()
@@ -98,6 +94,7 @@ class PlayerController(object):
         '''Gets a full object from Content'''
         return self.content_manager.lookup_nid(nid)
 
-    def notify_attachments(self, event, args=None):
-        for attachment in self.attachments:
-            attachment.handle_event(event, args)
+    def handle_event(self, event):
+        '''Handle events from Player'''
+        if isinstance(event, EndOfStream):
+            self.next()

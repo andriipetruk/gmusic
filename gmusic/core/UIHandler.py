@@ -1,13 +1,14 @@
+from gmusic.core.EventHandler import EventHandler
 import curses
 
-class UIHandler(object):
+class UIHandler(EventHandler):
     '''Text-Entry Controller which interfaces with Streamer/ContentManager'''
     def __init__(self, event_handler, cmd_parser):
-        self.attachments = [event_handler]
+        EventHandler.__init__(self)
+        self.attachments.append(event_handler)
         self.state = event_handler.state
         self.cache = event_handler.cache
         self.cmd_parser = cmd_parser
-        print(self.state)
 
     def handle(self, user_in):
         # Enter Key
@@ -50,19 +51,13 @@ class UIHandler(object):
         # Increment or Decrement
         if user_in == curses.KEY_DOWN: # down arrow
             self.state.adjust_selection(1)
-            self.notify_attachments('SELECTION CHANGE')
+            self.notify_attachments('PageUpdate')
         if user_in == curses.KEY_UP: # up arrow
             self.state.adjust_selection(-1)
-            self.notify_attachments('SELECTION CHANGE')
+            self.notify_attachments('PageUpdate')
         if user_in == curses.KEY_RIGHT:
             self.state.change_page(1)
-            self.notify_attachments('PAGE CHANGE')
+            self.notify_attachments('PageChange')
         if user_in == curses.KEY_LEFT:
             self.state.change_page(-1)
-            self.notify_attachments('PAGE CHANGE')
-
-
-    def notify_attachments(self, event):
-        '''blahblah'''
-        for attachment in self.attachments:
-            attachment.handle_event(event)
+            self.notify_attachments('PageChange')

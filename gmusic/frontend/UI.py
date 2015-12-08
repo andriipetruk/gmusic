@@ -1,15 +1,17 @@
 from gmusic.frontend.CursedObject import CursedObject
 from gmusic.core.CommandParser import CommandParser
+from gmusic.core.EventHandler import EventHandler
 from gmusic.core.UIParser import UIParser
 import curses
 
-class UI(CursedObject):
+class UI(CursedObject, EventHandler):
     """Asynchronous. Handles input from the user"""
 
     def __init__(self, draw_handler, cmd_parser, ui_parser):
         CursedObject.__init__(self)
+        EventHandler.__init__(self)
+        self.attachments.append(draw_handler)
         self.screen = draw_handler.screen
-        self.attachments = [draw_handler]
         self.cmd_parser = cmd_parser
         self.ui_parser = ui_parser
 
@@ -28,7 +30,7 @@ class UI(CursedObject):
         if user_input == ord('i') or user_input == ord('I'):
 
             result = self.handle_text_entry()
-            self.notify_attachments('CLEAR TEXT ENTRY')
+            self.notify_attachments('PageUpdate')
             return
 
         # Otherwise it goes off to the UI Parser
@@ -64,7 +66,3 @@ class UI(CursedObject):
         self.screen.refresh()
         win.refresh()
         return win.getstr(win_h-2, 4, win_w-4)
-
-    def notify_attachments(self, event, args=None):
-        for attachment in self.attachments:
-            attachment.handle_event(event)

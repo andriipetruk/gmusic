@@ -1,5 +1,3 @@
 class Event:
-    def __init__(self, sender, details, parameters=None):
+    def __init__(self, sender):
         self.sender = sender
-        self.details = details
-        self.parameters = parameters

@@ -1,25 +1,27 @@
+from gmusic.core.EventHandler import EventHandler
+from gmusic.model.events import *
 import gst, gobject, thread
 
-class Player:
+class Player(EventHandler):
     '''Direct interface with GStreamer; input ONLY from PlayerController'''
 
     def __init__(self):
+        EventHandler.__init__(self)
         self.player = gst.element_factory_make("playbin2", "player")
         self.volume = 1.0
         self.build_bus()
-        self.attachments = []
 
     def play(self, url):
         '''Play a track'''
         self.stop()
-        #self.now_playing_track = track
         self.player.set_property('uri', url)
         self.player.set_state(gst.STATE_PLAYING)
-        self.notify_attachments('START')
+        #self.notify_attachments('PauseOrResume',{"is_playing": True})
 
     def stop(self):
         '''Stop a song that is playing'''
         self.player.set_state(gst.STATE_NULL)
+        self.notify_attachments('PlayOrStop',{"track": None})
 
     def pause(self):
         '''Pause a song that is playing'''
@@ -27,12 +29,12 @@ class Player:
             self.resume()
             return
         self.player.set_state(gst.STATE_PAUSED)
-        self.notify_attachments('PAUSE')
+        self.notify_attachments('PauseOrResume',{"is_playing": False})
 
     def resume(self):
         '''Resume a song that has been paused'''
         self.player.set_state(gst.STATE_PLAYING)
-        self.notify_attachments('RESUME')
+        self.notify_attachments('PauseOrResume',{"is_playing": True})
 
     def adjust_volume(self, adjustment):
         self.volume = max(min(2.0,self.volume + float(adjustment)/10.0), 0.0)
@@ -54,14 +56,9 @@ class Player:
             loop.run()
         thread.start_new_thread(start, ())
 
-    def notify_attachments(self, event):
-        '''Send notifications to attachments'''
-        for attachment in self.attachments:
-            attachment.handle_event(event)
-
     #pylint: disable=unused-argument
     def handle_message(self, bus, message):
         '''Handles a message from gst'''
         if message.type == gst.MESSAGE_EOS:
             # file finished playing
-            self.notify_attachments('END')
+            self.notify_attachments('EndOfStream')
