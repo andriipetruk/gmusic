@@ -1,4 +1,4 @@
-from gmusic.core.Event import Event
+from gmusic.model.Event import Event
 
 class EventHandler:
     def __init__(self):
@@ -14,9 +14,5 @@ class EventHandler:
 
     def try_notify(self, event, attachment):
         '''Notifies an attachment IF it is capable of handling an event'''
-        #if hasattr('handle_event', attachment):
-        attachment.handle_event(event)
-
-    def handle_event(self, event):
-        '''Must be defined in implementing class'''
-        pass
+        if hasattr(attachment, 'handle_event'):
+            attachment.handle_event(event)

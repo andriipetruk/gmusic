@@ -1,4 +1,4 @@
-from gmusic.MenuElement import MenuElement
+from gmusic.model.MenuElement import MenuElement
 
 class State(object):
     def __init__(self):

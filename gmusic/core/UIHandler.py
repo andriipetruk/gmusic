@@ -7,6 +7,7 @@ class UIHandler(object):
         self.state = event_handler.state
         self.cache = event_handler.cache
         self.cmd_parser = cmd_parser
+        print(self.state)
 
     def handle(self, user_in):
         # Enter Key

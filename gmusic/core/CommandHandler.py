@@ -5,7 +5,7 @@ class CommandHandler(object):
         self.attachments = [event_handler]
         self.content_handler = content_handler
         self.player_controller = player_controller
-
+        
     def typed_radio(self, query):
         '''Gets a radio station'''
         radio = self.content_handler.search_radios(query)

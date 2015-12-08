@@ -1,6 +1,6 @@
 from gmusic.content.DataCache import DataCache
 from gmusic.content.GMusicClient import GMusicClient
-from gmusic.MenuElement import MenuElement
+from gmusic.model.MenuElement import MenuElement
 
 class ContentHandler:
     def __init__(self):

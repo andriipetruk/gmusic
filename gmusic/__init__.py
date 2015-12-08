@@ -16,8 +16,11 @@ from gmusic.frontend.CursedObject import CursedObject
 from gmusic.frontend.DrawHandler import DrawHandler
 from gmusic.frontend.Guide import Guide
 from gmusic.frontend.Menu import Menu
-from gmusic.MenuElement import MenuElement
 from gmusic.frontend.UI import UI
+
+from gmusic.model.Event import Event
+from gmusic.model.MenuElement import MenuElement
+from gmusic.model.State import State
 
 from gmusic.player.PlayerController import PlayerController
 from gmusic.player.Player import Player
