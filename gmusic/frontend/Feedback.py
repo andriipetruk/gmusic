@@ -6,6 +6,11 @@ class Feedback(CursedObject):
 
     def __init__(self, screen):
         self.screen = screen
+        self.is_visible = False
 
-    def draw(self, information):
-        self.center_text(information, self.height() - 2)
+    def draw(self):
+        if not self.is_visible:
+            return
+
+        height, width = self.screen.getmaxyx()
+        win = curses.newwin(3, 3, 3, 3)

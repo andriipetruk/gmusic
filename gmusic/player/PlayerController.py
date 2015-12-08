@@ -81,7 +81,6 @@ class PlayerController(EventHandler):
 
     def resume(self):
         self.player.resume()
-        self.notify_attachments('PauseOrResume', {'is_playing': True})
 
     def pause(self):
         self.player.pause()
@@ -98,3 +97,7 @@ class PlayerController(EventHandler):
         '''Handle events from Player'''
         if isinstance(event, EndOfStream):
             self.next()
+            return
+
+        if isinstance(event, PauseOrResume):
+            self.notify_attachments('PauseOrResume', {'is_playing': event.is_playing})

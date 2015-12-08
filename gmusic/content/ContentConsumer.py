@@ -7,7 +7,7 @@ class ContentConsumer:
         if type is 'songs':
             return {'type': self.get_type_name(type),
             'name': self.get_name(type),
-            'id': 'nid',
+            'id': self.get_id_type(type[:-1]),
             'alt': 'album'}
 
         # Otherwise we can generalize a lot of data
@@ -15,6 +15,7 @@ class ContentConsumer:
             'name': self.get_name(type),
             'id': self.get_id_type(type[:-1]),
             'alt': 'artist'}
+
 
     def format_item(self, item, type, args):
         '''Format the item for content_handler'''
