@@ -100,6 +100,15 @@ class GMusicClient(ContentConsumer):
         items = sorted(self.client.get_promoted_songs(), key=lambda y: y['title'])
         return [(t['title'], t['storeId'], t['album']) for t in items if 'storeId' in t]
 
+    def get_information_about(self, from_type, from_id):
+        '''Gets specific information about an id (depending on the type)'''
+        if 'artist' in from_type.lower():
+            return self.client.get_artist_info(from_id, include_albums=False)
+        if 'album' in from_type.lower():
+            return self.client.get_album_info(from_id, include_tracks=False)
+        return self.client.get_track_info(from_id)
+
+
     def get_stream_url(self, nid):
         return self.client.get_stream_url(nid)
 

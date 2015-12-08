@@ -28,12 +28,15 @@ class DataCache(ContentConsumer):
     def get_item_from_id(self, item_type, id):
         '''Get an item which matches a specific id'''
         id_type = self.get_id_type(item_type)
-        return [x for x in self.tracks if id_type in x and x[id_type] == id][0]
+        target = self.get_cache_target(item_type)
+        return [x for x in target if id_type in x and x[id_type] == id][0]
 
     def get_cache_target(self, item_type):
         '''Used to determine the data_cache source for searching'''
         if 'radio' in item_type:
             return self.radios
+        if 'playlist' in item_type:
+            return self.playlists
         return self.tracks
 
     def get_items(self, item_type, *_):

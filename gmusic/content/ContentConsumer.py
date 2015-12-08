@@ -6,13 +6,13 @@ class ContentConsumer:
         # Songs have some weird arguments, so we have to account for that
         if type is 'songs':
             return {'type': self.get_type_name(type),
-            'name': 'title',
+            'name': self.get_name(type),
             'id': 'nid',
             'alt': 'album'}
 
         # Otherwise we can generalize a lot of data
         return {'type': self.get_type_name(type),
-            'name': 'name',
+            'name': self.get_name(type),
             'id': self.get_id_type(type[:-1]),
             'alt': 'artist'}
 
@@ -33,9 +33,14 @@ class ContentConsumer:
         '''Returns the name of the field which is used for indexing this type'''
         if 'song' in type or 'track' in type:
             return 'nid'
-        if 'radio' in type:
+        if 'radio' in type or 'playlist' in type:
             return 'id'
         return type + 'Id'
+
+    def get_name(self, type):
+        if 'song' in type:
+            return 'title'
+        return 'name'
 
     def get_type_name(self, type):
         '''Get the name used for indexing'''

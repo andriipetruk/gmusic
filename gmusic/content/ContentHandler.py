@@ -1,9 +1,10 @@
+from gmusic.content.ContentConsumer import ContentConsumer
 from gmusic.content.DataCache import DataCache
 from gmusic.content.GMusicClient import GMusicClient
 from gmusic.core.EventHandler import EventHandler
 from gmusic.model.MenuElement import MenuElement
 
-class ContentHandler(EventHandler):
+class ContentHandler(EventHandler, ContentConsumer):
     def __init__(self):
         EventHandler.__init__(self)
         self.attachments = []
@@ -39,14 +40,30 @@ class ContentHandler(EventHandler):
     def search_playlists(self, query):
         self.search_radio_or_playlist(query, 'playlists')
 
+    def format_title(self, search_type, query=""):
+        '''Format a title which had no preceding search'''
+        if query is not "":
+            return '{0} matching "{1}"'.format(search_type.capitalize(), query)
+        return '{0}'.format(search_type.capitalize())
+
+    def format_title_specific(self, from_type, from_id):
+        '''Format a title from a sub-items search'''
+        if "playlist" not in from_type.lower():
+            info = self.client.get_information_about(from_type, from_id)
+        else:
+            info = self.data_cache.get_item_from_id(from_type, from_id)
+
+        return info[self.get_name(from_type)]
+
     def search_radio_or_playlist(self, query, type):
         method_name = 'get_{0}_list'.format(type[:-1])
         search = getattr(self.client, method_name)
 
+        title = self.format_title(type, query)
         items = [MenuElement(r['name'], r['id']) for r in search(query)]
         self.notify_attachments('Search',\
             event_parameters={"results": items,
-            "title": query,
+            "title": title,
             "display_element_type": "{0}".format(type.capitalize())} )
 
     def search_items(self, search_type, query):
@@ -58,8 +75,10 @@ class ContentHandler(EventHandler):
             method_name = 'get_items'.format(search_type)
             search = getattr(self.data_cache, method_name)
 
+        # Prepare to send
         found_items = search(search_type, query)
-        self.package_and_notify(query, search_type, found_items)
+        title = self.format_title(search_type, query)
+        self.package_and_notify(title, search_type, found_items)
 
     def package_and_notify(self, title, search_type, found_items):
         '''Stores in data cache if it's a song, then packages and notifies'''
@@ -79,7 +98,8 @@ class ContentHandler(EventHandler):
             search_type = 'albums'
 
         found_items = self.client.get_sub_items(type_from, search_type, from_id)
-        self.package_and_notify(from_id, search_type, found_items)
+        title = self.format_title_specific(type_from, from_id)
+        self.package_and_notify(title, search_type, found_items)
 
     def get_suggested(self):
         '''Gets a list of tracks that the user might be interested in'''
