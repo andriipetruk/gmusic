@@ -140,6 +140,7 @@ class UI(CursedObject, EventHandler):
         win.addstr(last_line_index, indentation, "> ")
 
         # draw everything
+        self.screen.leaveok(1)
         self.screen.refresh()
         win.refresh()
 

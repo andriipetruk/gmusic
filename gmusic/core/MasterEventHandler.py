@@ -23,7 +23,10 @@ class MasterEventHandler(EventHandler):
             self.draw_handler.banner_update(event.track)
 
         if isinstance(event, PauseOrResume):
-            self.draw_handler.banner_pause_resume(is_playing=event.is_playing)
+            self.draw_handler.pause_or_resume(event.is_paused)
+
+        if isinstance(event, Random):
+            self.draw_handler.random(event.is_random)
 
         if isinstance(event, ChangeMenu):
             build_menu = getattr(self.state, event.menu_type)
@@ -44,4 +47,6 @@ class MasterEventHandler(EventHandler):
             self.draw_handler.draw()
 
         if isinstance(event, Feedback):
-            self.draw_handler.provide_feedback(event.message)
+            self.draw_handler.feedback.message = event.message
+            self.draw_handler.feedback.is_showing_message = True
+            self.draw_handler.feedback.draw()

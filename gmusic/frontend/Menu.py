@@ -16,11 +16,13 @@ class Menu(CursedObject):
 
     def draw(self, selected):
         '''Draw the menu and lines'''
-        self.clear_rows_below(6)
+        start_row = 7
+
+        self.clear_rows_below(start_row)
         self.screen.refresh()
 
-        self.print_line(self.title, 6, curses.A_BOLD)
-        self.print_line(self.subtitle, 8, curses.A_BOLD)
+        self.print_line(self.title, start_row, curses.A_BOLD)
+        self.print_line(self.subtitle, start_row + 2, curses.A_BOLD)
 
         self.current_width = self.width()
 
@@ -32,7 +34,7 @@ class Menu(CursedObject):
 
             # Use 0 index here, as the tuple pattern is (DISPLAY_STRING, id)
             option = self.format_element(self.options[index])
-            self.screen.addstr(9+index, 4, "%d.\t%s" % (index+1, option), textstyle)
+            self.screen.addstr(start_row+index+3, 4, "%d.\t%s" % (index+1, option), textstyle)
 
         self.screen.border(0)
         self.screen.refresh()

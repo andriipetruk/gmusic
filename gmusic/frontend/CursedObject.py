@@ -19,6 +19,7 @@ class CursedObject(object):
         self.screen = curses.initscr()
         self.screen.refresh()
         self.screen.keypad(1)
+        self.screen.leaveok(1)
 
     def start_curses(self):
         '''Curses Init'''
@@ -61,8 +62,8 @@ class CursedObject(object):
         return text
 
     def compress_and_pad(self, text, width):
-        compressed = self.compress_text(text,width)
-        return self.pad_text(compressed,width)
+        compressed = self.compress_text(text, width)
+        return self.pad_text(compressed, width)
 
 
     def center_text(self, text, row, style=curses.A_NORMAL):

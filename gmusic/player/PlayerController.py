@@ -51,6 +51,7 @@ class PlayerController(EventHandler):
 
     def random(self):
         self.playlist.toggle_random()
+        self.notify_attachments('Random', {'is_random': self.playlist.random})
 
     def next(self):
         '''Play the next song'''
@@ -100,4 +101,4 @@ class PlayerController(EventHandler):
             return
 
         if isinstance(event, PauseOrResume):
-            self.notify_attachments('PauseOrResume', {'is_playing': event.is_playing})
+            self.notify_attachments('PauseOrResume', {'is_paused': event.is_paused})

@@ -6,7 +6,8 @@ from gmusic.model.events.PageChange import PageChange
 from gmusic.model.events.PageUpdate import PageUpdate
 from gmusic.model.events.PauseOrResume import PauseOrResume
 from gmusic.model.events.PlayOrStop import PlayOrStop
+from gmusic.model.events.Random import Random
 from gmusic.model.events.Search import Search
 
 __all__ = ["ChangeMenu", "EndOfStream", "Exit", "Feedback", "PageChange",
-    "PageUpdate", "PauseOrResume", "PlayOrStop", "Search"]
+    "PageUpdate", "PauseOrResume", "PlayOrStop", "Random", "Search"]

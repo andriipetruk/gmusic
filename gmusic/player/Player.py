@@ -29,12 +29,12 @@ class Player(EventHandler):
             self.resume()
             return
         self.player.set_state(gst.STATE_PAUSED)
-        self.notify_attachments('PauseOrResume',{"is_playing": False})
+        self.notify_attachments('PauseOrResume',{"is_paused": True})
 
     def resume(self):
         '''Resume a song that has been paused'''
         self.player.set_state(gst.STATE_PLAYING)
-        self.notify_attachments('PauseOrResume',{"is_playing": True})
+        self.notify_attachments('PauseOrResume',{"is_paused": False})
 
     def adjust_volume(self, adjustment):
         self.volume = max(min(2.0,self.volume + float(adjustment)/10.0), 0.0)
