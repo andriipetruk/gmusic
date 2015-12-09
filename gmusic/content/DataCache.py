@@ -45,6 +45,9 @@ class DataCache(ContentConsumer):
         items = self.get_cache_target(item_type)
         gen = (item for item in items if args['id'] in item)
 
+        if 'song' in item_type or 'track' in item_type:
+            args['type'] = 'title'
+
         # Have to account for absurdity in 'artists' AGAIN...
         if item_type == 'artists':
             return list(set([self.format_artist(artist, args) for artist in gen]))
