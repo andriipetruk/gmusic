@@ -46,8 +46,8 @@ class Menu(CursedObject):
             return self.compress_and_pad(menu_element.main, width=self.current_width-8)
 
         # if alt is nt none
-        main_width = int(self.current_width/2)-4
-        alt_width = int(self.current_width/3)-4
+        main_width = int(self.current_width*2/3)-8
+        alt_width = int(self.current_width/3)-6
         main = self.compress_and_pad(menu_element.main, width=main_width)
         alt = self.compress_and_pad(menu_element.alt, width=alt_width)
         return main + " " + alt
