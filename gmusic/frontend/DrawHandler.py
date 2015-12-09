@@ -37,10 +37,6 @@ class DrawHandler(CursedObject, EventHandler):
         ui_thread = threading.Thread(target=ui.__running__)
         ui_thread.start()
 
-        feedback_thread = threading.Thread(target=self.feedback.time_thread)
-        feedback_thread.daemon = True
-        feedback_thread.start()
-
         refresh_thread = threading.Thread(target=self.refresh_thread)
         refresh_thread.daemon = True
         refresh_thread.start()

@@ -17,12 +17,11 @@ class FeedbackDisplay(CursedObject):
         self.message = 'Default Feedback Message'
         self.last_time = time.time()
 
-    def time_thread(self):
+    def accumulate_time(self):
         '''Used to continually accumulate time elapsed if playing'''
-        while True:
-            if self.is_playing and not self.is_paused:
-                self.time_elapsed += time.time() - self.last_time
-            self.last_time = time.time()
+        if self.is_playing and not self.is_paused:
+            self.time_elapsed += time.time() - self.last_time
+        self.last_time = time.time()
 
     def new_song(self, duration):
         '''Reset everything for a new song'''
@@ -35,6 +34,8 @@ class FeedbackDisplay(CursedObject):
 
     def draw(self):
         '''Draw things!!!'''
+        self.accumulate_time()
+
         # If we're providing a message, do that first
         if self.is_showing_message:
             self.center_text('< {0} >'.format(self.message), 0)
@@ -100,5 +101,5 @@ class FeedbackDisplay(CursedObject):
     def get_random_symbol(self):
         '''Returns a random symbol if shuffling'''
         if self.is_random:
-            return '  ?  '
+            return '  ¿? '
         return '     '
