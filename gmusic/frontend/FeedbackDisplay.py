@@ -85,6 +85,8 @@ class FeedbackDisplay(CursedObject):
 
         bar = '='*int(math.floor(progressed_bar))
         if (progressed_bar % 1) > 0.5:
+            bar += '='
+        else:
             bar += '-'
         bar += ' '*int(bar_width - len(bar))
 
@@ -95,7 +97,7 @@ class FeedbackDisplay(CursedObject):
         if not self.is_playing:
             return '     '
         if self.is_paused:
-            return '  ❚❚ '
+            return ' ❚❚  '
         return '  ▶  '
 
     def get_random_symbol(self):

@@ -16,7 +16,6 @@ class Player(EventHandler):
         self.stop()
         self.player.set_property('uri', url)
         self.player.set_state(gst.STATE_PLAYING)
-        #self.notify_attachments('PauseOrResume',{"is_playing": True})
 
     def stop(self):
         '''Stop a song that is playing'''
