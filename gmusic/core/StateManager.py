@@ -66,7 +66,7 @@ class StateManager(object):
         '''Pops a state off of the StateStack, then peeks'''
         if len(self.states) == 1:
             return
-            
+
         self.states.pop()
         self.assign_state(self.states[-1])
 
@@ -84,9 +84,7 @@ class StateManager(object):
         return self.page_elements[self.selected_element]
 
     def get_seed_type(self):
-        if self.state == 'Suggested':
-            return 'songs'
-        if self.state == 'Songs' or self.state == 'Artists' or self.state == 'Albums':
+        if self.current_state_is('songs') or self.current_state_is('artists') or self.current_state_is('albums'):
             return self.state.lower()
         return ''
 
