@@ -72,7 +72,8 @@ class UI(CursedObject, EventHandler):
         help_options['next'] =      '> next            Play Next'
         help_options['previous'] =  '> previous        Play Previous'
         help_options['random'] =    '> random          Toggle Shuffle'
-        help_options['back'] =      '> back            Back to Main Menu'
+        help_options['back'] =      '> back            Returns to the previous page'
+        help_options['main'] =      '> main            Back to Main Menu'
         help_options['exit'] =      '> exit            Exit the program'
 
         # Examples for the above (only used if the window is wide enough)

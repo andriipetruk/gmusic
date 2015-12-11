@@ -35,11 +35,22 @@ class ContentHandler(EventHandler, ContentConsumer):
         self.client.load_radios()
         return radio_id
 
+
     def search_radios(self, query):
         self.search_radio_or_playlist(query, 'radios')
 
     def search_playlists(self, query):
         self.search_radio_or_playlist(query, 'playlists')
+
+    def search_radio_or_playlist(self, query, type):
+        method_name = 'get_{0}_list'.format(type[:-1])
+        search = getattr(self.client, method_name)
+
+        title = self.format_title(type, query)
+        items = [MenuElement(r['name'], r['id']) for r in search(query)]
+        state = State(title, "{0}".format(type.capitalize()), items)
+        self.notify_attachments('Search', event_parameters={"state": state})
+
 
     def format_title(self, search_type, query=""):
         '''Format a title which had no preceding search'''
@@ -56,14 +67,6 @@ class ContentHandler(EventHandler, ContentConsumer):
 
         return info[self.get_name(from_type)]
 
-    def search_radio_or_playlist(self, query, type):
-        method_name = 'get_{0}_list'.format(type[:-1])
-        search = getattr(self.client, method_name)
-
-        title = self.format_title(type, query)
-        items = [MenuElement(r['name'], r['id']) for r in search(query)]
-        state = State(title, "{0}".format(type.capitalize()), items)
-        self.notify_attachments('Search', event_parameters={"state": state})
 
     def search_items(self, search_type, query):
         '''Master Search Method'''
@@ -79,15 +82,6 @@ class ContentHandler(EventHandler, ContentConsumer):
         title = self.format_title(search_type, query)
         self.package_and_notify(title, search_type, found_items)
 
-    def package_and_notify(self, title, search_type, found_items):
-        '''Stores in data cache if it's a song, then packages and notifies'''
-        if 'song' in search_type:
-            self.data_cache.recently_searched_songs = [x[1] for x in found_items]
-        items = [MenuElement(s[0], s[1], s[2]) for s in found_items]
-        if len(items) > 0:
-            state = State(title, "{0}".format(search_type.capitalize()), items)
-            self.notify_attachments('Search', event_parameters={"state": state})
-
     def search_sub_items(self, type_from, from_id):
         '''Works for getting a specific artist's albums, or an album's tracks'''
         search_type = 'songs'
@@ -102,3 +96,13 @@ class ContentHandler(EventHandler, ContentConsumer):
         '''Gets a list of tracks that the user might be interested in'''
         suggested_tracks = self.client.get_suggested()
         self.package_and_notify('Suggested Tracks', 'songs', suggested_tracks)
+
+
+    def package_and_notify(self, title, search_type, found_items):
+        '''Stores in data cache if it's a song, then packages and notifies'''
+        if 'song' in search_type:
+            self.data_cache.recently_searched_songs = [x[1] for x in found_items]
+        items = [MenuElement(s[0], s[1], s[2]) for s in found_items]
+        if len(items) > 0:
+            state = State(title, "{0}".format(search_type.capitalize()), items)
+            self.notify_attachments('Search', event_parameters={"state": state})

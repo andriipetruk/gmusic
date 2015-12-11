@@ -22,22 +22,27 @@ class StateManager(object):
 
     def main_menu(self):
         '''Set everything necessary for the main menu'''
-        elements = [
-            MenuElement('View Suggested Songs', 'suggested'),
-            MenuElement('Browse Albums', 'album'),
-            MenuElement('Browse Artists', 'artist'),
-            MenuElement('Browse Playlists', 'playlist'),
-            MenuElement('Browse Radios', 'radio'),
-            MenuElement('Browse Songs', 'song'),
-            MenuElement('Connect to DJs', 'dj'),
-            MenuElement('Options', 'options'),
-            MenuElement('Exit', 'exit')]
-        title = "Main Menu"
-        subtitle = "Options"
-        main_state = State(title, subtitle, elements)
-        main_state.id = 'main'
+        if len(self.states) == 0:
+            elements = [
+                MenuElement('View Suggested Songs', 'suggested'),
+                MenuElement('Browse Albums', 'album'),
+                MenuElement('Browse Artists', 'artist'),
+                MenuElement('Browse Playlists', 'playlist'),
+                MenuElement('Browse Radios', 'radio'),
+                MenuElement('Browse Songs', 'song'),
+                MenuElement('Connect to DJs', 'dj'),
+                MenuElement('Options', 'options'),
+                MenuElement('Exit', 'exit')]
 
-        self.push_state(main_state)
+            main_state = State("Main Menu", "Options", elements)
+            main_state.id = 'main'
+
+            self.push_state(main_state)
+            return
+
+        # Delete all other states
+        self.states[1:] = []
+        self.assign_state(self.states[0])
 
     def options_menu(self):
         '''Pushses options menu to top of stack'''
