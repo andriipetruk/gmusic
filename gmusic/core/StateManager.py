@@ -135,7 +135,7 @@ class StateManager(object):
 
         # otherwise, play!
         return "play {0} {1}".format(\
-            self.states[-1].id,\
+            self.states[-1].id[:-1],\
             self.get_selected_element().id)
 
     def set_options(self, new_options):
