@@ -1,13 +1,9 @@
 class State:
-    def __init__(self):
-        pass
+    '''Data structure which houses all information about a State'''
 
-    def handle_execute(self):
-        pass
-
-
-'''
-Main
-Options
-Command      "songs", "artists", "playlists", "radios", "albums", "etc"
-'''
+    def __init__(self, title, subtitle, elements, data=None):
+        self.title = title
+        self.subtitle = subtitle
+        self.elements = elements
+        self.data = data
+        self.id = subtitle.lower()

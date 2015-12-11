@@ -100,6 +100,9 @@ class CommandHandler(EventHandler):
         self.player_controller.next()
 
     def typed_back(self, *_):
+        self.notify_attachments('Back')
+
+    def typed_main(self, *_):
         self.notify_attachments('ChangeMenu',\
             event_parameters={"menu_type": "main_menu"})
 

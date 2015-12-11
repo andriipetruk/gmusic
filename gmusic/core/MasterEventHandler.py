@@ -1,6 +1,6 @@
 from gmusic.core.EventHandler import EventHandler
 from gmusic.core.Cache import Cache
-from gmusic.core.State import State
+from gmusic.core.StateManager import StateManager
 from gmusic.frontend.DrawHandler import DrawHandler
 from gmusic.model.events import *
 import sys
@@ -9,8 +9,8 @@ class MasterEventHandler(EventHandler):
     def __init__(self):
         EventHandler.__init__(self)
         self.cache = Cache()
-        self.state = State()
-        self.draw_handler = DrawHandler(self.cache, self.state)
+        self.state = StateManager()
+        self.draw_handler = DrawHandler(self)
 
     def handle_event(self, event):
         if isinstance(event, PageChange):
@@ -33,17 +33,21 @@ class MasterEventHandler(EventHandler):
             build_menu()
             self.draw_handler.draw()
 
+        if isinstance(event, Resize):
+            capacity = self.draw_handler.get_page_capacity()
+            self.state.capacity = capacity
+            self.draw_handler.draw()
+
+        if isinstance(event, Back):
+            self.state.pop_state()
+            self.draw_handler.draw()
+
         if isinstance(event, Exit):
             self.draw_handler.exit()
             sys.exit(1)
 
         if isinstance(event, Search):
-            self.state.state = event.display_element_type
-            self.state.actual_title = event.title
-            self.state.subtitle = event.display_element_type.capitalize()
-
-            capacity = self.draw_handler.get_page_capacity()
-            self.state.set_options(event.results, capacity)
+            self.state.push_state(event.state)
             self.draw_handler.draw()
 
         if isinstance(event, Feedback):

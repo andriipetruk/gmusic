@@ -3,6 +3,7 @@ from gmusic.content.DataCache import DataCache
 from gmusic.content.GMusicClient import GMusicClient
 from gmusic.core.EventHandler import EventHandler
 from gmusic.model.MenuElement import MenuElement
+from gmusic.model.State import State
 
 class ContentHandler(EventHandler, ContentConsumer):
     def __init__(self):
@@ -61,10 +62,8 @@ class ContentHandler(EventHandler, ContentConsumer):
 
         title = self.format_title(type, query)
         items = [MenuElement(r['name'], r['id']) for r in search(query)]
-        self.notify_attachments('Search',\
-            event_parameters={"results": items,
-            "title": title,
-            "display_element_type": "{0}".format(type.capitalize())} )
+        state = State(title, "{0}".format(type.capitalize()), items)
+        self.notify_attachments('Search', event_parameters={"state": state})
 
     def search_items(self, search_type, query):
         '''Master Search Method'''
@@ -86,10 +85,8 @@ class ContentHandler(EventHandler, ContentConsumer):
             self.data_cache.recently_searched_songs = [x[1] for x in found_items]
         items = [MenuElement(s[0], s[1], s[2]) for s in found_items]
         if len(items) > 0:
-            self.notify_attachments('Search',\
-                event_parameters={"results": items,
-                "title": title,
-                "display_element_type": "{0}".format(search_type.capitalize())})
+            state = State(title, "{0}".format(search_type.capitalize()), items)
+            self.notify_attachments('Search', event_parameters={"state": state})
 
     def search_sub_items(self, type_from, from_id):
         '''Works for getting a specific artist's albums, or an album's tracks'''

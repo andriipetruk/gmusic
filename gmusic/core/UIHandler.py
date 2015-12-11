@@ -17,6 +17,9 @@ class UIHandler(EventHandler):
             if execution_command is not "":
                 self.cmd_parser.parse(execution_command)
 
+        if user_in == curses.KEY_RESIZE:
+            self.notify_attachments('Resize')
+
         # Spacebar
         if user_in == ord(' '):
             self.cmd_parser.parse("pause")
