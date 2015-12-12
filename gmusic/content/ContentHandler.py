@@ -47,7 +47,11 @@ class ContentHandler(EventHandler, ContentConsumer):
         search = getattr(self.client, method_name)
 
         title = self.format_title(type, query)
-        items = [MenuElement(r['name'], r['id']) for r in search(query)]
+        command = 'PlaylistSongs'
+        if 'radio' in type:
+            command = 'PlayRadio'
+
+        items = [MenuElement(r['name'], r['id'], command) for r in search(query)]
         state = State(title, "{0}".format(type.capitalize()), items)
         self.notify_attachments('Search', event_parameters={"state": state})
 
@@ -102,7 +106,8 @@ class ContentHandler(EventHandler, ContentConsumer):
         '''Stores in data cache if it's a song, then packages and notifies'''
         if 'song' in search_type:
             self.data_cache.recently_searched_songs = [x[1] for x in found_items]
-        items = [MenuElement(s[0], s[1], s[2]) for s in found_items]
+
+        items = [MenuElement(*s) for s in found_items]
         if len(items) > 0:
             state = State(title, "{0}".format(search_type.capitalize()), items)
             self.notify_attachments('Search', event_parameters={"state": state})

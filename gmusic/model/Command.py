@@ -1,5 +1,10 @@
 class Command:
-    pass
+    def __init__(self, *_):
+        self.content_handler = None
+        self.player_controller = None
 
-    def execute(self):
+    def pre_execute(self, args):
+        pass
+
+    def execute(self, query):
         pass

@@ -8,12 +8,14 @@ class ContentConsumer:
             return {'type': self.get_type_name(type),
             'name': self.get_name(type),
             'id': self.get_id_type(type[:-1]),
+            'command': 'Play',
             'alt': 'album'}
 
         # Otherwise we can generalize a lot of data
         return {'type': self.get_type_name(type),
             'name': self.get_name(type),
             'id': self.get_id_type(type[:-1]),
+            'command': '{0}Songs'.format(type[:-1].capitalize()),
             'alt': 'artist'}
 
 
@@ -21,13 +23,15 @@ class ContentConsumer:
         '''Format the item for content_handler'''
         # Artist does not have alternate information
         if type is 'artists':
-            return (item[args['type']][args['name']], \
-                item[args['type']][args['id']], \
+            return (item[args['type']][args['name']],
+                item[args['type']][args['id']],
+                'ArtistAlbums',
                 None)
 
         # Otherwise include alternate information
-        return (item[args['type']][args['name']], \
-            item[args['type']][args['id']], \
+        return (item[args['type']][args['name']],
+            item[args['type']][args['id']],
+            args['command'],
             item[args['type']][args['alt']])
 
     def get_id_type(self, type):

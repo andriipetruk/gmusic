@@ -1,5 +1,6 @@
 from gmusic.model import *
 from gmusic.model.events import *
+from gmusic.model.commands import *
 from gmusic.core import *
 from gmusic.content import *
 from gmusic.frontend import *

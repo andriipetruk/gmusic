@@ -1,6 +1,6 @@
 from gmusic.content.ContentHandler import ContentHandler
 from gmusic.player.PlayerController import PlayerController
-from gmusic.core.CommandParser import CommandParser
+from gmusic.core.CommandProcessor import CommandProcessor
 from gmusic.core.MasterEventHandler import MasterEventHandler
 from gmusic.core.UIParser import UIParser
 from gmusic.frontend.UI import UI
@@ -19,6 +19,6 @@ class Core:
         player_controller.start()
 
         # Build the parsers
-        cmd_parser = CommandParser(meh, content_handler, player_controller)
+        cmd_parser = CommandProcessor(meh, content_handler, player_controller)
         ui_parser = UIParser(event_handler=meh, command_parser=cmd_parser)
         meh.draw_handler.launch(cmd_parser, ui_parser)

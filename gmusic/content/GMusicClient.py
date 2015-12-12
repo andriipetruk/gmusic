@@ -78,10 +78,14 @@ class GMusicClient(ContentConsumer):
             # Get the appropriate search method and execute it
             search_method_name = 'get_{0}_info'.format(type_from)
             search_method = getattr(self.client, search_method_name)
-            items = search_method(from_id, True)[args['type']+'s'] # True here includes subelements
+            try:
+                items = search_method(from_id, True)[args['type']+'s'] # True here includes subelements
+            except:
+                # User passed in a bad id or something
+                return
 
         # Now return appropriately
-        return [(t[args['name']], t[args['id']], t[args['alt']])\
+        return [(t[args['name']], t[args['id']], args['command'], t[args['alt']])\
             for t in items if args['id'] in t]
 
     def get_playlist_contents(self, from_id):
@@ -90,7 +94,7 @@ class GMusicClient(ContentConsumer):
             if t['id'] == from_id][0]['shareToken']
         contents = self.client.get_shared_playlist_contents(shareToken)
 
-        store_available = [(t['track']['title'], t['trackId'], t['track']['album']) \
+        store_available = [(t['track']['title'], t['trackId'], 'Play', t['track']['album']) \
             for t in contents if 'track' in t]
 
         return store_available
@@ -98,7 +102,7 @@ class GMusicClient(ContentConsumer):
     def get_suggested(self):
         '''Returns a list of tracks that the user might be interested in'''
         items = sorted(self.client.get_promoted_songs(), key=lambda y: y['title'])
-        return [(t['title'], t['storeId'], t['album']) for t in items if 'storeId' in t]
+        return [(t['title'], t['storeId'], 'Play', t['album']) for t in items if 'storeId' in t]
 
     def get_information_about(self, from_type, from_id):
         '''Gets specific information about an id (depending on the type)'''

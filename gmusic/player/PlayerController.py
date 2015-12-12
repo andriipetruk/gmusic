@@ -1,8 +1,8 @@
 from gmusic.content.ContentHandler import ContentHandler
 from gmusic.core.EventHandler import EventHandler
-from gmusic.model.events import *
 from gmusic.player.PlayList import PlayList
 from gmusic.player.Player import Player
+import gmusic.model.events as events
 import json
 
 #pylint: disable=no-member
@@ -51,7 +51,7 @@ class PlayerController(EventHandler):
 
     def random(self):
         self.playlist.toggle_random()
-        self.notify_attachments('Random', {'is_random': self.playlist.random})
+        self.notify_attachments('ToggleRandom', {'is_random': self.playlist.random})
 
     def next(self):
         '''Play the next song'''
@@ -96,9 +96,9 @@ class PlayerController(EventHandler):
 
     def handle_event(self, event):
         '''Handle events from Player'''
-        if isinstance(event, EndOfStream):
+        if isinstance(event, events.EndOfStream):
             self.next()
             return
 
-        if isinstance(event, PauseOrResume):
+        if isinstance(event, events.PauseOrResume):
             self.notify_attachments('PauseOrResume', {'is_paused': event.is_paused})

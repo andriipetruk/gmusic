@@ -11,17 +11,26 @@ class FeedbackDisplay(CursedObject):
         self.time_elapsed = 0
         self.duration = 0
         self.is_random = False
-        self.is_showing_message = False
         self.is_paused = False
         self.is_playing = False
-        self.message = 'Default Feedback Message'
         self.last_time = time.time()
+
+        self.message = 'Default Feedback Message'
+        self.is_showing_message = False
+        self.message_start_time = time.time()
+        self.message_duration = 1.0
 
     def accumulate_time(self):
         '''Used to continually accumulate time elapsed if playing'''
         if self.is_playing and not self.is_paused:
             self.time_elapsed += time.time() - self.last_time
         self.last_time = time.time()
+
+    def display_message(self, message='Null message', duration=1.5):
+        self.is_showing_message = True
+        self.message = message
+        self.message_start_time = time.time()
+        self.message_duration = duration
 
     def new_song(self, duration):
         '''Reset everything for a new song'''
@@ -40,6 +49,8 @@ class FeedbackDisplay(CursedObject):
         if self.is_showing_message:
             self.center_text('< {0} >'.format(self.message), 0)
             self.screen.refresh()
+            if time.time() > self.message_start_time + self.message_duration:
+                self.is_showing_message = False
             return
 
         # If we're not playing, don't show anything

@@ -1,11 +1,11 @@
 from gmusic.core.EventHandler import EventHandler
-from gmusic.model.events import *
 from gmusic.frontend.Banner import Banner
 from gmusic.frontend.CursedObject import CursedObject
 from gmusic.frontend.FeedbackDisplay import FeedbackDisplay
 from gmusic.frontend.Guide import Guide
 from gmusic.frontend.Menu import Menu
 from gmusic.frontend.UI import UI
+import gmusic.model.events as events
 import threading, time
 import curses
 
@@ -87,10 +87,10 @@ class DrawHandler(CursedObject, EventHandler):
         pass
 
     def handle_event(self, event, args=None):
-        if isinstance(event, PageUpdate):
+        if isinstance(event, events.PageUpdate):
             self.redraw()
 
-        if isinstance(event, PageChange):
+        if isinstance(event, events.PageChange):
             self.update_menu()
             self.redraw()
 
