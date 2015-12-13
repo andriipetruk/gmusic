@@ -57,3 +57,7 @@ or
 
 ## DJ Streaming Service
 A [GMusic DJ Streaming service](https://github.com/NullVoxPopuli/gmusic-sync-service) has been written by Preston Sego
+
+## Authors
+* Evan Kirsch ([etkirsch](https://github.com/etkirsch)) -- Lead Developer
+* Preston Sego ([NullVoxPopuli](https://github.com/NullVoxPopuli)) -- Sync Service Author and Associate Developer
