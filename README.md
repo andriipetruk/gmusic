@@ -52,3 +52,8 @@ or
 ```
 ./run
 ```
+
+
+
+## DJ Streaming Service
+A [GMusic DJ Streaming service](https://github.com/NullVoxPopuli/gmusic-sync-service) has been written by Preston Sego
