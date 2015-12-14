@@ -100,6 +100,9 @@ class ContentHandler(EventHandler, ContentConsumer):
         suggested_tracks = self.client.get_suggested()
         self.package_and_notify('Suggested Tracks', 'songs', suggested_tracks)
 
+    def recently_added(self):
+        tracks = self.data_cache.recently_added()
+        self.package_and_notify('Recently Added Tracks', 'songs', tracks)
 
     def package_and_notify(self, title, search_type, found_items):
         '''Stores in data cache if it's a song, then packages and notifies'''

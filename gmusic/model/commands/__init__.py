@@ -18,6 +18,7 @@ from gmusic.model.commands.Previous import Previous
 from gmusic.model.commands.Queue import Queue
 from gmusic.model.commands.Radio import Radio
 from gmusic.model.commands.Random import Random
+from gmusic.model.commands.RecentlyAdded import RecentlyAdded
 from gmusic.model.commands.Resume import Resume
 from gmusic.model.commands.Seed import Seed
 from gmusic.model.commands.Song import Song
@@ -51,6 +52,7 @@ __all__ = [
 "Queue",
 "Radio",
 "Random",
+"RecentlyAdded",
 "Resume",
 "Seed",
 "Song",

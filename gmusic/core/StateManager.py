@@ -25,15 +25,16 @@ class StateManager(object):
         '''Set everything necessary for the main menu'''
         if len(self.states) == 0:
             elements = [
-                MenuElement('View Suggested Songs', id='', command='Suggested'),
-                MenuElement('Browse Albums', id='', command='Album'),
-                MenuElement('Browse Artists', id='', command='Artist'),
-                MenuElement('Browse Playlists', id='', command='Playlist'),
-                MenuElement('Browse Radios', id='', command='Radio'),
-                MenuElement('Browse Songs', id='', command='Song'),
-                MenuElement('Connect to DJs', id='', command='Main'),
-                MenuElement('Options', id='', command='Options'),
-                MenuElement('Exit', id='', command='Exit')]
+                MenuElement('View Suggested Songs', command='Suggested'),
+                MenuElement('View Recently Added Songs', command='RecentlyAdded'),
+                MenuElement('Browse Albums', command='Album'),
+                MenuElement('Browse Artists', command='Artist'),
+                MenuElement('Browse Playlists', command='Playlist'),
+                MenuElement('Browse Radios', command='Radio'),
+                MenuElement('Browse Songs', command='Song'),
+                MenuElement('Connect to DJs', command='Main'),
+                MenuElement('Options', command='Options'),
+                MenuElement('Exit', command='Exit')]
 
             main_state = State("Main Menu", "Options", elements)
             main_state.id = 'main'
