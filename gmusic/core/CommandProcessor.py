@@ -13,6 +13,9 @@ class CommandProcessor(EventHandler):
         '''Master method; figures out what was typed by the user'''
         command = self.build_type('command', cmd_class)
 
+        if command is None:
+            return
+
         command.player_controller = self.player_controller
         command.content_handler = self.content_handler
 
@@ -31,10 +34,13 @@ class CommandProcessor(EventHandler):
 
     def parse(self, line):
         '''Attempt to process input from command line'''
-        split_results = line.split(' ', 1)
-        cmd_class = split_results[0]
+        try:
+            split_results = line.strip().split(' ', 1)
+        except:
+            return
 
         cmd_args = None
+        cmd_class = split_results[0]
         if len(split_results) > 1:
             cmd_args = {"query": split_results[1]}
 
