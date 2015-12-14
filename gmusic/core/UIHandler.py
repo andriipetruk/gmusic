@@ -33,6 +33,12 @@ class UIHandler(EventHandler):
         if user_in == ord('p'):
             self.cmd_processor.process("Previous")
 
+        if user_in == ord('a'):
+            if self.state.current_state_is('songs'):
+                id = self.state.get_selected_element().id
+                name = self.state.get_selected_element().main
+                self.cmd_processor.process('AddTo', {"id": id, 'name': name})
+
         # Queue
         if user_in == ord('q'):
             id = self.state.get_selected_element().id

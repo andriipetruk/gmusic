@@ -53,7 +53,7 @@ class ContentHandler(EventHandler, ContentConsumer):
 
         items = [MenuElement(r['name'], r['id'], command) for r in search(query)]
         state = State(title, "{0}".format(type.capitalize()), items)
-        self.notify_attachments('Search', event_parameters={"state": state})
+        self.notify_attachments('PushState', event_parameters={"state": state})
 
 
     def format_title(self, search_type, query=""):
@@ -70,7 +70,6 @@ class ContentHandler(EventHandler, ContentConsumer):
             info = self.data_cache.get_item_from_id(from_type, from_id)
 
         return info[self.get_name(from_type)]
-
 
     def search_items(self, search_type, query):
         '''Master Search Method'''
@@ -110,4 +109,4 @@ class ContentHandler(EventHandler, ContentConsumer):
         items = [MenuElement(*s) for s in found_items]
         if len(items) > 0:
             state = State(title, "{0}".format(search_type.capitalize()), items)
-            self.notify_attachments('Search', event_parameters={"state": state})
+            self.notify_attachments('PushState', event_parameters={"state": state})

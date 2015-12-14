@@ -47,15 +47,7 @@ class StateManager(object):
 
     def options_menu(self):
         '''Pushses options menu to top of stack'''
-        elements = [
-            MenuElement('Background color', id='', command='Back', alt='Gray'),
-            MenuElement('Text color', id='', command='Back', alt='White'),
-            MenuElement('Highlight color', id='', command='Back', alt='White'),
-            MenuElement('Number of radio tracks to pull', id='', command='Back', alt='25'),
-            MenuElement('Port for DJ Notifications', id='', command='Back', alt='8080'),
-            MenuElement('Allow DJ to control playback', id='', command='Back', alt='No')]
-        options_state = State("Options Menu", "Options", elements)
-        options_state.id = 'options'
+
 
         self.push_state(options_state)
 
@@ -74,10 +66,9 @@ class StateManager(object):
 
     def assign_state(self, state):
         self.actual_title = state.title
-        self.subtitle = state.id
+        self.subtitle = state.subtitle
         self.set_options(state.elements)
         self.set_page(0)
-
 
 
     def get_selected_element(self):

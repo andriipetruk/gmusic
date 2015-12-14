@@ -1,3 +1,5 @@
+from gmusic.model.commands.AddTo import AddTo
+from gmusic.model.commands.AddToLibrary import AddToLibrary
 from gmusic.model.commands.Album import Album
 from gmusic.model.commands.AlbumSongs import AlbumSongs
 from gmusic.model.commands.Artist import Artist
@@ -21,6 +23,7 @@ from gmusic.model.commands.Seed import Seed
 from gmusic.model.commands.Song import Song
 from gmusic.model.commands.Stop import Stop
 from gmusic.model.commands.Suggested import Suggested
+from gmusic.model.commands.ViewQueue import ViewQueue
 from gmusic.model.commands.Volume import Volume
 
 
@@ -28,6 +31,8 @@ from gmusic.model.commands.Volume import Volume
 
 
 __all__ = [
+"AddTo",
+"AddToLibrary",
 "Album",
 "AlbumSongs",
 "Artist",
@@ -51,5 +56,6 @@ __all__ = [
 "Song",
 "Stop",
 "Suggested",
-"Volume"
+"Volume",
+"ViewQueue"
 ]

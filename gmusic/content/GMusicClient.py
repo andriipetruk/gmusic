@@ -85,7 +85,7 @@ class GMusicClient(ContentConsumer):
                 return
 
         # Now return appropriately
-        return [self.format_subitems(t) for t in items if args['id'] in t]
+        return [self.format_subitems(t, args) for t in items if args['id'] in t]
 
     def get_playlist_contents(self, from_id):
         '''Playlist exclusive stuff'''
@@ -114,12 +114,17 @@ class GMusicClient(ContentConsumer):
     def lookup(self, nid):
         return self.client.get_track_info(nid)
 
+    def add_track_to_library(self, nid):
+        self.client.add_aa_track(nid)
 
-    def format_suggested(self, track):
+    def add_to_playlist(self, playlist_id, nid):
+        self.client.add_songs_to_playlist(playlist_id, nid)
+
+    def format_suggested(self, t):
         return (t['title'], t['storeId'], 'Play', t['album'])
 
     def format_playlist_contents(self, t):
         return (t['track']['title'], t['trackId'], 'Play', t['track']['album'])
 
-    def format_subitems(self, track, args):
+    def format_subitems(self, t, args):
         return (t[args['name']], t[args['id']], args['command'], t[args['alt']])

@@ -5,8 +5,6 @@ class Queue(Command):
 
     def execute(self, args):
         '''Enqueue an id'''
-        query = ''
         if args is not None and 'id' in args:
-            id = args['id']
-        self.player_controller.queue(id)
-        return ('Feedback', {"message": 'Queued song for playback'})
+            self.player_controller.queue(args['id'])
+            return ('Feedback', {"message": 'Queued song for playback'})
