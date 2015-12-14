@@ -1,4 +1,4 @@
 from gmusic.model.Event import Event
 
-class Exit(Event):
+class ProgramExit(Event):
     pass

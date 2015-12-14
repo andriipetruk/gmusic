@@ -1,5 +1,5 @@
 from gmusic.frontend.CursedObject import CursedObject
-from gmusic.core.CommandParser import CommandParser
+from gmusic.core.CommandProcessor import CommandProcessor
 from gmusic.core.EventHandler import EventHandler
 from gmusic.core.UIParser import UIParser
 import curses
@@ -8,12 +8,12 @@ import collections
 class UI(CursedObject, EventHandler):
     """Asynchronous. Handles input from the user"""
 
-    def __init__(self, draw_handler, cmd_parser, ui_parser):
+    def __init__(self, draw_handler, cmd_processor, ui_parser):
         CursedObject.__init__(self)
         EventHandler.__init__(self)
         self.attachments.append(draw_handler)
         self.screen = draw_handler.screen
-        self.cmd_parser = cmd_parser
+        self.cmd_processor = cmd_processor
         self.ui_parser = ui_parser
 
     def __running__(self):
@@ -52,7 +52,7 @@ class UI(CursedObject, EventHandler):
 
         # Push it to cmd_parser
         curses.noecho()
-        self.cmd_parser.parse(request)
+        self.cmd_processor.parse(request)
 
     def draw_cli_prompt(self, height, width):
         indentation = 2

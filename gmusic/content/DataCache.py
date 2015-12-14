@@ -54,7 +54,7 @@ class DataCache(ContentConsumer):
         return list(set([self.format_result(item, args) for item in gen]))
 
     def format_result(self, item, args):
-        return (item[args['type']], item[args['id']], item[args['alt']])
+        return (item[args['type']], item[args['id']], args['command'], item[args['alt']])
 
     def format_artist(self, artist, args):
-        return (artist[args['type']], artist[args['id']][0], None)
+        return (artist[args['type']], artist[args['id']][0], 'ArtistAlbums', None)
