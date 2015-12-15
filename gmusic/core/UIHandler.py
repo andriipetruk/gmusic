@@ -45,9 +45,9 @@ class UIHandler(EventHandler):
             self.cmd_processor.process('Queue', {'id': id})
 
         if user_in == ord('+'):
-            self.cmd_processor.process('Volume',  {'adjustment': 0.5})
+            self.cmd_processor.process('Volume',  {'adjustment': 0.10})
         if user_in == ord('-'):
-            self.cmd_processor.process('Volume',  {'adjustment': -0.5})
+            self.cmd_processor.process('Volume',  {'adjustment': -0.10})
 
         if user_in == ord('r') or user_in == ord('R'):
             # Seed Radio
