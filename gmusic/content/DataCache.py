@@ -60,6 +60,7 @@ class DataCache(ContentConsumer):
             key=lambda y: y['creationTimestamp']) \
             if ('creationTimestamp' in a and 'deleted' in a)]
 
+
     def format_result(self, item, args):
         return (item[args['type']], item[args['id']], args['command'], item[args['alt']])
 

@@ -1,11 +1,7 @@
-from gmusic.model.Command import Command
+from gmusic.model.SearchCommand import SearchCommand
 
-class Album(Command):
+class Album(SearchCommand):
     '''Searches for an album'''
-
-    def execute(self, args):
-        '''Asks the Content Manager to find a song from specified album'''
-        query = ''
-        if args is not None and 'query' in args:
-            query = args['query']
-        self.content_handler.search_items('albums', query)
+    def __init__(self, *_):
+        SearchCommand.__init__(self)
+        self.search_type = 'albums'

@@ -46,12 +46,6 @@ class StateManager(object):
         self.states[1:] = []
         self.assign_state(self.states[0])
 
-    def options_menu(self):
-        '''Pushses options menu to top of stack'''
-
-
-        self.push_state(options_state)
-
     def push_state(self, state):
         '''Pushes a state on the StateStack'''
         self.states.append(state)
@@ -112,7 +106,7 @@ class StateManager(object):
     def handle_execute(self):
         '''State Machine'''
         element = self.get_selected_element()
-        return (element.command, {'id': element.id})
+        return (element.command, {'id': element.id, 'name': element.main})
 
 
     def set_options(self, new_options):

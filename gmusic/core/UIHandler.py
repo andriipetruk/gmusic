@@ -12,6 +12,9 @@ class UIHandler(EventHandler):
         self.cmd_processor = cmd_processor
 
     def handle(self, user_in):
+        id = self.state.get_selected_element().id
+        name = self.state.get_selected_element().main
+
         # Enter Key
         if user_in == 10:
             execution_command = self.state.handle_execute()
@@ -35,26 +38,22 @@ class UIHandler(EventHandler):
 
         if user_in == ord('a'):
             if self.state.current_state_is('songs'):
-                id = self.state.get_selected_element().id
-                name = self.state.get_selected_element().main
                 self.cmd_processor.process('AddTo', {"id": id, 'name': name})
 
         # Queue
         if user_in == ord('q'):
-            id = self.state.get_selected_element().id
-            self.cmd_processor.process('Queue', {'id': id})
+            self.cmd_processor.process('Queue', {'id': id, 'name': name})
 
+        # Volume
         if user_in == ord('+'):
             self.cmd_processor.process('Volume',  {'adjustment': 0.10})
         if user_in == ord('-'):
             self.cmd_processor.process('Volume',  {'adjustment': -0.10})
 
+        # Seed Radio
         if user_in == ord('r') or user_in == ord('R'):
-            # Seed Radio
             seed_type = self.state.get_seed_type()
             if seed_type is not '':
-                id = self.state.get_selected_element().id
-                name = self.state.get_selected_element().main
                 cmd = ('Seed', {"id": id, 'name': name, 'type': seed_type})
                 self.cmd_processor.process(*cmd)
             else:

@@ -9,7 +9,7 @@ class PlayRadio(Command):
         if 'id' not in args:
             return
 
-        return ('Feedback', {"message": 'Loading a radio for playback'})
+        return ('Feedback', {"message": 'Loading {0} for playback'.format(args['name'])})
 
     def execute(self, args):
         if 'id' not in args:
@@ -17,3 +17,4 @@ class PlayRadio(Command):
             return
 
         self.player_controller.play_radio(args['id'])
+        return ('Feedback', {"is_showing_message": False})
