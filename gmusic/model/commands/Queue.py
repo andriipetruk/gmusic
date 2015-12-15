@@ -7,4 +7,4 @@ class Queue(Command):
         '''Enqueue an id'''
         if args is not None and 'id' in args:
             self.player_controller.queue(args['id'])
-            return ('Feedback', {"message": 'Queued song for playback'})
+            return ('Feedback', {"message": 'Queued {0} for playback'.format(args['name']), "duration": 1.0})
