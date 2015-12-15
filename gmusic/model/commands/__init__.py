@@ -1,5 +1,7 @@
 from gmusic.model.commands.AddTo import AddTo
 from gmusic.model.commands.AddToLibrary import AddToLibrary
+from gmusic.model.commands.AddToPlaylist import AddToPlaylist
+from gmusic.model.commands.AddToPlaylistPrompt import AddToPlaylistPrompt
 from gmusic.model.commands.Album import Album
 from gmusic.model.commands.AlbumSongs import AlbumSongs
 from gmusic.model.commands.Artist import Artist
@@ -33,6 +35,8 @@ from gmusic.model.commands.Volume import Volume
 
 __all__ = [
 "AddTo",
+"AddToPlaylist",
+"AddToPlaylistPrompt",
 "AddToLibrary",
 "Album",
 "AlbumSongs",

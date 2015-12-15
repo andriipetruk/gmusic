@@ -42,6 +42,9 @@ class MasterEventHandler(EventHandler):
             self.state.pop_state()
             self.draw_handler.draw()
 
+        if isinstance(event, events.SetInterimState):
+            self.state.interim_state = event.state
+
         if isinstance(event, events.ProgramExit):
             self.draw_handler.exit()
             sys.exit(1)

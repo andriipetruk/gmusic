@@ -20,6 +20,7 @@ class StateManager(object):
         self.states = []
         # this just so happens to work in my favor!
         self.main_menu()
+        self.interim_state = None
 
     def main_menu(self):
         '''Set everything necessary for the main menu'''
@@ -56,6 +57,7 @@ class StateManager(object):
         if len(self.states) == 1:
             return
 
+        self.interim_state = None
         self.states.pop()
         self.assign_state(self.states[-1])
 
@@ -106,6 +108,10 @@ class StateManager(object):
     def handle_execute(self):
         '''State Machine'''
         element = self.get_selected_element()
+
+        if self.interim_state is not None:
+            return (self.interim_state.command, {'stored_id': self.interim_state.stored_id, 'id': element.id, 'name': element.main})
+
         return (element.command, {'id': element.id, 'name': element.main})
 
 

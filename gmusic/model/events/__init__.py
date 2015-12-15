@@ -10,7 +10,8 @@ from gmusic.model.events.PlayOrStop import PlayOrStop
 from gmusic.model.events.ToggleRandom import ToggleRandom
 from gmusic.model.events.Resize import Resize
 from gmusic.model.events.PushState import PushState
+from gmusic.model.events.SetInterimState import SetInterimState
 
 __all__ = ["PopState", "ChangeMenu", "EndOfStream", "ProgramExit", "Feedback",
     "PageChange", "PageUpdate", "PauseOrResume", "PlayOrStop", "ToggleRandom",
-    "Resize", "PushState"]
+    "Resize", "PushState", "SetInterimState"]

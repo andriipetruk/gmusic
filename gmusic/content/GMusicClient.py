@@ -2,6 +2,7 @@ from gmusic.content.ContentConsumer import ContentConsumer
 from gmusicapi import Mobileclient
 from decimal import Decimal
 import json
+import threading
 
 class GMusicClient(ContentConsumer):
     '''Element in charge of interfacing with GMusicApi Client'''
@@ -18,9 +19,18 @@ class GMusicClient(ContentConsumer):
 
     def load_my_library(self):
         '''Load user's songs, playlists, and stations'''
-        self.load_tracks()
-        self.load_radios()
-        self.load_playlists()
+        track_load = threading.Thread(target=self.load_tracks)
+        radio_load = threading.Thread(target=self.load_radios)
+        playlist_load = threading.Thread(target=self.load_playlists)
+
+        track_load.start()
+        radio_load.start()
+        playlist_load.start()
+
+        track_load.join()
+        radio_load.join()
+        playlist_load.join()
+
 
     def load_playlists(self):
         playlists = self.client.get_all_user_playlist_contents()
@@ -119,6 +129,10 @@ class GMusicClient(ContentConsumer):
 
     def add_to_playlist(self, playlist_id, nid):
         self.client.add_songs_to_playlist(playlist_id, nid)
+
+        playlist_load = threading.Thread(target=self.load_playlists)
+        playlist_load.daemon = True
+        playlist_load.start()
 
     def format_suggested(self, t):
         return (t['title'], t['storeId'], 'Play', t['album'])

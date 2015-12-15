@@ -8,3 +8,6 @@ class Command:
 
     def execute(self, query):
         pass
+
+    def post_execute(self, query):
+        pass

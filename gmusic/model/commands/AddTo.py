@@ -14,9 +14,7 @@ class AddTo(Command):
         elements = [
             MenuElement('Queue', command='Queue'),
             MenuElement('Library', command='AddToLibrary'),
-            MenuElement('New Playlist', command='Queue'),
-            MenuElement('Existing Playlist', command='Queue'),
-            MenuElement('Radio as a Seed', command='Queue')]
+            MenuElement('Playlist', command='AddToPlaylistPrompt')]
 
         for e in elements:
             e.id = args['id']
