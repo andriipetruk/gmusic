@@ -1,3 +1,7 @@
+from gmusic.model.commands.AddTo import AddTo
+from gmusic.model.commands.AddToLibrary import AddToLibrary
+from gmusic.model.commands.AddToPlaylist import AddToPlaylist
+from gmusic.model.commands.AddToPlaylistPrompt import AddToPlaylistPrompt
 from gmusic.model.commands.Album import Album
 from gmusic.model.commands.AlbumSongs import AlbumSongs
 from gmusic.model.commands.Artist import Artist
@@ -16,11 +20,13 @@ from gmusic.model.commands.Previous import Previous
 from gmusic.model.commands.Queue import Queue
 from gmusic.model.commands.Radio import Radio
 from gmusic.model.commands.Random import Random
+from gmusic.model.commands.RecentlyAdded import RecentlyAdded
 from gmusic.model.commands.Resume import Resume
 from gmusic.model.commands.Seed import Seed
 from gmusic.model.commands.Song import Song
 from gmusic.model.commands.Stop import Stop
 from gmusic.model.commands.Suggested import Suggested
+from gmusic.model.commands.ViewQueue import ViewQueue
 from gmusic.model.commands.Volume import Volume
 
 
@@ -28,6 +34,10 @@ from gmusic.model.commands.Volume import Volume
 
 
 __all__ = [
+"AddTo",
+"AddToPlaylist",
+"AddToPlaylistPrompt",
+"AddToLibrary",
 "Album",
 "AlbumSongs",
 "Artist",
@@ -46,10 +56,12 @@ __all__ = [
 "Queue",
 "Radio",
 "Random",
+"RecentlyAdded",
 "Resume",
 "Seed",
 "Song",
 "Stop",
 "Suggested",
-"Volume"
+"Volume",
+"ViewQueue"
 ]

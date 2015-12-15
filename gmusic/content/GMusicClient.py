@@ -2,6 +2,7 @@ from gmusic.content.ContentConsumer import ContentConsumer
 from gmusicapi import Mobileclient
 from decimal import Decimal
 import json
+import threading
 
 class GMusicClient(ContentConsumer):
     '''Element in charge of interfacing with GMusicApi Client'''
@@ -18,9 +19,18 @@ class GMusicClient(ContentConsumer):
 
     def load_my_library(self):
         '''Load user's songs, playlists, and stations'''
-        self.load_tracks()
-        self.load_radios()
-        self.load_playlists()
+        track_load = threading.Thread(target=self.load_tracks)
+        radio_load = threading.Thread(target=self.load_radios)
+        playlist_load = threading.Thread(target=self.load_playlists)
+
+        track_load.start()
+        radio_load.start()
+        playlist_load.start()
+
+        track_load.join()
+        radio_load.join()
+        playlist_load.join()
+
 
     def load_playlists(self):
         playlists = self.client.get_all_user_playlist_contents()
@@ -85,24 +95,20 @@ class GMusicClient(ContentConsumer):
                 return
 
         # Now return appropriately
-        return [(t[args['name']], t[args['id']], args['command'], t[args['alt']])\
-            for t in items if args['id'] in t]
+        return [self.format_subitems(t, args) for t in items if args['id'] in t]
 
     def get_playlist_contents(self, from_id):
         '''Playlist exclusive stuff'''
         shareToken = [t for t in self.data_cache.playlists \
             if t['id'] == from_id][0]['shareToken']
+
         contents = self.client.get_shared_playlist_contents(shareToken)
-
-        store_available = [(t['track']['title'], t['trackId'], 'Play', t['track']['album']) \
-            for t in contents if 'track' in t]
-
-        return store_available
+        return [self.format_playlist_contents(t) for t in contents if 'track' in t]
 
     def get_suggested(self):
         '''Returns a list of tracks that the user might be interested in'''
         items = sorted(self.client.get_promoted_songs(), key=lambda y: y['title'])
-        return [(t['title'], t['storeId'], 'Play', t['album']) for t in items if 'storeId' in t]
+        return [self.format_suggested(t) for t in items if 'storeId' in t]
 
     def get_information_about(self, from_type, from_id):
         '''Gets specific information about an id (depending on the type)'''
@@ -112,9 +118,27 @@ class GMusicClient(ContentConsumer):
             return self.client.get_album_info(from_id, include_tracks=False)
         return self.client.get_track_info(from_id)
 
-
     def get_stream_url(self, nid):
         return self.client.get_stream_url(nid)
 
     def lookup(self, nid):
         return self.client.get_track_info(nid)
+
+    def add_track_to_library(self, nid):
+        self.client.add_aa_track(nid)
+
+    def add_to_playlist(self, playlist_id, nid):
+        self.client.add_songs_to_playlist(playlist_id, nid)
+
+        playlist_load = threading.Thread(target=self.load_playlists)
+        playlist_load.daemon = True
+        playlist_load.start()
+
+    def format_suggested(self, t):
+        return (t['title'], t['storeId'], 'Play', t['album'])
+
+    def format_playlist_contents(self, t):
+        return (t['track']['title'], t['trackId'], 'Play', t['track']['album'])
+
+    def format_subitems(self, t, args):
+        return (t[args['name']], t[args['id']], args['command'], t[args['alt']])

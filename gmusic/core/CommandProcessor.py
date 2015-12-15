@@ -13,28 +13,31 @@ class CommandProcessor(EventHandler):
         '''Master method; figures out what was typed by the user'''
         command = self.build_type('command', cmd_class)
 
+        if command is None:
+            return
+
         command.player_controller = self.player_controller
         command.content_handler = self.content_handler
 
-        # See if there is an event that needs to run pre-execution
-        if hasattr(command, 'pre_execute'):
-            pre_execute_event = command.pre_execute(cmd_args)
-            if pre_execute_event is not None:
-                self.notify_attachments(*pre_execute_event)
+        execution_stages = {'pre_execute', 'execute', 'post_execute'}
+        for execution_stage in execution_stages:
+            self.execute(execution_stage, command, cmd_args)
 
-        # See if there is any event that needs to be run after execution
-        if hasattr(command, 'execute'):
-            execute_event = command.execute(cmd_args)
-            if execute_event is not None:
-                self.notify_attachments(*execute_event)
-
+    def execute(self, execution_stage, command, cmd_args):
+        '''Calls a command execution stage and handles the returned event'''
+        if hasattr(command, execution_stage):
+            event = getattr(command, execution_stage)(cmd_args)
+            if event is not None:
+                self.notify_attachments(*event)
 
     def parse(self, line):
         '''Attempt to process input from command line'''
-        split_results = line.split(' ', 1)
-        cmd_class = split_results[0]
+        try:
+            split_results = line.strip().split(' ', 1)
+        except: return
 
         cmd_args = None
+        cmd_class = split_results[0]
         if len(split_results) > 1:
             cmd_args = {"query": split_results[1]}
 

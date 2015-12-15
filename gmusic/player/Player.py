@@ -36,7 +36,7 @@ class Player(EventHandler):
         self.notify_attachments('PauseOrResume',{"is_paused": False})
 
     def adjust_volume(self, adjustment):
-        self.volume = max(min(5.0,self.volume + float(adjustment)), 0.0)
+        self.volume = max(min(1.5, self.volume + float(adjustment)), 0.0)
         self.player.set_property('volume', self.volume)
 
     def build_bus(self):

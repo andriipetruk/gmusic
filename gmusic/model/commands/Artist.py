@@ -1,11 +1,7 @@
-from gmusic.model.Command import Command
+from gmusic.model.SearchCommand import SearchCommand
 
-class Artist(Command):
+class Artist(SearchCommand):
     '''Searches for an artist'''
-
-    def execute(self, args):
-        '''Asks the Content Manager to find a song from specified artist'''
-        query = ''
-        if args is not None and 'query' in args:
-            query = args['query']
-        self.content_handler.search_items('artists', query)
+    def __init__(self, *_):
+        SearchCommand.__init__(self)
+        self.search_type = 'artists'

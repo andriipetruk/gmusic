@@ -1,11 +1,9 @@
-from gmusic.model.Command import Command
+from gmusic.model.SubelementSearchCommand import SubelementSearchCommand
 
-class ArtistAlbums(Command):
+class ArtistAlbums(SubelementSearchCommand):
     '''Searches for a artist's albums'''
 
-    def execute(self, args):
-        '''Asks the Content Manager to find all albums from an artist'''
-        query = ''
-        if args is not None and 'id' in args:
-            query = args['id']
-        self.content_handler.search_sub_items('artist', query)
+    def __init__(self, *_):
+        SubelementSearchCommand.__init__(self)
+        self.search_type = 'album'
+        self.origin_type = 'artist'

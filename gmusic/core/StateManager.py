@@ -20,20 +20,22 @@ class StateManager(object):
         self.states = []
         # this just so happens to work in my favor!
         self.main_menu()
+        self.interim_state = None
 
     def main_menu(self):
         '''Set everything necessary for the main menu'''
         if len(self.states) == 0:
             elements = [
-                MenuElement('View Suggested Songs', id='', command='Suggested'),
-                MenuElement('Browse Albums', id='', command='Album'),
-                MenuElement('Browse Artists', id='', command='Artist'),
-                MenuElement('Browse Playlists', id='', command='Playlist'),
-                MenuElement('Browse Radios', id='', command='Radio'),
-                MenuElement('Browse Songs', id='', command='Song'),
-                MenuElement('Connect to DJs', id='', command='Main'),
-                MenuElement('Options', id='', command='Options'),
-                MenuElement('Exit', id='', command='Exit')]
+                MenuElement('View Suggested Songs', command='Suggested'),
+                MenuElement('View Recently Added Songs', command='RecentlyAdded'),
+                MenuElement('Browse Albums', command='Album'),
+                MenuElement('Browse Artists', command='Artist'),
+                MenuElement('Browse Playlists', command='Playlist'),
+                MenuElement('Browse Radios', command='Radio'),
+                MenuElement('Browse Songs', command='Song'),
+                MenuElement('Connect to DJs', command='Main'),
+                MenuElement('Options', command='Options'),
+                MenuElement('Exit', command='Exit')]
 
             main_state = State("Main Menu", "Options", elements)
             main_state.id = 'main'
@@ -45,20 +47,6 @@ class StateManager(object):
         self.states[1:] = []
         self.assign_state(self.states[0])
 
-    def options_menu(self):
-        '''Pushses options menu to top of stack'''
-        elements = [
-            MenuElement('Background color', id='', command='Back', alt='Gray'),
-            MenuElement('Text color', id='', command='Back', alt='White'),
-            MenuElement('Highlight color', id='', command='Back', alt='White'),
-            MenuElement('Number of radio tracks to pull', id='', command='Back', alt='25'),
-            MenuElement('Port for DJ Notifications', id='', command='Back', alt='8080'),
-            MenuElement('Allow DJ to control playback', id='', command='Back', alt='No')]
-        options_state = State("Options Menu", "Options", elements)
-        options_state.id = 'options'
-
-        self.push_state(options_state)
-
     def push_state(self, state):
         '''Pushes a state on the StateStack'''
         self.states.append(state)
@@ -69,15 +57,15 @@ class StateManager(object):
         if len(self.states) == 1:
             return
 
+        self.interim_state = None
         self.states.pop()
         self.assign_state(self.states[-1])
 
     def assign_state(self, state):
         self.actual_title = state.title
-        self.subtitle = state.id
+        self.subtitle = state.subtitle
         self.set_options(state.elements)
         self.set_page(0)
-
 
 
     def get_selected_element(self):
@@ -120,7 +108,11 @@ class StateManager(object):
     def handle_execute(self):
         '''State Machine'''
         element = self.get_selected_element()
-        return (element.command, {'id': element.id})
+
+        if self.interim_state is not None:
+            return (self.interim_state.command, {'stored_id': self.interim_state.stored_id, 'id': element.id, 'name': element.main})
+
+        return (element.command, {'id': element.id, 'name': element.main})
 
 
     def set_options(self, new_options):
