@@ -46,7 +46,7 @@ class DataCache(ContentConsumer):
 
         if 'song' in item_type or 'track' in item_type:
             args['type'] = 'title'
-        gen = (item for item in items if args['id'] in item and query in item[args['type']])
+        gen = (item for item in items if args['id'] in item and query.lower() in item[args['type'].lower()])
 
         # Have to account for absurdity in 'artists' AGAIN...
         if 'artist' in item_type:
