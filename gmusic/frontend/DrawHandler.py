@@ -21,18 +21,36 @@ class DrawHandler(CursedObject, EventHandler):
         self.create_system()
         self.screen.clear()
         self.screen.refresh()
-        self.draw()
         self.notify_attachments('Resize')
+        self.draw()
         self.launch_threads(command_parser, ui_parser)
 
     def create_system(self):
         '''Builds all of the components and sends them the unified screen'''
         self.banner = Banner(self.screen)
         self.guide = Guide(self.screen)
-        win = curses.newwin(1, self.width()-2, 5, 1)
-        win.leaveok(1)
-        self.feedback = FeedbackDisplay(win)
-        self.menu = Menu(self.screen)
+
+        # Feedback
+        feedback_start_x = 1
+        feedback_start_y = 5
+        feedback_width = self.width()-2
+        feedback_height = 1
+        feedback_win = curses.newwin(feedback_height, feedback_width, feedback_start_y, feedback_start_x)
+        feedback_win.leaveok(1)
+        self.feedback = FeedbackDisplay(feedback_win)
+
+        # Menu
+        menu_start_x = 1
+        menu_start_y = 7
+        menu_width = self.width() - 2
+        menu_height = self.height() - 7 - 6 # 7 for banner/feedback, 6 for guide
+        menu_win = curses.newwin(menu_height, menu_width, menu_start_y, menu_start_x)
+        self.menu = Menu(menu_win)
+
+    def resize_menu(self):
+        menu_width = self.width() - 2
+        menu_height = self.height() - 7 - 6 # 7 for banner/feedback, 6 for guide
+        self.menu.screen.resize(menu_height, menu_width)
 
     def launch_threads(self, command_parser, ui_parser):
         """Launches a UI thread"""
@@ -46,10 +64,11 @@ class DrawHandler(CursedObject, EventHandler):
 
     def refresh_thread(self):
         while True:
-            time.sleep(0.5)
-            self.screen.leaveok(1)
-            self.screen.refresh()
+            time.sleep(1.0)
+            cur_pos = curses.getsyx()
             self.feedback.draw()
+            #curses.setsyx(*cur_pos)
+            #curses.doupdate()
 
     def draw(self):
         self.screen.clear()
@@ -80,7 +99,7 @@ class DrawHandler(CursedObject, EventHandler):
         self.banner.draw()
 
     def get_page_capacity(self):
-        return self.height() - 17
+        return self.menu.height() - 6
 
     def provide_feedback(self, information):
     #    self.feedback.draw(information)

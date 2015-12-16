@@ -38,8 +38,11 @@ class GMusicClient(ContentConsumer):
         self.data_cache.playlists = playlists
 
     def load_tracks(self):
-        tracks = [t for t in self.client.get_all_songs() if 'nid' in t]
+        generator = [self.scrape_song(t) for t in self.client.get_all_songs() if 'nid' in t]
         self.data_cache.tracks = tracks
+
+    def scrape_song(self, track):
+        return track
 
     def load_radios(self):
         radios = self.client.get_all_stations()

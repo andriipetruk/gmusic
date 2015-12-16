@@ -35,6 +35,7 @@ class MasterEventHandler(EventHandler):
 
         if isinstance(event, events.Resize):
             capacity = self.draw_handler.get_page_capacity()
+            self.draw_handler.resize_menu()
             self.state.capacity = capacity
             self.draw_handler.draw()
 

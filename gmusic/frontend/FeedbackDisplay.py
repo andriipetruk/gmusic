@@ -44,11 +44,17 @@ class FeedbackDisplay(CursedObject):
     def draw(self):
         '''Draw things!!!'''
         self.accumulate_time()
+        self.determine_and_draw_feedback_type()
 
+        self.screen.refresh()
+        curses.setsyx(0, 0)
+        curses.doupdate()
+
+
+    def determine_and_draw_feedback_type(self):
         # If we're providing a message, do that first
         if self.is_showing_message:
             self.center_text('< {0} >'.format(self.message), 0)
-            self.screen.refresh()
             if time.time() > self.message_start_time + self.message_duration:
                 self.is_showing_message = False
             return
@@ -56,10 +62,9 @@ class FeedbackDisplay(CursedObject):
         # If we're not playing, don't show anything
         if not self.is_playing:
             self.center_text(' ', 0)
-            self.screen.refresh()
             return
 
-        # Otherwise, show the playing pane
+        # Otherwise, show the playing
         self.draw_playing()
 
     def draw_playing(self):
@@ -71,9 +76,9 @@ class FeedbackDisplay(CursedObject):
         bar = self.get_bar()
 
         feedback_args = (play, time_elapsed, bar, duration, random)
-        self.screen.clear()
+        #self.screen.clrtoeol()
         self.screen.addstr(0, 2, '{0}[{1}]{2}[{3}]{4}'.format(*feedback_args))
-        self.screen.refresh()
+
 
     def format_time(self, value):
         '''Formats an int representing time, e.g. '13:52' '''

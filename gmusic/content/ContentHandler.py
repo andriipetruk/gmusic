@@ -73,15 +73,15 @@ class ContentHandler(EventHandler, ContentConsumer):
 
     def search_items(self, search_type, query):
         '''Master Search Method'''
+        cache_method = 'get_items'.format(search_type)
+        found_items = getattr(self.data_cache, cache_method)(search_type)
+
         if query is not '':
-            method_name = 'search_items_all_access'.format(search_type)
-            search = getattr(self.client, method_name)
-        else:
-            method_name = 'get_items'.format(search_type)
-            search = getattr(self.data_cache, method_name)
+            aa_method = 'search_items_all_access'.format(search_type)
+            all_access = getattr(self.client, aa_method)(search_type, query)
+            found_items += all_access
 
         # Prepare to send
-        found_items = search(search_type, query)
         title = self.format_title(search_type, query)
         self.package_and_notify(title, search_type, found_items)
 

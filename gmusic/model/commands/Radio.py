@@ -4,7 +4,8 @@ class Radio(Command):
     '''Searches for a radio'''
 
     def pre_execute(self, args):
-        return ('Feedback', {"message": 'Searching radios matching "{0}"'.format(args['query'])})
+        if 'query' in args:
+            return ('Feedback', {"message": 'Searching radios matching "{0}"'.format(args['query'])})
 
     def execute(self, args=None):
         '''Gets a radio station'''
