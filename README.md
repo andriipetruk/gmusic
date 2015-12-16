@@ -3,15 +3,7 @@
 Google Music Terminal Interface; written in Python 2.
 
 ## Before We Start
-Create a `credentials.json` file in data/unlocked/. In this file, add the following...
-
-```
-mkdir data/unlocked
-echo '{"username": "you@gmail.com", "password": "yourpassword"}' >> data/unlocked/credentials.json
-```
-Note: if you use two-step authentication, password needs to be an application-specific password.
-
-NEVER commit this data to your fork. You can use `python3 lock.py` to password-encrypt your credentials and `python3 unlock.py` to pasword-decrypt locked data.
+When you first start GMusic, a startup script will prompt you for your Google email and an application-specific password. These credentials will NEVER be accessed by anyone here. Please do use an application-specific password, as we prefer you have the increased security it provides.
 
 
 ### Dependencies
