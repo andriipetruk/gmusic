@@ -19,6 +19,7 @@ class DrawHandler(CursedObject, EventHandler):
     def launch(self, command_parser, ui_parser):
         self.start()
         self.create_system()
+        self.screen.scrollok(False)
         self.screen.clear()
         self.screen.refresh()
         self.notify_attachments('Resize')
@@ -67,8 +68,8 @@ class DrawHandler(CursedObject, EventHandler):
             time.sleep(1.0)
             cur_pos = curses.getsyx()
             self.feedback.draw()
-            #curses.setsyx(*cur_pos)
-            #curses.doupdate()
+            curses.setsyx(*cur_pos)
+            curses.doupdate()
 
     def draw(self):
         self.screen.clear()

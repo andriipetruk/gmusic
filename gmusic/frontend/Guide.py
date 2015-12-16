@@ -12,13 +12,14 @@ class Guide(CursedObject):
     def draw(self):
         lines = self.keys()
 
-        for i in range(3):
-            self.center_text(lines[i], self.height() - (5-i))
+        for i in range(4):
+            self.center_text(lines[i], self.height() - (6-i))
 
     def keys(self):
-        line1 = "↕ : Move Selection    r : Create Radio    n : Next    + : Vol Up  "
-        line2 = "↔ : Change Page       q : Play Next       p : Prev    - : Vol Down"
+        line1 = '  '
+        line2 = "↕ : Move Selection    r : Create Radio    n : Next    + : Vol Up  "
+        line3 = "↔ : Change Page       q : Play Next       p : Prev    - : Vol Down"
         # offset last row to account for wierd centering issues
-        line3 = "                        i : CLI         Space : ▶/❚❚              "
+        line4 = "                        i : CLI         Space : ▶/❚❚              "
 
-        return (line1, line2, line3)
+        return (line1, line2, line3, line4)
