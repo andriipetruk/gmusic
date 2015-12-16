@@ -7,7 +7,7 @@ class SearchCommand(Command):
         self.search_type = 'songs'
 
     def pre_execute(self, args):
-        if 'query' not in args:
+        if args is None or 'query' not in args:
             return ('Feedback', {'message': 'Displaying all {0}'.format(self.search_type)})
 
         query = args['query']

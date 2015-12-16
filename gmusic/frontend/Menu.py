@@ -51,7 +51,13 @@ class Menu(CursedObject):
 
         # if alt is nt none
         main_width = int(self.current_width*2/3)-6
+        main = self.format_subelement(menu_element.main, main_width)
         alt_width = int(self.current_width/3)-4
-        main = self.compress_and_pad(menu_element.main, width=main_width)
-        alt = self.compress_and_pad(menu_element.alt, width=alt_width)
+        alt = self.format_subelement(menu_element.alt, alt_width)
         return main + " " + alt
+
+    def format_subelement(self, text, width):
+        t = self.compress_text(text.strip(), width)
+        if len(t) == 0:
+            t = 'Unknown'
+        return self.pad_text(t, width)

@@ -31,15 +31,13 @@ class GMusicClient(ContentConsumer):
         radio_load.join()
         playlist_load.join()
 
-
     def load_playlists(self):
         playlists = self.client.get_all_user_playlist_contents()
         playlists.reverse()
         self.data_cache.playlists = playlists
 
     def load_tracks(self):
-        generator = [self.scrape_song(t) for t in self.client.get_all_songs() if 'nid' in t]
-        self.data_cache.tracks = tracks
+        self.data_cache.tracks = [t for t in self.client.get_all_songs() if 'nid' in t]
 
     def scrape_song(self, track):
         return track

@@ -55,7 +55,6 @@ class ContentHandler(EventHandler, ContentConsumer):
         state = State(title, "{0}".format(type.capitalize()), items)
         self.notify_attachments('PushState', event_parameters={"state": state})
 
-
     def format_title(self, search_type, query=""):
         '''Format a title which had no preceding search'''
         if query is not "":
@@ -73,12 +72,10 @@ class ContentHandler(EventHandler, ContentConsumer):
 
     def search_items(self, search_type, query):
         '''Master Search Method'''
-        cache_method = 'get_items'.format(search_type)
-        found_items = getattr(self.data_cache, cache_method)(search_type)
+        found_items = self.data_cache.get_items(search_type, query)
 
         if query is not '':
-            aa_method = 'search_items_all_access'.format(search_type)
-            all_access = getattr(self.client, aa_method)(search_type, query)
+            all_access = self.client.search_items_all_access(search_type, query)
             found_items += all_access
 
         # Prepare to send

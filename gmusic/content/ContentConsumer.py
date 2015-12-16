@@ -4,7 +4,7 @@ class ContentConsumer:
     def get_index_arguments(self, type):
         '''Get the data indexing arguments'''
         # Songs have some weird arguments, so we have to account for that
-        if type is 'songs':
+        if 'song' in type:
             return {'type': self.get_type_name(type),
             'name': self.get_name(type),
             'id': self.get_id_type(type[:-1]),
@@ -22,7 +22,7 @@ class ContentConsumer:
     def format_item(self, item, type, args):
         '''Format the item for content_handler'''
         # Artist does not have alternate information
-        if type is 'artists':
+        if 'artist' in type:
             return (item[args['type']][args['name']],
                 item[args['type']][args['id']],
                 'ArtistAlbums',

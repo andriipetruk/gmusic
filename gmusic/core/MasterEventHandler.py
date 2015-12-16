@@ -31,16 +31,19 @@ class MasterEventHandler(EventHandler):
         if isinstance(event, events.ChangeMenu):
             build_menu = getattr(self.state, event.menu_type)
             build_menu()
+            self.draw_handler.menu.screen.clear()
             self.draw_handler.draw()
 
         if isinstance(event, events.Resize):
             capacity = self.draw_handler.get_page_capacity()
+            self.draw_handler.menu.screen.clear()
             self.draw_handler.resize_menu()
             self.state.capacity = capacity
             self.draw_handler.draw()
 
         if isinstance(event, events.PopState):
             self.state.pop_state()
+            self.draw_handler.menu.screen.clear()
             self.draw_handler.draw()
 
         if isinstance(event, events.SetInterimState):
@@ -52,6 +55,7 @@ class MasterEventHandler(EventHandler):
 
         if isinstance(event, events.PushState):
             self.state.push_state(event.state)
+            self.draw_handler.menu.screen.clear()
             self.draw_handler.draw()
 
         if isinstance(event, events.Feedback):

@@ -39,17 +39,17 @@ class DataCache(ContentConsumer):
             return self.playlists
         return self.tracks
 
-    def get_items(self, item_type, *_):
+    def get_items(self, item_type, query):
         '''Get all items from cache of `item_type`'''
         args = self.get_index_arguments(item_type)
         items = self.get_cache_target(item_type)
-        gen = (item for item in items if args['id'] in item)
 
         if 'song' in item_type or 'track' in item_type:
             args['type'] = 'title'
+        gen = (item for item in items if args['id'] in item and query in item[args['type']])
 
         # Have to account for absurdity in 'artists' AGAIN...
-        if item_type == 'artists':
+        if 'artist' in item_type:
             return list(set([self.format_artist(artist, args) for artist in gen]))
         return list(set([self.format_result(item, args) for item in gen]))
 
