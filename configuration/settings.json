@@ -1,0 +1,20 @@
+{
+  "options": {
+    "volumeAdjustment": {
+      "value": "0.1",
+      "description": "Volume Adjustment Amount"
+    },
+    "numRadioTracks": {
+      "value": 25,
+      "description": "Number of radio tracks to pull"
+    },
+    "djPort":{
+      "value": 8080,
+      "description": "Port for Dj Notifications"
+    },
+    "djCanControlPlayback": {
+      "value": false,
+      "description": "Allow DJ to control playback"
+    }
+  }
+}

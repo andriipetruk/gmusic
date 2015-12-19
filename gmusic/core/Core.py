@@ -9,16 +9,16 @@ class Core:
     def start(self):
         '''Launch all elements'''
         # Build and launch player and content entry points
-        meh = MasterEventHandler()
+        master = MasterEventHandler()
         content_handler = ContentHandler()
-        content_handler.attachments.append(meh)
+        content_handler.attachments.append(master)
         content_handler.launch()
 
         player_controller = PlayerController(content_handler)
-        player_controller.attachments.append(meh)
+        player_controller.attachments.append(master)
         player_controller.start()
 
         # Build the parsers
-        cmd_parser = CommandProcessor(meh, content_handler, player_controller)
-        ui_parser = UIParser(event_handler=meh, command_parser=cmd_parser)
-        meh.draw_handler.launch(cmd_parser, ui_parser)
+        cmd_parser = CommandProcessor(master, content_handler, player_controller)
+        ui_parser = UIParser(event_handler=master, command_parser=cmd_parser)
+        master.draw_handler.launch(cmd_parser, ui_parser)

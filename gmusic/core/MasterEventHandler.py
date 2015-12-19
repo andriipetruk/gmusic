@@ -1,5 +1,4 @@
 from gmusic.core.EventHandler import EventHandler
-from gmusic.core.Cache import Cache
 from gmusic.core.StateManager import StateManager
 from gmusic.frontend.DrawHandler import DrawHandler
 import gmusic.model.events as events
@@ -8,7 +7,6 @@ import sys
 class MasterEventHandler(EventHandler):
     def __init__(self):
         EventHandler.__init__(self)
-        self.cache = Cache()
         self.state = StateManager()
         self.draw_handler = DrawHandler(self)
 

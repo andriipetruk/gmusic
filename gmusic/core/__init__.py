@@ -1,4 +1,4 @@
-from gmusic.core.Cache import Cache
+from gmusic.core.ConfigurationHandler import ConfigurationHandler
 from gmusic.core.CommandProcessor import CommandProcessor
 from gmusic.core.Core import Core
 from gmusic.core.EventHandler import EventHandler

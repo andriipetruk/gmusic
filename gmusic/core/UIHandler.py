@@ -8,7 +8,6 @@ class UIHandler(EventHandler):
         EventHandler.__init__(self)
         self.attachments.append(event_handler)
         self.state = event_handler.state
-        self.cache = event_handler.cache
         self.cmd_processor = cmd_processor
 
     def handle(self, user_in):

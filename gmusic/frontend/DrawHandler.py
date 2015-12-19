@@ -13,7 +13,6 @@ class DrawHandler(CursedObject, EventHandler):
     def __init__(self, event_handler):
         EventHandler.__init__(self)
         self.attachments.append(event_handler)
-        self.cache = event_handler.cache
         self.state = event_handler.state
 
     def launch(self, command_parser, ui_parser):
