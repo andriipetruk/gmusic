@@ -15,6 +15,10 @@
     "djCanControlPlayback": {
       "value": false,
       "description": "Allow DJ to control playback"
+    },
+    "secretMode": {
+      "value": true,
+      "description": "Update play counts"
     }
   }
 }
