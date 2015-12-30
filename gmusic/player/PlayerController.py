@@ -70,7 +70,7 @@ class PlayerController(EventHandler):
 
         # Tell attachments about the song
         track_details = self.content_handler.lookup_nid(nid)
-        self.content_handler.increment_song_playcount(track_details['id'])
+        self.content_handler.increment_song_playcount(track_details)
         self.notify_attachments('PlayOrStop', {'track': track_details})
 
     def queue(self, nid):

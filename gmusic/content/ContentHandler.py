@@ -29,8 +29,9 @@ class ContentHandler(EventHandler, ContentConsumer):
         # Not in cache; need to look it up
         return self.client.lookup(nid)
 
-    def increment_song_playcount(self, id):
-        self.client.client.increment_song_playcount(id)
+    def increment_song_playcount(self, track):
+        if 'id' in track:
+            self.client.client.increment_song_playcount(track['id'])
 
     def create_radio(self, seed_type, id, name):
         '''Create a radio from an id, then add it to cache'''
