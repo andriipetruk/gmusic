@@ -1,1 +1,7 @@
+if [ ! -d "data" ]; then
+  mkdir data;
+fi
+if [ ! -d "data/unlocked" ]; then
+  mkdir data/unlocked;
+fi
 python startup.py

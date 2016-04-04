@@ -6,5 +6,5 @@ from gmusic.core.StateManager import StateManager
 from gmusic.core.UIHandler import UIHandler
 from gmusic.core.UIParser import UIParser
 
-__all__ = ["Cache", "CommandProcessor", "Core", \
+__all__ = ["CommandProcessor", "Core", \
             "EventHandler", "StateManager", "UIHandler", "UIParser"]
