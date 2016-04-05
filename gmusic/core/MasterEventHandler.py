@@ -5,12 +5,15 @@ import gmusic.model.events as events
 import sys
 
 class MasterEventHandler(EventHandler):
+    '''The MASTER Event Handler and main component that launches the UI.'''
+
     def __init__(self):
         EventHandler.__init__(self)
         self.state = StateManager()
         self.draw_handler = DrawHandler(self)
 
     def handle_event(self, event):
+        '''Todo fix this so we don't have lots of if isinstances'''
         if isinstance(event, events.PageChange):
             self.draw_handler.draw()
 

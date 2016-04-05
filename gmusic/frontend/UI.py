@@ -6,7 +6,10 @@ import curses
 import collections
 
 class UI(CursedObject, EventHandler):
-    """Asynchronous. Handles input from the user"""
+    """
+    Handles input from the user; handles keypress events
+    and even has its own command-line interface
+    """
 
     def __init__(self, draw_handler, cmd_processor, ui_parser):
         CursedObject.__init__(self)

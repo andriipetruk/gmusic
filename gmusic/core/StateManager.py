@@ -3,6 +3,8 @@ from gmusic.model.State import State
 from gmusic.model.commands import *
 
 class StateManager(object):
+    '''Handles a bulk majority of state-based logic in the UI.'''
+
     def __init__(self):
         self.state = ""
         self.title = ""

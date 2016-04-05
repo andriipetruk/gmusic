@@ -1,5 +1,5 @@
 from gmusic.frontend.CursedObject import CursedObject
-import curses, threading
+import curses, threading, sys
 
 class Menu(CursedObject):
     '''A class which abstracts the horrors of building a curses-based menu system'''
@@ -16,14 +16,14 @@ class Menu(CursedObject):
 
     def draw(self, selected):
         '''Draw the menu and lines'''
-
-        #self.screen.clear()
-        #self.screen.refresh()
+        # Create a box around the screen
         self.screen.box()
 
+        # Add the title and subtitle
         self.screen.addstr(0, 2, self.title, curses.A_BOLD)
         self.print_line(self.subtitle, 2, curses.A_BOLD)
 
+        # get the current width
         self.current_width = self.width()
 
         # Display all the menu items, showing the 'pos' item highlighted

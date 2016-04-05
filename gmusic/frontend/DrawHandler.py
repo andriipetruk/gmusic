@@ -6,7 +6,7 @@ from gmusic.frontend.Guide import Guide
 from gmusic.frontend.Menu import Menu
 from gmusic.frontend.UI import UI
 import gmusic.model.events as events
-import threading, time
+import threading, time, sys
 import curses
 
 class DrawHandler(CursedObject, EventHandler):
@@ -17,6 +17,7 @@ class DrawHandler(CursedObject, EventHandler):
 
     def launch(self, command_parser, ui_parser):
         self.start()
+        self.validate_sufficient_rows()
         self.create_system()
         self.screen.scrollok(False)
         self.screen.clear()
@@ -24,6 +25,13 @@ class DrawHandler(CursedObject, EventHandler):
         self.notify_attachments('Resize')
         self.draw()
         self.launch_threads(command_parser, ui_parser)
+
+    def validate_sufficient_rows(self):
+        '''Checks on startup that there are enough rows to draw Curses menu'''
+        if self.height() < 27:
+            self.exit()
+            print('Critical Error: Insufficient rows available to draw CURSES system.  Exiting.');
+            sys.exit(1)
 
     def create_system(self):
         '''Builds all of the components and sends them the unified screen'''
@@ -99,7 +107,7 @@ class DrawHandler(CursedObject, EventHandler):
         self.banner.draw()
 
     def get_page_capacity(self):
-        return self.menu.height() - 6
+        return self.menu.height() - 5
 
     def provide_feedback(self, information):
     #    self.feedback.draw(information)
