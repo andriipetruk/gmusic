@@ -1,32 +1,44 @@
 import os, json, subprocess, sys
+from subprocess import Popen, PIPE
 
-# Check Dependencies
+default_terminal_color = '\033[m'
+
+# Possible Dependencies:
+#   gir1.2-gstreamer-1.0 libqt5gstreamer-1.0-0 libqtgstreamer-1.0-0
+#   apt-cache -n search "gstreamer-1.0"
+
+# Check Dependencies Commands
+# TODO: do we need to check for pip as well?
 check_gst_command = 'dpkg -l python-gst-1.0'
-check_gmusicapi_command = 'pip list | grep gmusicapi'
-check_pygobject_command = 'pip list | grep pygobject'
+pip_list = 'pip list'
 
-gst_result = subprocess.check_output(check_gst_command.split(" "))
-gmusicapi_result = subprocess.check_output(check_gmusicapi_command.split(" "))
-pygobject_result  = subprocess.check_output(check_pygobject_command.split(" "))
+# Check if this system has the required packages
+gst_popen = Popen(check_gst_command.split(" "), stdout=PIPE, stderr=PIPE)
+pip_list_popen = Popen(pip_list.split(" "), stdout=PIPE, stderr=PIPE)
 
-# TODO: what if non-english system?
-gst_missing = ("no packages found" in gst_result)
-gmusicapi_missing = (not gmusicapi_result)
-pygobject_missing = (not pygobject_result)
+# get the output from the popen/shell command
+gst_result, gst_error = gst_popen.communicate()
+pip_list_result = pip_list_popen.communicate()[0]
+
+gst_missing = ("no packages found" in gst_error)
+gmusicapi_missing = not ("gmusicapi" in pip_list_result)
+pygobject_missing = not ("pygobject" in pip_list_result)
+
+# blank line to differentiate between the PS1 / any accidental output
+# *cough*dpkg*cough*
+print '\n'
 
 if gst_missing:
     print('It looks like python-gst-1.0 was not found on your system.')
     print('You can install them with this command\n')
-    print('\033[93m\tsudo apt-get install python-gst-1.0')
+    print('\033[93m\tsudo apt-get install python-gst-1.0\n')
+    print(default_terminal_color)
 
 if gmusicapi_missing or pygobject_missing:
     print('It looks like you don\'t have all the pip requirements.')
     print('You can install them with this command\n')
-    print('\033[93m\tsudo pip install -r requirements.txt --no-cache-dir')
-
-print(gst_missing)
-print(gmusicapi_missing)
-print(pygobject_missing)
+    print('\033[93m\tsudo pip install -r requirements.txt --no-cache-dir\n')
+    print(default_terminal_color)
 
 if gst_missing or gmusicapi_missing or pygobject_missing:
     sys.exit(1)

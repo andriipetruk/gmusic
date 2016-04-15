@@ -1,3 +1,8 @@
+# gmusic Build files
+gmusic/bin/
+gmusic/include/
+gmusic/local/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
