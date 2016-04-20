@@ -1,4 +1,6 @@
 import curses, os, sys, math
+import locale
+locale.setlocale(locale.LC_ALL, '')
 
 #pylint: disable=no-member
 class CursedObject(object):
@@ -6,6 +8,7 @@ class CursedObject(object):
 
     def __init__(self):
         self.screen = None
+        #self.code = locale.getpreferredencoding()
 
     def start(self):
         '''Start a screen'''
@@ -76,7 +79,7 @@ class CursedObject(object):
         # Center the text
         diff = width - len(text)
         text = ' '*int(math.floor(diff/2)-1) + text
-        self.print_line(text, row,style)
+        self.print_line(text.encode('utf-8'), row,style)
 
 
     def run_method_at(self, row, column, method):
