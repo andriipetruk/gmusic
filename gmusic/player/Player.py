@@ -1,6 +1,9 @@
 from gmusic.core.EventHandler import EventHandler
 from gmusic.model.events import *
-import gst, gobject, thread
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst
+import gobject, thread
 
 class Player(EventHandler):
     '''Direct interface with GStreamer; input ONLY from PlayerController'''
