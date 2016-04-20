@@ -17,9 +17,9 @@ class Guide(CursedObject):
 
     def keys(self):
         line1 = '  '
-        line2 = "↕ : Move Selection    r : Create Radio    n : Next    + : Vol Up  "
-        line3 = "↔ : Change Page       q : Play Next       p : Prev    - : Vol Down"
+        line2 = "↕ : Move Selection    r : Create Radio    n : Next    + : Vol Up  ".encode('utf-8')
+        line3 = "↔ : Change Page       q : Play Next       p : Prev    - : Vol Down".encode('utf-8')
         # offset last row to account for wierd centering issues
-        line4 = "                        i : CLI         Space : ▶/❚❚              "
+        line4 = "                        i : CLI         Space : ▶/❚❚              ".encode('utf-8')
 
         return (line1, line2, line3, line4)
