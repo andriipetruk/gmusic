@@ -8,13 +8,9 @@ When you first start GMusic, a startup script will prompt you for your Google em
 
 ### Dependencies
 
-The `python-pip` package that comes with ubuntu is horribly broken, and doesn't seem to work.. which is hilarious, cause so many ubuntu apps use python....
-To get a working version of `python-pip`:
+Before we get to anything, we need to install the python package manager
 ```
-curl -O https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz#md5=3823d2343d9f3aaab21cf9c917710196
-tar xvfz pip-7.1.2.tar.gz
-cd pip-7.1.2
-sudo python setup.py install
+sudo apt-get install python-pip
 ```
 
 Then, install the dependencies specific to gmusic

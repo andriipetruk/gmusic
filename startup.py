@@ -7,8 +7,21 @@ default_terminal_color = '\033[m'
 #   gir1.2-gstreamer-1.0 libqt5gstreamer-1.0-0 libqtgstreamer-1.0-0
 #   apt-cache -n search "gstreamer-1.0"
 
+# Top dependency
+# you can't really run anything in python without this
+pip_command = 'which pip'
+pip_popen = Popen(pip_command.split(" "), stdout=PIPE, stderr=PIPE)
+pip_result, pip_error = pip_popen.communicate()
+pip_missing = not ('pip' in pip_result)
+if pip_missing:
+    print('It looks like pip was not found on your system.')
+    print('You can install pip with this command\n')
+    print('\033[93m\tsudo apt-get install python-pip')
+    print(default_terminal_color)
+    sys.exit(1)
+
+
 # Check Dependencies Commands
-# TODO: do we need to check for pip as well?
 check_gst_command = 'dpkg -l python-gst-1.0'
 pip_list = 'pip list'
 
@@ -37,7 +50,7 @@ if gst_missing:
 if gmusicapi_missing or pygobject_missing:
     print('It looks like you don\'t have all the pip requirements.')
     print('You can install them with this command\n')
-    print('\033[93m\tsudo pip install -r requirements.txt --no-cache-dir\n')
+    print('\033[93m\tsudo pip install -r requirements.txt\n')
     print(default_terminal_color)
 
 if gst_missing or gmusicapi_missing or pygobject_missing:
