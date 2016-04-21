@@ -3,6 +3,7 @@ from gmusicapi import Mobileclient
 from decimal import Decimal
 import json
 import threading
+import os
 
 class GMusicClient(ContentConsumer):
     '''Element in charge of interfacing with GMusicApi Client'''
@@ -14,8 +15,17 @@ class GMusicClient(ContentConsumer):
     def login(self):
         '''Use data/unlocked/credentials.json to log in'''
         mac = Mobileclient.FROM_MAC_ADDRESS
-        credentials = json.load(open('data/unlocked/credentials.json', 'r'))
-        self.client.login(credentials['username'], credentials['password'], mac)
+        try:
+            credentials = json.load(open('data/unlocked/credentials.json', 'r'))
+            result = self.client.login(credentials['username'], credentials['password'], mac)
+            if result == False:
+                print('\n\033[93mLogin failed.')
+                print('Please double check that data/unlocked/credentials.json has correct information.\033[m\n')
+                os._exit(1)
+        except:
+            print('\n\033[93mdata/unlocked/credentials.json is not valid.')
+            print('You may need to delete and regnerate the credentials file.\033[m\n')
+            exit(1)
 
     def load_my_library(self):
         '''Load user's songs, playlists, and stations'''
